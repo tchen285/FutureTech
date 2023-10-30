@@ -2,7 +2,7 @@ from tkinter import *
 from page1 import Page1
 from page2 import Page2
 from page3 import Page3
-
+# 以下内容是测试内容, 测试用python字典的形式实现txt文件字典的转换
 class ShipManagementApp:
     def __init__(self, root):
         self.root = root
