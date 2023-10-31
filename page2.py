@@ -24,6 +24,10 @@ class Page2:
         self.frame.grid_remove()
 
     def show_file_content(self):
-        # 在点击"Unloading and Loading"按钮后，显示文件内容
-        self.app.page3.set_file_content(self.app.page1.file_content)
+        # Get the keys (descriptions) from container_data and filter out "NAN" and "UNUSED"
+        descriptions = [description for description in self.app.container_data.values() if
+                        description not in ["NAN", "UNUSED"]]
+        self.app.page3.set_file_content(descriptions)
         self.app.show_page3()
+
+

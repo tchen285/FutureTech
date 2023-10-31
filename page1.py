@@ -14,6 +14,7 @@ class Page1:
 
         def resize_image(image, width, height):
             return image.subsample(5) # 5 represents the image is going to be 1/5 size of original
+
         self.small_logo = resize_image(logo, 572, 251)
 
         canvas_width = self.small_logo.width()
@@ -40,13 +41,50 @@ class Page1:
         self.file_entry.delete(0, END)
         self.file_entry.insert(0, file_path)
 
-        # 读取文件内容并处理以去除不需要的字符
+        # 初始化两个字典
+        container_data = {}
+        container_weight = {}
+
+        # 读取文件内容并处理
         with open(file_path, 'r') as file:
-            lines = file.readlines()
-            content = [line.strip() for line in lines if "NAN" not in line and "UNUSED" not in line]
-            # 进一步处理文件内容以提取所需的部分并去掉花括号
-            cleaned_content = [line.split("}, ")[1].replace("{", "").replace("}", "") for line in content]
-            self.file_content = cleaned_content
+            lines = file.readlines() # 把每一行按照String的形式储存到lines中, lines就是一个数组
+            for line in lines:
+                # print(line) # 输出: [01, 01], {00000}, NAN
+                line = line.strip() # 除去String开始和结尾的空白字符
+                # print(line) # 去除了前后的空格还是输出: [01, 01], {00000}, NAN
+                parts = line.split("}, ") # 经过这一行变成[01, 02], {00120 和 Walmart Ohio 1000 air fryers两部分
+                # print(parts)
+                description = parts[1] # description
+                # print("description: " + description) # 成功输出: Walmart Ohio 1000 air fryers
+
+                # 经过下面这行, [01, 02], {00120 变成 ("01", "02")元组
+                # 进一步处理 coordinates，去除方括号并将元素转换为整数
+                # Process coordinates
+                coordinates = parts[0].split("], {")
+                weight = int(coordinates[1])
+                # print("Weight: ")
+                # print(weight)
+                coordinates[0] = coordinates[0].strip("[")
+                # print(coordinates[0])
+
+                coordinates = tuple(map(int, coordinates[0].split(", ")))
+                # print("Coordinates: ")
+                # print(coordinates)
+
+
+
+                # 将坐标映射到描述
+                container_data[coordinates] = description
+                # print(container_data[coordinates])
+
+                # 将描述映射到重量，但排除NAN和UNUSED
+                if description != "NAN" and description != "UNUSED":
+                    container_weight[description] = weight
+
+        self.app.container_data = container_data
+        self.app.container_weight = container_weight
+        print(self.app.container_data[1, 9])
+        print(self.app.container_weight["Target Cosmetics"])
 
     def show(self):
         self.frame.grid()
