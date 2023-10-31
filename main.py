@@ -14,6 +14,10 @@ class ShipManagementApp:
         self.page2 = Page2(self)
         self.page3 = Page3(self)
 
+        # 初始化两个字典
+        self.container_data = {}
+        self.container_weight = {}
+
         self.show_page1()
 
     def show_page1(self):
