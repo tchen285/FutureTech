@@ -8,14 +8,17 @@ class Page2:
 
         self.file_content = []
 
-        unload_button = Button(self.frame, text="Unloading and Loading", font=("Arial", 18), bg="white", command=self.show_file_content)
+        unload_button = Button(self.frame, text="Unloading", font=("Arial", 18), bg="white", command=self.show_file_content)
         unload_button.grid(row=0, column=0, pady=20)
 
+        load_button = Button(self.frame, text="Loading", font=("Arial", 18), bg="white")
+        unload_button.grid(row=1, column=0, pady=20)
+
         balancing_button = Button(self.frame, text="Balancing", font=("Arial", 18), bg="white")
-        balancing_button.grid(row=1, column=0, pady=20)
+        balancing_button.grid(row=2, column=0, pady=20)
 
         back_button = Button(self.frame, text="Back", font=("Arial", 18), bg="red", command=app.show_page1)
-        back_button.grid(row=2, column=0, pady=20)
+        back_button.grid(row=3, column=0, pady=20)
 
     def show(self):
         self.frame.grid()
@@ -29,5 +32,4 @@ class Page2:
                         description not in ["NAN", "UNUSED"]]
         self.app.page3.set_file_content(descriptions)
         self.app.show_page3()
-
 

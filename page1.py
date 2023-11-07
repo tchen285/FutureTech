@@ -1,7 +1,5 @@
 from tkinter import *
 from tkinter import filedialog
-from tkinter import ttk
-import os
 
 class Page1:
     def __init__(self, app):
@@ -93,7 +91,7 @@ class Page1:
         self.frame.grid_remove()
 
     def show_file_content(self):
-        # 在点击"Unloading and Loading"按钮后，将文件内容存储到Page2的file_content属性中
+        # 在点击"Unloading"按钮后，将文件内容存储到Page2的file_content属性中
         self.app.page2.file_content = self.file_content
         self.app.page3.set_file_content(self.file_content)
         self.app.show_page3()
