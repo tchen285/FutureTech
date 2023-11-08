@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import filedialog
+import os
 
 class Page1:
     def __init__(self, app):
@@ -7,6 +8,7 @@ class Page1:
 
         self.frame = Frame(app.root, bg="white")
         self.frame.grid(row=0, column=0, padx=10, pady=10)
+        self.file_name = None
 
         logo = PhotoImage(file="Logo.png")
 
@@ -38,7 +40,11 @@ class Page1:
         file_path = filedialog.askopenfilename(filetypes=[("Text Files", "*.txt")])
         self.file_entry.delete(0, END)
         self.file_entry.insert(0, file_path)
-
+        self.app.page2.update_file_name(file_path)  # 调用更新文件名的方法
+        self.app.page3.update_file_name(file_path)
+        self.app.page4.update_file_name(file_path)
+        self.file_name = os.path.splitext(os.path.basename(file_path))[0]
+        print(self.file_name)
         # 初始化两个字典
         container_data = {}
         container_weight = {}
@@ -81,8 +87,8 @@ class Page1:
 
         self.app.container_data = container_data
         self.app.container_weight = container_weight
-        print(self.app.container_data[1, 9])
-        print(self.app.container_weight["Target Cosmetics"])
+        # print(self.app.container_data[1, 9])
+        # print(self.app.container_weight["Target Cosmetics"])
 
     def show(self):
         self.frame.grid()
