@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import filedialog
+from tkinter.simpledialog import askstring  # Import askstring for input dialog
 import os
 
 class Page1:
@@ -9,6 +10,7 @@ class Page1:
         self.frame = Frame(app.root, bg="white")
         self.frame.grid(row=0, column=0, padx=10, pady=10)
         self.file_name = None
+        self.operator_name = None
 
         logo = PhotoImage(file="Logo.png")
 
@@ -35,6 +37,15 @@ class Page1:
 
         continue_button = Button(self.frame, text="Continue", font=("Arial", 18), bg="green", command=app.show_page2)
         continue_button.grid(row=4, column=1, pady=20)
+
+        # Add a button to set operator name
+        set_operator_name_button = Button(self.frame, text="Check in", font=("Arial", 14), bg="orange",
+                                          command=self.set_operator_name)
+        set_operator_name_button.grid(row=0, column=3, padx=10, pady=10)
+
+        # Display operator name label
+        self.operator_name_label = Label(self.frame, text="", font=("Arial", 14), bg="white")
+        self.operator_name_label.grid(row=1, column=2, padx=10, pady=10)
 
     def browse_file(self):
         file_path = filedialog.askopenfilename(filetypes=[("Text Files", "*.txt")])
@@ -101,3 +112,12 @@ class Page1:
         self.app.page2.file_content = self.file_content
         self.app.page3.set_file_content(self.file_content)
         self.app.show_page3()
+
+    def set_operator_name(self):
+        # Use askstring to get operator name from user
+        operator_name = askstring("Operator Name", "Enter Your Name:")
+        if operator_name:
+            # Display operator name in the label
+            self.operator_name_label.config(text=f"Operator: {operator_name}")
+
+        self.app.page2.update_operator_name(operator_name)

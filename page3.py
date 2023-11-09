@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter.simpledialog import askstring  # Import askstring for input dialog
 import os
 
 class Page3:
@@ -9,7 +10,7 @@ class Page3:
 
         file_name = self.app.page1.file_name
 
-        self.file_name_label = Label(self.frame, text=file_name, font=("Arial", 14), bg="white")
+        self.file_name_label = Label(self.frame, text=file_name, font=("Arial", 14), bg="white", fg="red")
         self.file_name_label.pack(pady=20)
 
         back_button = Button(self.frame, text="Back to Page 2", font=("Arial", 18), bg="red", command=app.show_page2)
@@ -17,6 +18,14 @@ class Page3:
 
         continue_button = Button(self.frame, text="Continue", font=("Arial", 18), bg="red", command=app.show_page4)
         continue_button.pack(side="bottom", pady=20, anchor="center")
+
+        # Add a button to set operator name
+        set_operator_name_button = Button(self.frame, text="Check in", font=("Arial", 14), bg="orange",
+                                          command=self.set_operator_name)
+        set_operator_name_button.pack(pady=20)
+
+        self.operator_name_label = Label(self.frame, text="", font=("Arial", 14), bg="white")
+        self.operator_name_label.pack(pady=20)
 
     def set_file_content(self, descriptions):
         # Create Checkbuttons for each description
@@ -56,3 +65,15 @@ class Page3:
         file_name = os.path.basename(file_path)
         file_name_no_extension = os.path.splitext(file_name)[0]
         self.file_name_label.config(text=f"{file_name_no_extension}")
+
+    def set_operator_name(self):
+        # Use askstring to get operator name from user
+        operator_name = askstring("Operator Name", "Enter Your Name:")
+        if operator_name:
+            # Display operator name in the label
+            self.operator_name_label.config(text=f"Operator: {operator_name}")
+        self.app.page4.update_operator_name(operator_name)
+
+    def update_operator_name(self, name):
+        self.operator_name_label.config(text=f"Operator: {name}")
+        self.app.page4.update_operator_name(name)
