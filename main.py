@@ -48,6 +48,6 @@ class ShipManagementApp:
 
 if __name__ == "__main__":
     root = Tk()
-    root.geometry("900x700")  # 设置窗口大小为800x600像素
+    root.geometry("1000x800")  # 设置窗口大小为800x600像素
     app = ShipManagementApp(root)
     root.mainloop()
