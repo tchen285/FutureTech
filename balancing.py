@@ -7,41 +7,65 @@ class FindBalancingPath:
         self.cols = len(matrix[0])
         self.rows = len(matrix)
         self.queue = deque()
-        self.queue.append((matrix, []))  # 每个节点保存当前矩阵和移动的路径
+        # self.queue.append((matrix, []))  # 每个节点保存当前矩阵和移动的路径
+        self.queue.append(matrix)
         self.visited = set()  # Initialize the visited set
 
     def solve_balancing(self):
         while self.queue:
-            current_matrix, current_path = self.queue.popleft()
+            # current_matrix, current_path = self.queue.popleft()
+            current_matrix = self.queue.popleft()
 
-            print("Current Matrix:")
-            for row in current_matrix:
-                print(row)
+            # print("Current Matrix:")
+            # for row in current_matrix:
+            #     print(row)
 
-            if self.is_balanced(current_matrix):
-                print("Balancing path found:")
-                for move in current_path:
-                    print(move)
-                return
+            # if self.is_balanced(current_matrix):
+            #     print("Balancing path found:")
+            #     for move in current_path:
+            #         print(move)
+            #     return
 
-            visited_hash = hash(str(current_matrix))  # 使用哈希值来避免重复访问相同状态
-            if visited_hash in self.visited:
+            # visited_hash = hash(str(current_matrix))  # 使用哈希值来避免重复访问相同状态
+            # if visited_hash in self.visited:
+            #     continue
+            if frozenset(map(frozenset, current_matrix)) in self.visited:
                 continue
-            self.visited.add(visited_hash)
+            self.visited.add(frozenset(map(frozenset, current_matrix)))
 
-            for row in range(self.rows):
-                for col in range(self.cols):
-                    for move_row in [-1, 0, 1]:
-                        for move_col in [-1, 0, 1]:
-                            if move_row == 0 and move_col == 0:
-                                continue  # Skip the case where there is no movement
 
-                            new_matrix = self.make_move(current_matrix, row, col, move_row, move_col)
-                            if new_matrix:
-                                new_path = current_path + [(row, col, move_row, move_col)]
-                                self.queue.append((new_matrix, new_path))
+            for col1 in range(self.cols):
+                if current_matrix[-1][col1] == 0:
+                    continue
+                for row1 in range(self.rows):
+                    if current_matrix[row1][col1] != 0:
+                        weight = current_matrix[row1][col1]
+                        current_matrix[row1][col1] = 0
+                        for col2 in range(self.cols):
+                            for row2 in reversed(range(self.rows)):
+                                if current_matrix[row2][col2] == 0 and row2 != 0:
+                                    current_matrix[row2][col2] = weight
+                                    print(current_matrix)
+                                    if frozenset(map(frozenset, current_matrix)) in self.visited:
+                                        continue
+                                    self.visited.add(frozenset(map(frozenset, current_matrix)))
 
-        print("No balancing path found.")
+                                    print("Can you see me?")
+                                    print(current_matrix)
+
+            # for row in range(self.rows):
+            #     for col in range(self.cols):
+            #         for move_row in [-1, 0, 1]:
+            #             for move_col in [-1, 0, 1]:
+            #                 if move_row == 0 and move_col == 0:
+            #                     continue  # Skip the case where there is no movement
+            #
+            #                 new_matrix = self.make_move(current_matrix, row, col, move_row, move_col)
+            #                 if new_matrix:
+            #                     new_path = current_path + [(row, col, move_row, move_col)]
+            #                     self.queue.append((new_matrix, new_path))
+
+
 
     def is_balanced(self, matrix):
         left_sum = sum(matrix[i][j] for i in range(self.rows) for j in range(self.cols // 2))
