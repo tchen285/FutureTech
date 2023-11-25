@@ -1,5 +1,6 @@
+import queue
 from collections import deque
-
+import copy
 
 class FindBalancingPath:
     def __init__(self, matrix):
@@ -13,26 +14,13 @@ class FindBalancingPath:
 
     def solve_balancing(self):
         while self.queue:
-            # current_matrix, current_path = self.queue.popleft()
-            current_matrix = self.queue.popleft()
+            popped_matrix = self.queue.popleft()
+            current_matrix = popped_matrix
 
-            # print("Current Matrix:")
-            # for row in current_matrix:
-            #     print(row)
-
-            # if self.is_balanced(current_matrix):
-            #     print("Balancing path found:")
-            #     for move in current_path:
-            #         print(move)
-            #     return
-
-            # visited_hash = hash(str(current_matrix))  # 使用哈希值来避免重复访问相同状态
-            # if visited_hash in self.visited:
-            #     continue
-            if frozenset(map(frozenset, current_matrix)) in self.visited:
+            matrix_tuple = tuple(tuple(row) for row in current_matrix)
+            if matrix_tuple in self.visited:
                 continue
-            self.visited.add(frozenset(map(frozenset, current_matrix)))
-
+            self.visited.add(matrix_tuple)
 
             for col1 in range(self.cols):
                 if current_matrix[-1][col1] == 0:
@@ -43,28 +31,27 @@ class FindBalancingPath:
                         current_matrix[row1][col1] = 0
                         for col2 in range(self.cols):
                             for row2 in reversed(range(self.rows)):
-                                if current_matrix[row2][col2] == 0 and row2 != 0:
+                                if current_matrix[row2][col2] == 0 and col2 != col1:
                                     current_matrix[row2][col2] = weight
-                                    print(current_matrix)
-                                    if frozenset(map(frozenset, current_matrix)) in self.visited:
+                                    print("\n--------------")
+                                    print(current_matrix[0])
+                                    print(current_matrix[1])
+                                    print("--------------\n")
+                                    matrix_tuple = tuple(tuple(row) for row in current_matrix)
+                                    if matrix_tuple in self.visited:
                                         continue
-                                    self.visited.add(frozenset(map(frozenset, current_matrix)))
+                                    self.visited.add(matrix_tuple)
 
-                                    print("Can you see me?")
-                                    print(current_matrix)
+                                    # Append a copy of the matrix to the queue
+                                    self.queue.append(copy.deepcopy(current_matrix))
 
-            # for row in range(self.rows):
-            #     for col in range(self.cols):
-            #         for move_row in [-1, 0, 1]:
-            #             for move_col in [-1, 0, 1]:
-            #                 if move_row == 0 and move_col == 0:
-            #                     continue  # Skip the case where there is no movement
-            #
-            #                 new_matrix = self.make_move(current_matrix, row, col, move_row, move_col)
-            #                 if new_matrix:
-            #                     new_path = current_path + [(row, col, move_row, move_col)]
-            #                     self.queue.append((new_matrix, new_path))
+                                    print("Queue Size:", len(self.queue))
+                                    print("Queue Elements:")
+                                    for elem in self.queue:
+                                        print(elem)
 
+                                    current_matrix[row2][col2] = 0
+                                    break  # 只跳出当前循环
 
 
     def is_balanced(self, matrix):
@@ -96,7 +83,6 @@ def main():
 
     balancing_path_finder = FindBalancingPath(matrix)
     balancing_path_finder.solve_balancing()
-
 
 if __name__ == "__main__":
     main()
