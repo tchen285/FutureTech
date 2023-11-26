@@ -23,11 +23,12 @@ class FindBalancingPath:
                 if matrix_tuple in self.visited:
                     continue
                 self.visited.add(matrix_tuple)
-                #self.solve_current_column(current_matrix, 1)
+                # self.solve_current_column(current_matrix, popped_matrix, 0)
                 for col in range(self.cols):
                     if current_matrix[-1][col] == 0:
                         continue
                     self.solve_current_column(current_matrix, popped_matrix, col)
+                    current_matrix = [row[:] for row in popped_matrix]
 
     def solve_current_column(self, matrix, original_matrix, col):
         for row1 in range(self.rows):
@@ -46,10 +47,15 @@ class FindBalancingPath:
                 print(weight)
 
                 matrix[row1][col] = 0
+                print(matrix)
 
                 for col2 in range(self.cols):
+                    if col2 == col:
+                        continue
                     for row2 in reversed(range(self.rows)):
-                        if matrix[row2][col2] == 0 and col2 != col:
+                        if matrix[0][col2] != 0:
+                            continue
+                        if matrix[row2][col2] == 0:
                             matrix[row2][col2] = weight
 
                             print("\n--------------")
@@ -76,7 +82,6 @@ class FindBalancingPath:
 
                             matrix[row2][col2] = 0
                             break  # Exit the inner loop
-                    matrix = [row[:] for row in original_matrix]
 
                 break  # Exit the outer loop
 
