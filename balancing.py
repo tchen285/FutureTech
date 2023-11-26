@@ -29,7 +29,8 @@ class FindBalancingPath:
                 popped_matrix = self.queue.popleft()
                 if self.is_balanced(popped_matrix):
                     print("\n\nFOUND SOLUTION!!!\n\n")
-                    print(popped_matrix)  # Print the found matrix
+                    for row in popped_matrix:
+                        print(row)
                     print(self.level)
                     sys.exit()  # End the entire program
                 matrix_tuple = tuple(tuple(row) for row in popped_matrix)
@@ -86,7 +87,8 @@ class FindBalancingPath:
 
                             if self.is_balanced(matrix):
                                 print("\n\nFOUND SOLUTION!!!\n\n")
-                                print(matrix)  # Print the found matrix
+                                for row in matrix:
+                                    print(row)
                                 print(self.level)
                                 sys.exit()  # End the entire program
 
@@ -112,30 +114,25 @@ class FindBalancingPath:
     def is_balanced(self, matrix):
         left_sum = sum(matrix[i][j] for i in range(self.rows) for j in range(self.cols // 2))
         right_sum = sum(matrix[i][j] for i in range(self.rows) for j in range(self.cols // 2, self.cols))
-
-        # print("Left Sum:", left_sum)
-        # print("Right Sum:", right_sum)
-
+        print(left_sum)
+        print(right_sum)
         balancing_score = min(left_sum, right_sum) / max(left_sum, right_sum)
-        return balancing_score > 0.9
+        print(balancing_score)
+        threshold = 0.9  # Adjust this threshold as needed
 
-    def make_move(self, matrix, row, col, move_row, move_col):
-        new_matrix = [row[:] for row in matrix]  # 创建矩阵的副本，以防修改原始矩阵
-
-        if 0 <= row + move_row < self.rows and 0 <= col + move_col < self.cols:
-            new_matrix[row][col], new_matrix[row + move_row][col + move_col] = new_matrix[row + move_row][
-                col + move_col], new_matrix[row][col]
-            return new_matrix
-        else:
-            return None
+        return balancing_score > threshold
 
 
 def main():
     matrix = [
-        [0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0],
-        [2, 0, 0, 2, 0, 3],
-        [1, 0, 1, 1, 1, 1]
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 10],
+        [25, 30, 20, 20, 0, 0, 15, 10, 101, 50],
+        [101, 101, 5, 101, 25, 20, 51, 101, 101, 29]
     ]
 
     balancing_path_finder = FindBalancingPath(matrix)
