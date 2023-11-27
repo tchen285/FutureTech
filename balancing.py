@@ -8,7 +8,7 @@ class FindBalancingPath:
         self.cols = len(matrix[0])
         self.rows = len(matrix)
         self.queue = deque()
-        self.queue.append((matrix, []))  # Each node saves the current matrix and the path taken
+        self.queue.append((matrix, None))  # (matrix, parent_matrix)) 初始化为None
         self.visited = set()  # Initialize the visited set
         self.level = 0
 
@@ -18,36 +18,34 @@ class FindBalancingPath:
             self.level += 1
 
             for _ in range(level_size):
-                popped_matrix, path = self.queue.popleft()
+                popped_matrix, parent_matrix = self.queue.popleft()
+
+                # 检查是否初始矩阵已经balance
                 if self.is_balanced(popped_matrix):
                     print("\n\nFOUND SOLUTION!!!\n\n")
-                    self.print_solution(popped_matrix, path)
+                    self.print_solution(popped_matrix, parent_matrix)
                     sys.exit()  # End the entire program
 
+                # 把当前matrix放入visited里
                 matrix_tuple = tuple(tuple(row) for row in popped_matrix)
                 if matrix_tuple in self.visited:
                     continue
                 self.visited.add(matrix_tuple)
 
+                # 遇到非0列, 放入solve_current_column中解决
                 for col in range(self.cols):
                     if popped_matrix[-1][col] == 0:
                         continue
 
                     current_matrix = copy.deepcopy(popped_matrix)
-                    for row in range(self.rows):
-                        if current_matrix[row][col] != 0:
-                            path.append((col, row))
-                            break
-                    self.solve_current_column(current_matrix, path, col)
+                    self.solve_current_column(current_matrix, col)
 
                 print("Queue Size:", len(self.queue))
                 print("Queue Elements:")
-                for elem, elem_path in self.queue:
-                    print(elem)
-                    print(elem_path)
-                    print()
 
-    def solve_current_column(self, matrix, path, col):
+
+    def solve_current_column(self, matrix, col):
+        parent = copy.deepcopy(matrix)
         for row1 in range(self.rows):
             if matrix[row1][col] != 0:
                 weight = matrix[row1][col]
@@ -63,15 +61,14 @@ class FindBalancingPath:
 
                             if self.is_balanced(matrix):
                                 print("\n\nFOUND SOLUTION!!!\n\n")
-                                self.print_solution(matrix, path + [(col2, row2)])
+                                self.print_solution(matrix, parent)
 
                                 sys.exit()  # End the entire program
 
                             matrix_tuple = tuple(tuple(row) for row in matrix)
                             if matrix_tuple in self.visited:
                                 continue
-                            path.append((col2, row2))
-                            self.queue.append((copy.deepcopy(matrix), path))
+                            self.queue.append((copy.deepcopy(matrix), parent))
 
                             print("Queue Size:", len(self.queue))
                             print("Queue Elements:")
@@ -93,12 +90,12 @@ class FindBalancingPath:
 
         return balancing_score > threshold
 
-    def print_solution(self, matrix, path):
+    def print_solution(self, matrix, parent):
         print("FOUND SOLUTION!!!")
         for row in matrix:
             print(row)
         print("Path:")
-        print(path)
+        print(parent)
 
 def main():
     matrix = [
