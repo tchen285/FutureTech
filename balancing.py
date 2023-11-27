@@ -92,12 +92,6 @@ class FindBalancingPath:
                                 print(self.level)
                                 sys.exit()  # End the entire program
 
-                            # matrix_tuple = tuple(tuple(row) for row in matrix)
-                            # if matrix_tuple in self.visited:
-                            #     continue
-                            #
-                            # self.visited.add(matrix_tuple)
-                            # Append a copy of the matrix to the queue
                             self.queue.append(copy.deepcopy(matrix))
 
                             print("Queue Size:", len(self.queue))
@@ -124,15 +118,19 @@ class FindBalancingPath:
 
 
 def main():
+    # matrix = [
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [1, 0, 0, 0, 0, 0, 0, 0, 0, 10],
+    #     [25, 30, 20, 20, 0, 0, 15, 10, 101, 50],
+    #     [101, 101, 5, 101, 25, 20, 51, 101, 101, 29]
+    # ]
     matrix = [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 10],
-        [25, 30, 20, 20, 0, 0, 15, 10, 101, 50],
-        [101, 101, 5, 101, 25, 20, 51, 101, 101, 29]
+        [6, 0, 0, 0],
+        [10, 4, 0, 0]
     ]
 
     balancing_path_finder = FindBalancingPath(matrix)
