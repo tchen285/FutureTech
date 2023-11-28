@@ -48,10 +48,11 @@ class FindBalancingPath:
                         print(row)
                     print(self.level)
                     sys.exit()  # End the entire program
+
                 matrix_tuple = tuple(tuple(row) for row in popped_matrix)
                 if matrix_tuple in self.visited:
                     continue
-                self.visited.add(matrix_tuple)
+                # self.visited.add(matrix_tuple)
 
                 for col in range(self.cols):
                     if popped_matrix[-1][col] == 0:
@@ -120,7 +121,6 @@ class FindBalancingPath:
                             print("--------------")
 
                             if self.is_balanced(matrix):
-                                print("\n\nFOUND SOLUTION!!!\n\n")
                                 for row in matrix:
                                     print(row)
                                 print(self.level)
@@ -145,12 +145,12 @@ class FindBalancingPath:
                                     current = self.matrix_parent[current]
                                 sys.exit()  # End the entire program
 
-                            # matrix_tuple = tuple(tuple(row) for row in matrix)
-                            # if matrix_tuple in self.visited:
-                            #     continue
-                            #
-                            # self.visited.add(matrix_tuple)
-                            # Append a copy of the matrix to the queue
+                            matrix_tuple = tuple(tuple(row) for row in matrix)
+                            if matrix_tuple in self.visited:
+                                continue
+
+                            self.visited.add(matrix_tuple)
+
                             self.queue.append(copy.deepcopy(matrix))
 
                             print("Queue Size:", len(self.queue))
@@ -167,6 +167,8 @@ class FindBalancingPath:
     def is_balanced(self, matrix):
         left_sum = sum(matrix[i][j] for i in range(self.rows) for j in range(self.cols // 2))
         right_sum = sum(matrix[i][j] for i in range(self.rows) for j in range(self.cols // 2, self.cols))
+        print("\n\nFOUND SOLUTION!!!")
+        print("计算左右的值")
         print(left_sum)
         print(right_sum)
         balancing_score = min(left_sum, right_sum) / max(left_sum, right_sum)
@@ -187,6 +189,17 @@ def main():
     #     [25, 30, 20, 20, 0, 0, 15, 10, 101, 50],
     #     [101, 101, 5, 101, 25, 20, 51, 101, 101, 29]
     # ]
+
+    # matrix = [
+    #     [3, 3, 0, 0],
+    #     [10, 4, 0, 0]
+    # ]
+
+    # matrix = [
+    #     [0, 0, 0, 0],
+    #     [10, 2, 14, 2]
+    # ]
+
     matrix = [
         [6, 0, 0, 0],
         [10, 4, 0, 0]
