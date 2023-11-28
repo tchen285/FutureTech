@@ -120,7 +120,6 @@ class FindBalancingPath:
                             print("--------------")
 
                             if self.is_balanced(matrix):
-                                print("\n\nFOUND SOLUTION!!!\n\n")
                                 for row in matrix:
                                     print(row)
                                 print(self.level)
@@ -167,6 +166,8 @@ class FindBalancingPath:
     def is_balanced(self, matrix):
         left_sum = sum(matrix[i][j] for i in range(self.rows) for j in range(self.cols // 2))
         right_sum = sum(matrix[i][j] for i in range(self.rows) for j in range(self.cols // 2, self.cols))
+        print("\n\nFOUND SOLUTION!!!")
+        print("计算左右的值")
         print(left_sum)
         print(right_sum)
         balancing_score = min(left_sum, right_sum) / max(left_sum, right_sum)
