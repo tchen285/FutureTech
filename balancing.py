@@ -12,6 +12,7 @@ class FindBalancingPath:
         matrix_tuple = tuple(map(tuple, matrix))
         self.visited.add(matrix_tuple)
         self.matrix_parent = {tuple(map(tuple, matrix)): None}
+        self.move_descriptions = []
 
     def solve_balancing(self):
         while self.queue:
@@ -126,10 +127,12 @@ class FindBalancingPath:
                                 print("哈哈哈哈")
                                 current = tuple(map(tuple, matrix))
                                 print(current)
-                                while current:
-                                    # print(self.matrix_coordinates[current])
-                                    print(self.matrix_parent[current])
+                                while self.matrix_parent[current]:
+                                    move_description = self.interpret_move(self.matrix_parent[current], current)
+                                    #print(move_description)
+
                                     current = self.matrix_parent[current]
+                                print(self.move_descriptions[::-1])
                                 sys.exit()  # End the entire program
 
                             matrix_tuple = tuple(tuple(row) for row in matrix)
@@ -169,6 +172,38 @@ class FindBalancingPath:
         threshold = 0.9  # Adjust this threshold as needed
 
         return balancing_score > threshold
+
+    def interpret_move(self, parent_tuple, current_tuple):
+        moves = []
+        for i in range(len(current_tuple)):
+            for j in range(len(current_tuple[0])):
+                if parent_tuple[i][j] != 0 and current_tuple[i][j] == 0:
+                    moves.append((i, j))
+
+        for i in range(len(current_tuple)):
+            for j in range(len(current_tuple[0])):
+                if parent_tuple[i][j] == 0 and current_tuple[i][j] != 0:
+                    moves.append((i, j))
+
+        move_description = f"Move the container at {moves[0]} to {moves[1]}"
+        self.move_descriptions.append(move_description)
+
+    # def interpret_move(curr, parent):
+    #     moved_container_positions = []
+    #
+    #     for i in range(len(curr)):
+    #         for j in range(len(curr[0])):
+    #             if curr[i][j] - parent[i][j] != 0:
+    #                 moved_container_positions.append(((i, j), parent[i][j]))
+    #
+    #     if len(moved_container_positions) != 2:
+    #         # Handle unexpected case where more or fewer than two changes occurred
+    #         return "Unexpected number of container movements"
+    #
+    #     (from_position, moved_container), (to_position, _) = moved_container_positions
+    #     move_description = f"Move the container at {from_position} to {to_position}"
+    #
+    #     return move_description
 
 
 def main():
