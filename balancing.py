@@ -13,6 +13,7 @@ class FindBalancingPath:
         self.visited.add(matrix_tuple)
         self.matrix_parent = {tuple(map(tuple, matrix)): None}
         self.move_descriptions = []
+        self.time_consume = 0
 
     def solve_balancing(self):
         while self.queue:
@@ -100,14 +101,6 @@ class FindBalancingPath:
                             if tuple(map(tuple, matrix)) in self.visited:
                                 continue
                             self.matrix_parent[tuple(map(tuple, matrix))] = tuple(map(tuple, original_matrix))
-                            # print("$$$$\n应该会按顺序输出根节点下面的三个矩阵")
-                            # print(matrix) # 目前输出正确
-                            # print("应该都输出根矩阵((6, 0, 0, 0), (10, 4, 0, 0))")
-                            # print(self.matrix_parent[tuple(map(tuple, matrix))]) # 目前输出正确
-                            # print("测试再往上走一层, 测试根节点对应的坐标, 下面是根节点的父节点")
-                            # pa = self.matrix_parent[tuple(map(tuple, matrix))]
-                            # print(self.matrix_parent[tuple(map(tuple, pa))]) # 目前输出正确
-                            # print("$$$$")
 
                             print("\n--------------")
                             print(matrix[0])
@@ -132,14 +125,15 @@ class FindBalancingPath:
                                     #print(move_description)
 
                                     current = self.matrix_parent[current]
-                                print(self.move_descriptions[::-1])
+                                for description in reversed(self.move_descriptions):
+                                    print(description)
+                                print("Time Cost: ", self.time_consume, " minutes")
                                 sys.exit()  # End the entire program
 
                             matrix_tuple = tuple(tuple(row) for row in matrix)
                             if matrix_tuple in self.visited:
                                 print("Found Duplicate")
-                                sys.exit()
-                                # continue # 这里这种情况是无限循环的根源
+                                continue # 这里这种情况是无限循环的根源
 
                             self.visited.add(matrix_tuple)
 
@@ -186,25 +180,8 @@ class FindBalancingPath:
                     moves.append((i, j))
 
         move_description = f"Move the container at {moves[0]} to {moves[1]}"
+        self.time_consume += (abs(moves[0][0] - moves[1][0]) + abs(moves[0][1] - moves[1][1]))
         self.move_descriptions.append(move_description)
-
-    # def interpret_move(curr, parent):
-    #     moved_container_positions = []
-    #
-    #     for i in range(len(curr)):
-    #         for j in range(len(curr[0])):
-    #             if curr[i][j] - parent[i][j] != 0:
-    #                 moved_container_positions.append(((i, j), parent[i][j]))
-    #
-    #     if len(moved_container_positions) != 2:
-    #         # Handle unexpected case where more or fewer than two changes occurred
-    #         return "Unexpected number of container movements"
-    #
-    #     (from_position, moved_container), (to_position, _) = moved_container_positions
-    #     move_description = f"Move the container at {from_position} to {to_position}"
-    #
-    #     return move_description
-
 
 def main():
     # matrix = [
@@ -240,6 +217,11 @@ def main():
     # matrix = [
     #     [0, 0, 3, 1],
     #     [5, 9, 1, 1]
+    # ]
+    
+    # matrix = [
+    #     [0, 2, 3, 0],
+    #     [1, 1, 2, 7]
     # ]
 
     balancing_path_finder = FindBalancingPath(matrix)
