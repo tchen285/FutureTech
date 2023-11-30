@@ -1,0 +1,3 @@
+[00, 00], {00006}, Walmart Ohio 1000 air fryers
+[01, 00], {00010}, Walmart Ohio Cat toys
+[01, 01], {00004}, Amazon 64834 Snap-on tools

@@ -51,55 +51,60 @@ class Page1:
         file_path = filedialog.askopenfilename(filetypes=[("Text Files", "*.txt")])
         self.file_entry.delete(0, END)
         self.file_entry.insert(0, file_path)
-        self.app.page2.update_file_name(file_path)  # 调用更新文件名的方法
+        self.app.page2.update_file_name(file_path)
         self.app.page3.update_file_name(file_path)
         self.app.page4.update_file_name(file_path)
         self.file_name = os.path.splitext(os.path.basename(file_path))[0]
         print(self.file_name)
+
         # 初始化两个字典
         container_data = {}
         container_weight = {}
 
         # 读取文件内容并处理
         with open(file_path, 'r') as file:
-            lines = file.readlines() # 把每一行按照String的形式储存到lines中, lines就是一个数组
+            lines = file.readlines()
             for line in lines:
-                # print(line) # 输出: [01, 01], {00000}, NAN
-                line = line.strip() # 除去String开始和结尾的空白字符
-                # print(line) # 去除了前后的空格还是输出: [01, 01], {00000}, NAN
-                parts = line.split("}, ") # 经过这一行变成[01, 02], {00120 和 Walmart Ohio 1000 air fryers两部分
-                # print(parts)
-                description = parts[1] # description
-                # print("description: " + description) # 成功输出: Walmart Ohio 1000 air fryers
+                line = line.strip()
+                parts = line.split("}, ")
+                description = parts[1]
 
                 # 经过下面这行, [01, 02], {00120 变成 ("01", "02")元组
                 # 进一步处理 coordinates，去除方括号并将元素转换为整数
                 # Process coordinates
                 coordinates = parts[0].split("], {")
                 weight = int(coordinates[1])
-                # print("Weight: ")
-                # print(weight)
                 coordinates[0] = coordinates[0].strip("[")
-                # print(coordinates[0])
-
                 coordinates = tuple(map(int, coordinates[0].split(", ")))
-                # print("Coordinates: ")
-                # print(coordinates)
 
-
+                # 输出坐标和描述，以确保它们被正确读取
+                print("Coordinates:", coordinates)
+                print("Description:", description)
 
                 # 将坐标映射到描述
                 container_data[coordinates] = description
-                # print(container_data[coordinates])
+
+                # 输出 container_data，以确保它被正确更新
+                print("Container Data Updated:")
+                print(container_data)
 
                 # 将描述映射到重量，但排除NAN和UNUSED
                 if description != "NAN" and description != "UNUSED":
                     container_weight[description] = weight
 
+                # 输出 container_weight，以确保它被正确更新
+                print("Container Weight Updated:")
+                print(container_weight)
+
+        # 输出最终的 container_data 和 container_weight
+        print("Final Container Data:")
+        print(container_data)
+        print("Final Container Weight:")
+        print(container_weight)
+
+        # 将数据赋值给 app 对象
         self.app.container_data = container_data
         self.app.container_weight = container_weight
-        # print(self.app.container_data[1, 9])
-        # print(self.app.container_weight["Target Cosmetics"])
 
     def show(self):
         self.frame.grid()
@@ -113,6 +118,9 @@ class Page1:
         self.app.page3.set_file_content(self.file_content)
         self.app.show_page3()
 
+        # 初始化矩阵
+        self.initialize_matrix()
+
     def set_operator_name(self):
         # Use askstring to get operator name from user
         operator_name = askstring("Operator Name", "Enter Your Name:")
@@ -121,3 +129,25 @@ class Page1:
             self.operator_name_label.config(text=f"Operator: {operator_name}")
 
         self.app.page2.update_operator_name(operator_name)
+
+        # ... (existing code)
+
+    def initialize_matrix(self):
+        # 初始化一个2x4的矩阵，内容都是0
+        original_matrix = [[0] * 4 for _ in range(2)]
+
+        # 输出原始矩阵到控制台
+        print("Initialized Matrix:")
+        for row in original_matrix:
+            print(row)
+
+        # 遍历文件内容并更新矩阵
+        for coordinates, description in self.app.container_data.items():
+            row, col = coordinates
+            original_matrix[row][col] = self.app.container_weight.get(description, 0)
+
+        # 输出修改后的矩阵到控制台
+        print("\nModified Matrix:")
+        for row in original_matrix:
+            print(row)
+
