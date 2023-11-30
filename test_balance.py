@@ -2,28 +2,19 @@ from collections import deque
 import copy
 import sys
 
-class FindBalancingPath:
-    def __init__(self):
-        self.cols = 0
-        self.rows = 0
-        self.queue = deque()
-        self.visited = set()
-        self.matrix_parent = {}
-        self.move_descriptions = []
-        self.time_consume = 0
 
-    def find_balancing(self, matrix):
+class FindBalancingPath:
+    def __init__(self, matrix):
         self.cols = len(matrix[0])
         self.rows = len(matrix)
+        self.queue = deque()
         self.queue.append(matrix)
-        self.visited = set()
+        self.visited = set()  # Initialize the visited set
         matrix_tuple = tuple(map(tuple, matrix))
         self.visited.add(matrix_tuple)
         self.matrix_parent = {tuple(map(tuple, matrix)): None}
         self.move_descriptions = []
         self.time_consume = 0
-
-        self.solve_balancing()
 
     def solve_balancing(self):
         while self.queue:
@@ -44,8 +35,8 @@ class FindBalancingPath:
                 popped_matrix = self.queue.popleft()
                 # 输出根矩阵的父节点, 是None
                 print("$$$$\n打印根节点矩阵以及根节点的父节点")
-                print(tuple(map(tuple, popped_matrix))) # 目前输出正确
-                print(self.matrix_parent[tuple(map(tuple, popped_matrix))]) # 根节点的父节点是None, 目前输出正确
+                print(tuple(map(tuple, popped_matrix)))  # 目前输出正确
+                print(self.matrix_parent[tuple(map(tuple, popped_matrix))])  # 根节点的父节点是None, 目前输出正确
                 print("$$$$")
 
                 if self.is_balanced(popped_matrix):
@@ -72,7 +63,6 @@ class FindBalancingPath:
                 for elem in self.queue:
                     print(elem)
                     print()
-
 
     def solve_current_column(self, matrix, original_matrix, col):
         print("当前处理的矩阵:")
@@ -122,7 +112,7 @@ class FindBalancingPath:
                                     print(row)
 
                                 # 打印result的父矩阵
-                                print(self.matrix_parent[tuple(map(tuple, matrix))]) # 到目前为止是对的
+                                print(self.matrix_parent[tuple(map(tuple, matrix))])  # 到目前为止是对的
                                 # new_matrix是result的父矩阵
                                 new_matrix = self.matrix_parent[tuple(map(tuple, matrix))]
                                 print(new_matrix)
@@ -132,7 +122,7 @@ class FindBalancingPath:
                                 print(current)
                                 while self.matrix_parent[current]:
                                     move_description = self.interpret_move(self.matrix_parent[current], current)
-                                    #print(move_description)
+                                    # print(move_description)
 
                                     current = self.matrix_parent[current]
                                 for description in reversed(self.move_descriptions):
@@ -143,7 +133,7 @@ class FindBalancingPath:
                             matrix_tuple = tuple(tuple(row) for row in matrix)
                             if matrix_tuple in self.visited:
                                 print("Found Duplicate")
-                                continue # 这里这种情况是无限循环的根源
+                                continue  # 这里这种情况是无限循环的根源
 
                             self.visited.add(matrix_tuple)
 
@@ -179,62 +169,66 @@ class FindBalancingPath:
 
     def interpret_move(self, parent_tuple, current_tuple):
         moves = []
-        for i in range(len(current_tuple)):
-            for j in range(len(current_tuple[0])):
-                if parent_tuple[i][j] != 0 and current_tuple[i][j] == 0:
-                    moves.append((i, j))
+        for i1 in range(len(current_tuple)):
+            for j1 in range(len(current_tuple[0])):
+                if parent_tuple[i1][j1] != 0 and current_tuple[i1][j1] == 0:
+                    moves.append((i1, j1))
+                    print("起点当前i, j: ", i1, j1)
 
-        for i in range(len(current_tuple)):
-            for j in range(len(current_tuple[0])):
-                if parent_tuple[i][j] == 0 and current_tuple[i][j] != 0:
-                    moves.append((i, j))
+        for i2 in range(len(current_tuple)):
+            for j2 in range(len(current_tuple[0])):
+                if parent_tuple[i2][j2] == 0 and current_tuple[i2][j2] != 0:
+                    moves.append((i2, j2))
+                    print("终点当前i, j: ", i2, j2)
 
         move_description = f"Move the container at {moves[0]} to {moves[1]}"
         self.time_consume += (abs(moves[0][0] - moves[1][0]) + abs(moves[0][1] - moves[1][1]))
         self.move_descriptions.append(move_description)
 
-# def main():
-#     # matrix = [
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [1, 0, 0, 0, 0, 0, 0, 0, 0, 10],
-#     #     [25, 30, 20, 20, 0, 0, 15, 10, 101, 50],
-#     #     [101, 101, 5, 101, 25, 20, 51, 101, 101, 29]
-#     # ]
-#
-#     # matrix = [
-#     #     [3, 3, 0, 0],
-#     #     [10, 4, 0, 0]
-#     # ]
-#     # matrix = [
-#     #     [0, 0, 3, 0],
-#     #     [10, 4, 3, 0]
-#     # ]
-#
-#
-#     # matrix = [
-#     #     [0, 0, 0, 0],
-#     #     [10, 2, 14, 2]
-#     # ]
-#
-#     matrix = [
-#         [6, 0, 0, 0],
-#         [10, 4, 0, 0]
-#     ]
-#     # matrix = [
-#     #     [0, 0, 3, 1],
-#     #     [5, 9, 1, 1]
-#     # ]
-#     # matrix = [
-#     #     [0, 2, 3, 0],
-#     #     [1, 1, 2, 7]
-#     # ]
-#
-#     balancing_path_finder = FindBalancingPath(matrix)
-#     balancing_path_finder.solve_balancing()
-#
-# if __name__ == "__main__":
-#     main()
+
+def main():
+    # matrix = [
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [1, 0, 0, 0, 0, 0, 0, 0, 0, 10],
+    #     [25, 30, 20, 20, 0, 0, 15, 10, 101, 50],
+    #     [101, 101, 5, 101, 25, 20, 51, 101, 101, 29]
+    # ]
+
+    # matrix = [
+    #     [3, 3, 0, 0],
+    #     [10, 4, 0, 0]
+    # ]
+    # matrix = [
+    #     [0, 0, 3, 0],
+    #     [10, 4, 3, 0]
+    # ]
+
+    # matrix = [
+    #     [0, 0, 0, 0],
+    #     [10, 2, 14, 2]
+    # ]
+
+    matrix = [
+        [6, 0, 0, 0],
+        [10, 4, 0, 0]
+    ]
+    # matrix = [
+    #     [0, 0, 3, 1],
+    #     [5, 9, 1, 1]
+    # ]
+
+    # matrix = [
+    #     [0, 2, 3, 0],
+    #     [1, 1, 2, 7]
+    # ]
+
+    balancing_path_finder = FindBalancingPath(matrix)
+    balancing_path_finder.solve_balancing()
+
+
+if __name__ == "__main__":
+    main()
