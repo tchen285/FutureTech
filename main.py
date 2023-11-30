@@ -20,7 +20,19 @@ class ShipManagementApp:
         self.container_data = {}
         self.container_weight = {}
 
+        # 初始化2x4的矩阵
+        self.initialize_matrix()
+
         self.show_page1()
+
+    def initialize_matrix(self):
+        # 初始化一个2x4的矩阵，内容都是0
+        self.matrix = [[0] * 4 for _ in range(2)]
+
+        # 输出矩阵到控制台
+        print("Initialized Matrix:")
+        for row in self.matrix:
+            print(row)
 
     def show_page1(self):
         self.page2.hide()
