@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import filedialog
 from tkinter.simpledialog import askstring  # Import askstring for input dialog
+from balancing import FindBalancingPath
 import os
 
 class Page1:
@@ -105,6 +106,7 @@ class Page1:
         # 将数据赋值给 app 对象
         self.app.container_data = container_data
         self.app.container_weight = container_weight
+        self.initialize_matrix()
 
     def show(self):
         self.frame.grid()
@@ -119,7 +121,7 @@ class Page1:
         self.app.show_page3()
 
         # 初始化矩阵
-        self.initialize_matrix()
+        # self.initialize_matrix()
 
     def set_operator_name(self):
         # Use askstring to get operator name from user
@@ -130,12 +132,11 @@ class Page1:
 
         self.app.page2.update_operator_name(operator_name)
 
-        # ... (existing code)
 
     def initialize_matrix(self):
         # 初始化一个2x4的矩阵，内容都是0
         original_matrix = [[0] * 4 for _ in range(2)]
-
+        print("测试是否进入") # 可以进入
         # 输出原始矩阵到控制台
         print("Initialized Matrix:")
         for row in original_matrix:
@@ -144,6 +145,7 @@ class Page1:
         # 遍历文件内容并更新矩阵
         for coordinates, description in self.app.container_data.items():
             row, col = coordinates
+            print("行: ", row)
             original_matrix[row][col] = self.app.container_weight.get(description, 0)
 
         # 输出修改后的矩阵到控制台
@@ -151,3 +153,5 @@ class Page1:
         for row in original_matrix:
             print(row)
 
+        balancing_path_finder = FindBalancingPath()
+        balancing_path_finder.find_balancing(original_matrix)
