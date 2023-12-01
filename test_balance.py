@@ -14,7 +14,7 @@ class FindBalancingPath:
         self.visited.add(matrix_tuple)
         self.matrix_parent = {tuple(map(tuple, matrix)): None}
         self.move_descriptions = []
-        self.time_consume = 0
+        self.total_cost = 0
 
     def solve_balancing(self):
         while self.queue:
@@ -127,7 +127,7 @@ class FindBalancingPath:
                                     current = self.matrix_parent[current]
                                 for description in reversed(self.move_descriptions):
                                     print(description)
-                                print("Time Cost: ", self.time_consume, " minutes")
+                                print("\nTotal time cost: ", self.total_cost, " minutes.")
                                 sys.exit()  # End the entire program
 
                             matrix_tuple = tuple(tuple(row) for row in matrix)
@@ -169,21 +169,59 @@ class FindBalancingPath:
 
     def interpret_move(self, parent_tuple, current_tuple):
         moves = []
+        start_row, start_col, end_row, end_col = 0, 0, 0, 0
         for i1 in range(len(current_tuple)):
             for j1 in range(len(current_tuple[0])):
                 if parent_tuple[i1][j1] != 0 and current_tuple[i1][j1] == 0:
                     moves.append((i1, j1))
-                    print("起点当前i, j: ", i1, j1)
+                    start_row, start_col = i1, j1
+                    height = self.rows - start_row
 
         for i2 in range(len(current_tuple)):
             for j2 in range(len(current_tuple[0])):
                 if parent_tuple[i2][j2] == 0 and current_tuple[i2][j2] != 0:
                     moves.append((i2, j2))
-                    print("终点当前i, j: ", i2, j2)
+                    end_row, end_col = i2, j2
+                    height = max(height, self.rows - end_row)
 
-        move_description = f"Move the container at {moves[0]} to {moves[1]}"
-        self.time_consume += (abs(moves[0][0] - moves[1][0]) + abs(moves[0][1] - moves[1][1]))
+        if abs(start_col - end_col) == 1:
+            distance = abs(moves[0][0] - moves[1][0]) + abs(moves[0][1] - moves[1][1])
+        else:
+            distance = self.find_moving_distance(parent_tuple, current_tuple, start_col, end_col)
+        print("这一轮的移动距离: ", distance)
+        self.total_cost += distance
+
+        move_description = f"\nMove the container at {moves[0]} to {moves[1]}. It takes {distance} minutes."
         self.move_descriptions.append(move_description)
+
+    def find_moving_distance(self, start_tuple, end_tuple, start_col, end_col):
+        mid_height, start_height, end_height = 0, 0, 0
+        start = start_col
+        end = end_col
+        print("\n\n这一轮起点列与终点列: ", start, end) # 输出正确
+        for row in range(self.rows):
+            if start_tuple[row][start] != 0:
+                start_height = self.rows - row
+                break
+        print("start_height: ", start_height)
+
+        for row in range(self.rows):
+            if end_tuple[row][end] != 0:
+                end_height = self.rows - row
+                break
+        print("end_height: ", end_height)
+
+        for column in range(min(start, end) + 1, max(start, end)):
+            print("列: ", column)
+            for row in range(self.rows):
+                if start_tuple[row][column] != 0:
+                    mid_height = max(mid_height, self.rows - row)
+                    break
+        print("mid_height: ", mid_height)
+
+        if mid_height < max(start_height, end_height):
+            return abs(start - end) + abs(start_height - end_height)
+        return mid_height - start_height + 2 + mid_height - end_height + abs(start - end)
 
 
 def main():
@@ -198,33 +236,35 @@ def main():
     #     [101, 101, 5, 101, 25, 20, 51, 101, 101, 29]
     # ]
 
-    # matrix = [
+    # matrix = [ # passed time cost test
     #     [3, 3, 0, 0],
     #     [10, 4, 0, 0]
     # ]
-    # matrix = [
+
+    # matrix = [ # passed time cost test
     #     [0, 0, 3, 0],
     #     [10, 4, 3, 0]
     # ]
 
-    # matrix = [
+    # matrix = [ # passed time cost test
     #     [0, 0, 0, 0],
     #     [10, 2, 14, 2]
     # ]
 
-    matrix = [
-        [6, 0, 0, 0],
-        [10, 4, 0, 0]
-    ]
-    # matrix = [
+    # matrix = [ # passed time cost test
+    #     [6, 0, 0, 0],
+    #     [10, 4, 0, 0]
+    # ]
+
+    # matrix = [ # passed time cost test
     #     [0, 0, 3, 1],
     #     [5, 9, 1, 1]
     # ]
-
-    # matrix = [
-    #     [0, 2, 3, 0],
-    #     [1, 1, 2, 7]
-    # ]
+    #
+    matrix = [ # passed time cost test
+        [0, 2, 3, 0],
+        [1, 1, 2, 7]
+    ]
 
     balancing_path_finder = FindBalancingPath(matrix)
     balancing_path_finder.solve_balancing()
