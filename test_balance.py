@@ -5,6 +5,7 @@ import sys
 
 class FindBalancingPath:
     def __init__(self, matrix):
+        self.start_matrix_tuple = tuple(map(tuple, matrix))
         self.cols = len(matrix[0])
         self.rows = len(matrix)
         self.queue = deque()
@@ -15,6 +16,10 @@ class FindBalancingPath:
         self.matrix_parent = {tuple(map(tuple, matrix)): None}
         self.move_descriptions = []
         self.total_cost = 0
+        self.goal_matrix_tuple = None
+        self.idle_starts = []
+        self.idle_matrix_tuple = []
+        self.idle_ends = []
 
     def solve_balancing(self):
         while self.queue:
@@ -113,6 +118,9 @@ class FindBalancingPath:
 
                                 # 打印result的父矩阵
                                 print(self.matrix_parent[tuple(map(tuple, matrix))])  # 到目前为止是对的
+                                self.goal_matrix_tuple = tuple(map(tuple, matrix))
+                                print("起点矩阵: ", self.start_matrix_tuple) # 对了
+                                print("终点矩阵: ", self.goal_matrix_tuple) # 都对了
                                 # new_matrix是result的父矩阵
                                 new_matrix = self.matrix_parent[tuple(map(tuple, matrix))]
                                 print(new_matrix)
@@ -120,11 +128,20 @@ class FindBalancingPath:
                                 print("哈哈哈哈")
                                 current = tuple(map(tuple, matrix))
                                 print(current)
-                                while self.matrix_parent[current]:
-                                    move_description = self.interpret_move(self.matrix_parent[current], current)
-                                    # print(move_description)
 
+                                while self.matrix_parent[current]:
+                                    self.interpret_move(self.matrix_parent[current], current)
                                     current = self.matrix_parent[current]
+                                i = 1
+                                while self.idle_matrix_tuple[-i] != self.goal_matrix_tuple and self.idle_matrix_tuple[-i] != self.start_matrix_tuple:
+                                    print("\n空转起点: ", self.idle_starts[-i])
+                                    print("空转起点长度: ", len(self.idle_starts))
+                                    print("\n空转矩阵: ", self.idle_matrix_tuple[-i])
+                                    print("空转矩阵长度: ", len(self.idle_matrix_tuple))
+                                    print("\n空转终点: ", self.idle_ends[-(i + 1)])
+                                    print("空转终点长度: ", len(self.idle_ends))
+                                    i += 1
+
                                 for description in reversed(self.move_descriptions):
                                     print(description)
                                 print("\nTotal time cost: ", self.total_cost, " minutes.")
@@ -194,6 +211,9 @@ class FindBalancingPath:
 
         move_description = f"\nMove the container at {moves[0]} to {moves[1]}. It takes {distance} minutes."
         self.move_descriptions.append(move_description)
+        self.idle_ends.append(moves[0])
+        self.idle_starts.append(moves[1])
+        self.idle_matrix_tuple.append(current_tuple)
 
     def find_moving_distance(self, start_tuple, end_tuple, start_col, end_col):
         mid_height, start_height, end_height = 0, 0, 0
@@ -252,20 +272,20 @@ def main():
     #     [10, 2, 14, 2]
     # ]
 
-    # matrix = [ # passed time cost test
-    #     [6, 0, 0, 0],
-    #     [10, 4, 0, 0]
-    # ]
+    matrix = [ # passed time cost test
+        [6, 0, 0, 0],
+        [10, 4, 0, 0]
+    ]
 
     # matrix = [ # passed time cost test
     #     [0, 0, 3, 1],
     #     [5, 9, 1, 1]
     # ]
     #
-    matrix = [ # passed time cost test
-        [0, 2, 3, 0],
-        [1, 1, 2, 7]
-    ]
+    # matrix = [ # passed time cost test
+    #     [0, 2, 3, 0],
+    #     [1, 1, 2, 7]
+    # ]
 
     balancing_path_finder = FindBalancingPath(matrix)
     balancing_path_finder.solve_balancing()
