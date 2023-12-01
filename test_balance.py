@@ -128,6 +128,7 @@ class FindBalancingPath:
                                 for description in reversed(self.move_descriptions):
                                     print(description)
                                 print("\nTotal time cost: ", self.total_cost, " minutes.")
+
                                 sys.exit()  # End the entire program
 
                             matrix_tuple = tuple(tuple(row) for row in matrix)
