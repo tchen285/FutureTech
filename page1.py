@@ -89,6 +89,12 @@ class Page1:
                 print("Container Data Updated:")
                 print(container_data)
 
+                if description == "NAN":
+                    container_weight[description] = None
+
+                if description == "UNUSED":
+                    container_weight[description] = 0
+
                 # 将描述映射到重量，但排除NAN和UNUSED
                 if description != "NAN" and description != "UNUSED":
                     container_weight[description] = weight
@@ -145,6 +151,8 @@ class Page1:
         # 遍历文件内容并更新矩阵
         for coordinates, description in self.app.container_data.items():
             row, col = coordinates
+            col = col - 1
+            row = len(original_matrix) - row
             print("行: ", row)
             original_matrix[row][col] = self.app.container_weight.get(description, 0)
 
@@ -153,5 +161,5 @@ class Page1:
         for row in original_matrix:
             print(row)
 
-        balancing_path_finder = FindBalancingPath()
-        balancing_path_finder.find_balancing(original_matrix)
+        balancing_path_finder = FindBalancingPath(original_matrix)
+        balancing_path_finder.solve_balancing()
