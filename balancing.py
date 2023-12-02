@@ -193,7 +193,6 @@ class FindBalancingPath:
         self.time_consume += (abs(moves[0][0] - moves[1][0]) + abs(moves[0][1] - moves[1][1]))
         self.move_descriptions.append(move_description)
 
-
 # def main():
 #     # matrix = [
 #     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -239,50 +238,3 @@ class FindBalancingPath:
 #
 # if __name__ == "__main__":
 #     main()
-
-def main():
-    # matrix = [
-    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #     [1, 0, 0, 0, 0, 0, 0, 0, 0, 10],
-    #     [25, 30, 20, 20, 0, 0, 15, 10, 101, 50],
-    #     [101, 101, 5, 101, 25, 20, 51, 101, 101, 29]
-    # ]
-
-    # matrix = [
-    #     [3, 3, 0, 0],
-    #     [10, 4, 0, 0]
-    # ]
-    # matrix = [
-    #     [0, 0, 3, 0],
-    #     [10, 4, 3, 0]
-    # ]
-
-
-    # matrix = [
-    #     [0, 0, 0, 0],
-    #     [10, 2, 14, 2]
-    # ]
-
-    matrix = [
-        [6, 0, 0, 0],
-        [10, 4, 0, 0]
-    ]
-    # matrix = [
-    #     [0, 0, 3, 1],
-    #     [5, 9, 1, 1]
-    # ]
-    
-    # matrix = [
-    #     [0, 2, 3, 0],
-    #     [1, 1, 2, 7]
-    # ]
-
-    balancing_path_finder = FindBalancingPath(matrix)
-    balancing_path_finder.solve_balancing()
-
-if __name__ == "__main__":
-    main()
