@@ -58,10 +58,14 @@ class FindBalancingPath:
 
                 # 从第一列开始检查, 跳过全是0的列
                 for col in range(self.cols):
-                    if popped_matrix[-1][col] == 0:
+                    if popped_matrix[-1][col] == 0 or (popped_matrix[-1][col] is None and any(
+                            popped_matrix[i][col] == 0 for i in range(self.rows - 1, -1, -1))):
+                        # 进入下一轮循环的逻辑
+                        # 如果最下面是0或者最下面是None但上面有非None且值为0的元素
                         continue
 
                     current_matrix = copy.deepcopy(popped_matrix)
+                    print("打印进入循环的列: ", col)
                     self.solve_current_column(current_matrix, popped_matrix, col)
 
                 print("Queue Size:", len(self.queue))
@@ -76,7 +80,7 @@ class FindBalancingPath:
         print("当前处理的列:")
         print(col)
         for row1 in range(self.rows):
-            if matrix[row1][col] != 0:
+            if matrix[row1][col] != 0 and matrix[row1][col] != None:
                 weight = matrix[row1][col]
 
                 print("Original Matrix:")
@@ -133,6 +137,7 @@ class FindBalancingPath:
                                 while self.matrix_parent[current]:
                                     self.interpret_move(self.matrix_parent[current], current)
                                     current = self.matrix_parent[current]
+
                                 i = 1
                                 while self.idle_matrix_tuple[-i] != self.goal_matrix_tuple and self.idle_matrix_tuple[-i] != self.start_matrix_tuple:
                                     idle_start = self.idle_starts[-i]
@@ -187,13 +192,21 @@ class FindBalancingPath:
                 break  # Exit the outer loop
 
     def is_balanced(self, matrix):
-        left_sum = sum(matrix[i][j] for i in range(self.rows) for j in range(self.cols // 2))
-        right_sum = sum(matrix[i][j] for i in range(self.rows) for j in range(self.cols // 2, self.cols))
+        left_sum = sum(
+            matrix[i][j] if matrix[i][j] is not None else 0 for i in range(self.rows) for j in range(self.cols // 2))
+        right_sum = sum(matrix[i][j] if matrix[i][j] is not None else 0 for i in range(self.rows) for j in
+                        range(self.cols // 2, self.cols))
+
         print("计算左右的值")
         print(left_sum)
         print(right_sum)
-        balancing_score = min(left_sum, right_sum) / max(left_sum, right_sum)
+
+        # Ensure that denominator is not zero
+        max_sum = max(left_sum, right_sum)
+        balancing_score = min(left_sum, right_sum) / max_sum if max_sum != 0 else 0
+
         print(balancing_score)
+
         threshold = 0.9  # Adjust this threshold as needed
 
         return balancing_score > threshold
@@ -203,14 +216,14 @@ class FindBalancingPath:
         start_row, start_col, end_row, end_col = 0, 0, 0, 0
         for i1 in range(len(current_tuple)):
             for j1 in range(len(current_tuple[0])):
-                if parent_tuple[i1][j1] != 0 and current_tuple[i1][j1] == 0:
+                if parent_tuple[i1][j1] != 0 and parent_tuple[i1][j1] != None and current_tuple[i1][j1] == 0:
                     moves.append((i1, j1))
                     start_row, start_col = i1, j1
                     height = self.rows - start_row
 
         for i2 in range(len(current_tuple)):
             for j2 in range(len(current_tuple[0])):
-                if parent_tuple[i2][j2] == 0 and current_tuple[i2][j2] != 0:
+                if parent_tuple[i2][j2] == 0 and current_tuple[i2][j2] != 0 and current_tuple[i2][j2] != None:
                     moves.append((i2, j2))
                     end_row, end_col = i2, j2
                     height = max(height, self.rows - end_row)
@@ -291,28 +304,28 @@ def main():
 
     # matrix = [ # passed time cost test,
     #     [3, 3, 0, 0],
-    #     [10, 4, 0, 0]
+    #     [10, 4, 0, None]
     # ]
 
     # matrix = [ # passed time cost test, no idle needed
-    #     [0, 0, 3, 0],
-    #     [10, 4, 3, 0]
+    #     [10, 0, 3, 0],
+    #     [None, 4, 3, None]
     # ]
 
     # matrix = [ # passed time cost test, no idle needed
-    #     [0, 0, 0, 0],
-    #     [10, 2, 14, 2]
-    # ]
-
-    # matrix = [ # passed time cost test,
-    #     [6, 0, 0, 0],
-    #     [10, 4, 0, 0]
+    #     [10, 0, 0, 2],
+    #     [None, 2, 14, None]
     # ]
 
     matrix = [ # passed time cost test,
-        [0, 0, 3, 1],
-        [5, 9, 1, 1]
+        [6, 4, 0, 0],
+        [None, 10, None, None]
     ]
+
+    # matrix = [ # passed time cost test,
+    #     [0, 0, 3, 1],
+    #     [5, 9, 1, 1]
+    # ]
     #
     # matrix = [ # passed time cost test, passed idle
     #     [0, 2, 3, 0],
