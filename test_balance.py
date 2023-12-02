@@ -20,6 +20,7 @@ class FindBalancingPath:
         self.idle_starts = []
         self.idle_matrix_tuple = []
         self.idle_ends = []
+        self.idle_descriptions = []
 
     def solve_balancing(self):
         while self.queue:
@@ -134,16 +135,28 @@ class FindBalancingPath:
                                     current = self.matrix_parent[current]
                                 i = 1
                                 while self.idle_matrix_tuple[-i] != self.goal_matrix_tuple and self.idle_matrix_tuple[-i] != self.start_matrix_tuple:
-                                    print("\n空转起点: ", self.idle_starts[-i])
-                                    print("空转起点长度: ", len(self.idle_starts))
-                                    print("\n空转矩阵: ", self.idle_matrix_tuple[-i])
-                                    print("空转矩阵长度: ", len(self.idle_matrix_tuple))
-                                    print("\n空转终点: ", self.idle_ends[-(i + 1)])
-                                    print("空转终点长度: ", len(self.idle_ends))
+                                    idle_start = self.idle_starts[-i]
+                                    print("\n空转起点: ", idle_start)
+                                    idle_matrix_tuple = self.idle_matrix_tuple[-i]
+                                    print("\n空转矩阵: ", idle_matrix_tuple)
+                                    idle_end = self.idle_ends[-(i + 1)]
+                                    print("\n空转终点: ", idle_end)
+                                    idle_distance = self.find_idle_distance(idle_start, idle_matrix_tuple, idle_end)
+                                    print("空转距离", idle_distance)
+                                    idle_description = f"\nMove the crane from {idle_start} to {idle_end}. It takes {idle_distance} minutes."
+                                    self.idle_descriptions.append(idle_description)
+                                    self.total_cost += idle_distance
                                     i += 1
 
-                                for description in reversed(self.move_descriptions):
-                                    print(description)
+                                # for description in reversed(self.move_descriptions):
+                                #     print(description)
+                                index1, index2 = 0, 0
+                                while index1 != len(self.move_descriptions) and index2 != len(self.idle_descriptions):
+                                    print(self.move_descriptions[-(index1 + 1)])
+                                    print(self.idle_descriptions[index2])
+                                    index1 += 1
+                                    index2 += 1
+                                print(self.move_descriptions[0])
                                 print("\nTotal time cost: ", self.total_cost, " minutes.")
 
                                 sys.exit()  # End the entire program
@@ -244,6 +257,25 @@ class FindBalancingPath:
             return abs(start - end) + abs(start_height - end_height)
         return mid_height - start_height + 2 + mid_height - end_height + abs(start - end)
 
+    def find_idle_distance(self, idle_start, idle_matrix_tuple, idle_end):
+        start_height = self.rows - idle_start[0]
+        end_height = self.rows - idle_end[0]
+        mid_height = 0
+        for col in range(min(idle_start[1], idle_end[1]) + 1, max(idle_start[1], idle_end[1])):
+            for row in range(self.rows):
+                if idle_matrix_tuple[row][col] != 0:
+                    height = self.rows - row
+                    mid_height = max(height, mid_height)
+        print("中间高度: ", mid_height)
+
+        if start_height == end_height and mid_height < start_height:
+            return abs(idle_start[1] - idle_end[1]) + 2
+
+        if mid_height < max(start_height, end_height):
+            return abs(idle_start[0] - idle_end[0]) + abs(idle_start[1] - idle_end[1])
+
+        return mid_height - start_height + 2 + mid_height - end_height + abs(idle_start[1] - idle_end[1])
+
 
 def main():
     # matrix = [
@@ -257,32 +289,32 @@ def main():
     #     [101, 101, 5, 101, 25, 20, 51, 101, 101, 29]
     # ]
 
-    # matrix = [ # passed time cost test
+    # matrix = [ # passed time cost test,
     #     [3, 3, 0, 0],
     #     [10, 4, 0, 0]
     # ]
 
-    # matrix = [ # passed time cost test
+    # matrix = [ # passed time cost test, no idle needed
     #     [0, 0, 3, 0],
     #     [10, 4, 3, 0]
     # ]
 
-    # matrix = [ # passed time cost test
+    # matrix = [ # passed time cost test, no idle needed
     #     [0, 0, 0, 0],
     #     [10, 2, 14, 2]
     # ]
 
-    matrix = [ # passed time cost test
-        [6, 0, 0, 0],
-        [10, 4, 0, 0]
-    ]
-
-    # matrix = [ # passed time cost test
-    #     [0, 0, 3, 1],
-    #     [5, 9, 1, 1]
+    # matrix = [ # passed time cost test,
+    #     [6, 0, 0, 0],
+    #     [10, 4, 0, 0]
     # ]
+
+    matrix = [ # passed time cost test,
+        [0, 0, 3, 1],
+        [5, 9, 1, 1]
+    ]
     #
-    # matrix = [ # passed time cost test
+    # matrix = [ # passed time cost test, passed idle
     #     [0, 2, 3, 0],
     #     [1, 1, 2, 7]
     # ]
