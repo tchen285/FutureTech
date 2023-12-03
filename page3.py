@@ -13,9 +13,6 @@ class Page3:
         self.file_name_label = Label(self.frame, text=file_name, font=("Arial", 14), bg="white", fg="red")
         self.file_name_label.pack(pady=20)
 
-        back_button = Button(self.frame, text="Back to Page 2", font=("Arial", 18), bg="red", command=app.show_page2)
-        back_button.pack(pady=20)
-
         continue_button = Button(self.frame, text="Continue", font=("Arial", 18), bg="red", command=app.show_page4)
         continue_button.pack(side="bottom", pady=20, anchor="center")
 

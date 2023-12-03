@@ -1,6 +1,5 @@
 from collections import deque
 import copy
-import sys
 
 
 class FindBalancingPath:
@@ -25,76 +24,25 @@ class FindBalancingPath:
     def solve_balancing(self):
         while self.queue:
             level_size = len(self.queue)
-            print("\n@@@@@@")
-            print("开始新一轮pop queue:")
-            print("Queue Size:", len(self.queue))
-            print("Queue Elements:")
-            for elem in self.queue:
-                print(elem)
-            print("visited elements:")
-            for visited_elem in self.visited:
-                print(visited_elem)
-                print()
-            print("@@@@@@\n")
-
             for _ in range(level_size):
                 popped_matrix = self.queue.popleft()
-                # 输出根矩阵的父节点, 是None
-                print("$$$$\n打印根节点矩阵以及根节点的父节点")
-                print(tuple(map(tuple, popped_matrix)))  # 目前输出正确
-                print(self.matrix_parent[tuple(map(tuple, popped_matrix))])  # 根节点的父节点是None, 目前输出正确
-                print("$$$$")
-
+                # 初始状态就已经平衡的情况
                 if self.is_balanced(popped_matrix):
-                    print("\n\nFOUND SOLUTION!!!\n\n")
-                    for row in popped_matrix:
-                        print(row)
-                    sys.exit()  # End the entire program
+                    return
 
-                # matrix_tuple = tuple(tuple(row) for row in popped_matrix)
-                # if matrix_tuple in self.visited:
-                #     continue
-                # self.visited.add(matrix_tuple)
-
-                # 从第一列开始检查, 跳过全是0的列
                 for col in range(self.cols):
                     if popped_matrix[-1][col] == 0 or (popped_matrix[-1][col] is None and any(
                             popped_matrix[i][col] == 0 for i in range(self.rows - 1, -1, -1))):
-                        # 进入下一轮循环的逻辑
-                        # 如果最下面是0或者最下面是None但上面有非None且值为0的元素
                         continue
 
                     current_matrix = copy.deepcopy(popped_matrix)
-                    print("打印进入循环的列: ", col)
-                    self.solve_current_column(current_matrix, popped_matrix, col)
-
-                print("Queue Size:", len(self.queue))
-                print("Queue Elements:")
-                for elem in self.queue:
-                    print(elem)
-                    print()
+                    if self.solve_current_column(current_matrix, popped_matrix, col):
+                        return
 
     def solve_current_column(self, matrix, original_matrix, col):
-        print("当前处理的矩阵:")
-        print(matrix)
-        print("当前处理的列:")
-        print(col)
         for row1 in range(self.rows):
             if matrix[row1][col] != 0 and matrix[row1][col] != None:
                 weight = matrix[row1][col]
-
-                print("Original Matrix:")
-                print(original_matrix)
-                print("Current Matrix:")
-                print(matrix)
-
-                print("!!!ROW:")
-                print(row1)
-                print("!!!COLUMN:")
-                print(col)
-                print("!!! WEIGHT:")
-                print(weight)
-
                 matrix[row1][col] = 0
 
                 for col2 in range(self.cols):
@@ -105,34 +53,14 @@ class FindBalancingPath:
                             continue
                         if matrix[row2][col2] == 0:
                             matrix[row2][col2] = weight
-                            # tuple_matrix = tuple(map(tuple, matrix))
-                            # if tuple_matrix in queue:
-                            #     continue
                             if tuple(map(tuple, matrix)) in self.visited:
                                 continue
                             self.matrix_parent[tuple(map(tuple, matrix))] = tuple(map(tuple, original_matrix))
 
-                            print("\n--------------")
-                            print(matrix[0])
-                            print(matrix[1])
-                            print("--------------")
-
                             if self.is_balanced(matrix):
-                                for row in matrix:
-                                    print(row)
-
-                                # 打印result的父矩阵
-                                print(self.matrix_parent[tuple(map(tuple, matrix))])  # 到目前为止是对的
                                 self.goal_matrix_tuple = tuple(map(tuple, matrix))
-                                print("起点矩阵: ", self.start_matrix_tuple) # 对了
-                                print("终点矩阵: ", self.goal_matrix_tuple) # 都对了
-                                # new_matrix是result的父矩阵
-                                new_matrix = self.matrix_parent[tuple(map(tuple, matrix))]
-                                print(new_matrix)
-                                print(self.matrix_parent[new_matrix])
-                                print("哈哈哈哈")
+                                self.matrix_parent[tuple(map(tuple, matrix))]
                                 current = tuple(map(tuple, matrix))
-                                print(current)
 
                                 while self.matrix_parent[current]:
                                     self.interpret_move(self.matrix_parent[current], current)
@@ -147,14 +75,12 @@ class FindBalancingPath:
                                     idle_end = self.idle_ends[-(i + 1)]
                                     print("\n空转终点: ", idle_end)
                                     idle_distance = self.find_idle_distance(idle_start, idle_matrix_tuple, idle_end)
-                                    print("空转距离", idle_distance)
+                                    print("\n空转距离", idle_distance)
                                     idle_description = f"\nMove the crane from {idle_start} to {idle_end}. It takes {idle_distance} minutes."
                                     self.idle_descriptions.append(idle_description)
                                     self.total_cost += idle_distance
                                     i += 1
 
-                                # for description in reversed(self.move_descriptions):
-                                #     print(description)
                                 index1, index2 = 0, 0
                                 while index1 != len(self.move_descriptions) and index2 != len(self.idle_descriptions):
                                     print(self.move_descriptions[-(index1 + 1)])
@@ -163,33 +89,18 @@ class FindBalancingPath:
                                     index2 += 1
                                 print(self.move_descriptions[0])
                                 print("\nTotal time cost: ", self.total_cost, " minutes.")
-
-                                sys.exit()  # End the entire program
+                                return True
 
                             matrix_tuple = tuple(tuple(row) for row in matrix)
                             if matrix_tuple in self.visited:
-                                print("Found Duplicate")
                                 continue  # 这里这种情况是无限循环的根源
 
                             self.visited.add(matrix_tuple)
-
-                            print("Visited Elements:")
-                            for visited_elem in self.visited:
-                                print(visited_elem)
-                                print()
-
                             self.queue.append(copy.deepcopy(matrix))
-
-                            print("Queue Size:", len(self.queue))
-                            print("Queue Elements:")
-                            for elem in self.queue:
-                                print(elem)
-                                print()
-
                             matrix[row2][col2] = 0
                             break  # Exit the inner loop
-
                 break  # Exit the outer loop
+        return False
 
     def is_balanced(self, matrix):
         left_sum = sum(
@@ -197,18 +108,10 @@ class FindBalancingPath:
         right_sum = sum(matrix[i][j] if matrix[i][j] is not None else 0 for i in range(self.rows) for j in
                         range(self.cols // 2, self.cols))
 
-        print("计算左右的值")
-        print(left_sum)
-        print(right_sum)
-
         # Ensure that denominator is not zero
         max_sum = max(left_sum, right_sum)
         balancing_score = min(left_sum, right_sum) / max_sum if max_sum != 0 else 0
-
-        print(balancing_score)
-
         threshold = 0.9  # Adjust this threshold as needed
-
         return balancing_score > threshold
 
     def interpret_move(self, parent_tuple, current_tuple):
@@ -232,7 +135,6 @@ class FindBalancingPath:
             distance = abs(moves[0][0] - moves[1][0]) + abs(moves[0][1] - moves[1][1])
         else:
             distance = self.find_moving_distance(parent_tuple, current_tuple, start_col, end_col)
-        print("这一轮的移动距离: ", distance)
         self.total_cost += distance
 
         move_description = f"\nMove the container at {moves[0]} to {moves[1]}. It takes {distance} minutes."
@@ -245,26 +147,21 @@ class FindBalancingPath:
         mid_height, start_height, end_height = 0, 0, 0
         start = start_col
         end = end_col
-        print("\n\n这一轮起点列与终点列: ", start, end) # 输出正确
         for row in range(self.rows):
             if start_tuple[row][start] != 0:
                 start_height = self.rows - row
                 break
-        print("start_height: ", start_height)
 
         for row in range(self.rows):
             if end_tuple[row][end] != 0:
                 end_height = self.rows - row
                 break
-        print("end_height: ", end_height)
 
         for column in range(min(start, end) + 1, max(start, end)):
-            print("列: ", column)
             for row in range(self.rows):
                 if start_tuple[row][column] != 0:
                     mid_height = max(mid_height, self.rows - row)
                     break
-        print("mid_height: ", mid_height)
 
         if mid_height < max(start_height, end_height):
             return abs(start - end) + abs(start_height - end_height)
@@ -279,7 +176,6 @@ class FindBalancingPath:
                 if idle_matrix_tuple[row][col] != 0:
                     height = self.rows - row
                     mid_height = max(height, mid_height)
-        print("中间高度: ", mid_height)
 
         if start_height == end_height and mid_height < start_height:
             return abs(idle_start[1] - idle_end[1]) + 2
@@ -290,51 +186,54 @@ class FindBalancingPath:
         return mid_height - start_height + 2 + mid_height - end_height + abs(idle_start[1] - idle_end[1])
 
 
-# def main():
-#     # matrix = [
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [1, 0, 0, 0, 0, 0, 0, 0, 0, 10],
-#     #     [25, 30, 20, 20, 0, 0, 15, 10, 101, 50],
-#     #     [101, 101, 5, 101, 25, 20, 51, 101, 101, 29]
-#     # ]
-#
-#     # matrix = [ # passed time cost test,
-#     #     [3, 3, 0, 0],
-#     #     [10, 4, 0, None]
-#     # ]
-#
-#     # matrix = [ # passed time cost test, no idle needed
-#     #     [10, 0, 3, 0],
-#     #     [None, 4, 3, None]
-#     # ]
-#
-#     # matrix = [ # passed time cost test, no idle needed
-#     #     [10, 0, 0, 2],
-#     #     [None, 2, 14, None]
-#     # ]
-#
-#     matrix = [ # passed time cost test,
-#         [6, 4, 0, 0],
-#         [None, 10, None, None]
-#     ]
-#
-#     # matrix = [ # passed time cost test,
-#     #     [0, 0, 3, 1],
-#     #     [5, 9, 1, 1]
-#     # ]
-#     #
-#     # matrix = [ # passed time cost test, passed idle
-#     #     [0, 2, 3, 0],
-#     #     [1, 1, 2, 7]
-#     # ]
-#
-#     balancing_path_finder = FindBalancingPath(matrix)
-#     balancing_path_finder.solve_balancing()
-#
-#
-# if __name__ == "__main__":
-#     main()
+def main():
+    # matrix = [
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [1, 0, 0, 0, 0, 0, 0, 0, 0, 10],
+    #     [25, 30, 20, 20, 0, 0, 15, 10, 101, 50],
+    #     [101, 101, 5, 101, 25, 20, 51, 101, 101, 29]
+    # ]
+
+    # matrix = [ # passed time cost test,
+    #     [3, 3, 0, 0],
+    #     [10, 4, 0, None]
+    # ]
+
+    # matrix = [ # passed time cost test, no idle needed
+    #     [10, 0, 3, 0],
+    #     [None, 4, 3, None]
+    # ]
+
+    # matrix = [ # passed time cost test, no idle needed
+    #     [10, 0, 0, 2],
+    #     [None, 2, 14, None]
+    # ]
+
+    matrix = [ # passed time cost test,
+        [6, 4, 0, 0],
+        [None, 10, 0, None]
+    ]
+    # matrix = [ # passed time cost test,
+    #     [0, 0, 0, 6],
+    #     [None, 10, 4, None]
+    # ]
+    # matrix = [ # passed time cost test,
+    #     [0, 0, 3, 1],
+    #     [5, 9, 1, 1]
+    # ]
+    #
+    # matrix = [ # passed time cost test, passed idle
+    #     [0, 2, 3, 0],
+    #     [1, 1, 2, 7]
+    # ]
+
+    balancing_path_finder = FindBalancingPath(matrix)
+    balancing_path_finder.solve_balancing()
+
+
+if __name__ == "__main__":
+    main()
