@@ -13,17 +13,14 @@ class Page2:
         self.file_name_label = Label(self.frame, text="", font=("Arial", 14), bg="white", fg="red")
         self.file_name_label.grid(row=0, column=0, padx=10, pady=10, sticky="e")
 
-        unload_button = Button(self.frame, text="Unloading", font=("Arial", 18), bg="white", command=self.show_file_content)
+        unload_button = Button(self.frame, text="Loading / Unloading", font=("Arial", 18), bg="white", command=self.show_file_content)
         unload_button.grid(row=2, column=0, pady=20)
 
-        load_button = Button(self.frame, text="Loading", font=("Arial", 18), bg="white")
-        load_button.grid(row=3, column=0, pady=20)
-
         balancing_button = Button(self.frame, text="Balancing", font=("Arial", 18), bg="white")
-        balancing_button.grid(row=4, column=0, pady=20)
+        balancing_button.grid(row=3, column=0, pady=20)
 
         back_button = Button(self.frame, text="Back", font=("Arial", 18), bg="red", command=app.show_page1)
-        back_button.grid(row=5, column=0, pady=20)
+        back_button.grid(row=4, column=0, pady=20)
 
         # Add a button to set operator name
         set_operator_name_button = Button(self.frame, text="Check in", font=("Arial", 14), bg="orange",

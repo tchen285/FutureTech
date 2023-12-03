@@ -76,7 +76,7 @@ class Page1:
                 coordinates = parts[0].split("], {")
                 weight = int(coordinates[1])
                 coordinates[0] = coordinates[0].strip("[")
-                coordinates = tuple(map(int, coordinates[0].split(", ")))
+                coordinates = tuple(map(int, coordinates[0].split(",")))
 
                 # 输出坐标和描述，以确保它们被正确读取
                 print("Coordinates:", coordinates)
@@ -126,9 +126,6 @@ class Page1:
         self.app.page3.set_file_content(self.file_content)
         self.app.show_page3()
 
-        # 初始化矩阵
-        # self.initialize_matrix()
-
     def set_operator_name(self):
         # Use askstring to get operator name from user
         operator_name = askstring("Operator Name", "Enter Your Name:")
@@ -138,23 +135,19 @@ class Page1:
 
         self.app.page2.update_operator_name(operator_name)
 
-
+    # For small test cases
     def initialize_matrix(self):
         # 初始化一个2x4的矩阵，内容都是0
         original_matrix = [[0] * 4 for _ in range(2)]
-        print("测试是否进入") # 可以进入
-        # 输出原始矩阵到控制台
-        print("Initialized Matrix:")
-        for row in original_matrix:
-            print(row)
-
         # 遍历文件内容并更新矩阵
         for coordinates, description in self.app.container_data.items():
             row, col = coordinates
-            col = col - 1
-            row = len(original_matrix) - row
-            print("行: ", row)
-            original_matrix[row][col] = self.app.container_weight.get(description, 0)
+            new_col = col - 1
+            new_row = len(original_matrix) - row
+            original_matrix[new_row][new_col] = self.app.container_weight.get(description, 0)
+
+        # 将矩阵存储到App对象中, 可以直接使用self.app.original_matrix调用
+        self.app.original_matrix = original_matrix
 
         # 输出修改后的矩阵到控制台
         print("\nModified Matrix:")
@@ -163,3 +156,28 @@ class Page1:
 
         balancing_path_finder = FindBalancingPath(original_matrix)
         balancing_path_finder.solve_balancing()
+        total_cost = balancing_path_finder.total_cost
+        description_list = balancing_path_finder.description_list
+
+        for content in description_list:
+            print(content)
+
+        print("Total time cost:", total_cost, "minutes")
+
+    # For regular test cases
+    # def initialize_matrix(self):
+    #     # 初始化一个8x12的矩阵，内容都是0
+    #     original_matrix = [[0] * 12 for _ in range(8)]
+    #     # 遍历文件内容并更新矩阵
+    #     for coordinates, description in self.app.container_data.items():
+    #         row, col = coordinates
+    #         new_col = col - 1
+    #         new_row = len(original_matrix) - row
+    #         original_matrix[new_row][new_col] = self.app.container_weight.get(description, 0)
+    #
+    #     # 将矩阵存储到App对象中, 可以直接使用self.app.original_matrix调用
+    #     self.app.original_matrix = original_matrix
+    #     # 输出修改后的矩阵到控制台
+    #     print("\nModified Matrix:")
+    #     for row in original_matrix:
+    #         print(row)

@@ -19,6 +19,8 @@ class ShipManagementApp:
         # 初始化两个字典
         self.container_data = {}
         self.container_weight = {}
+        # 初始化矩阵
+        self.original_matrix = None
 
         self.show_page1()
 
