@@ -24,6 +24,19 @@ class FindBalancingPath:
         self.description_list = []
 
     def solve_balancing(self):
+        total_sum = sum(
+            self.start_matrix_tuple[i][j] if self.start_matrix_tuple[i][j] is not None else 0
+            for i in range(self.rows) for j in range(self.cols)
+        )
+        max_element = max(
+            self.start_matrix_tuple[i][j] if self.start_matrix_tuple[i][j] is not None else float('-inf')
+            for i in range(self.rows) for j in range(self.cols)
+        )
+        print("total sum and max:", total_sum, max_element)
+        if 0.9 * max_element > (total_sum - max_element):
+            print("无法找到结果")
+            return
+
         while self.queue:
             level_size = len(self.queue)
             for _ in range(level_size):
@@ -56,7 +69,8 @@ class FindBalancingPath:
                         if matrix[row2][col2] == 0:
                             matrix[row2][col2] = weight
                             if tuple(map(tuple, matrix)) in self.visited:
-                                continue
+                                matrix[row2][col2] = 0
+                                break
                             self.matrix_parent[tuple(map(tuple, matrix))] = tuple(map(tuple, original_matrix))
 
                             if self.is_balanced(matrix):
