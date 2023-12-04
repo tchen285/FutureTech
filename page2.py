@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import filedialog
 from tkinter.simpledialog import askstring  # Import askstring for input dialog
+from balancing import FindBalancingPath
 import os
 
 class Page2:
@@ -16,11 +17,8 @@ class Page2:
         unload_button = Button(self.frame, text="Loading / Unloading", font=("Arial", 18), bg="white", command=self.show_file_content)
         unload_button.grid(row=2, column=0, pady=20)
 
-        balancing_button = Button(self.frame, text="Balancing", font=("Arial", 18), bg="white")
+        balancing_button = Button(self.frame, text="Balancing", font=("Arial", 18), bg="white", command=self.calculate_balance)
         balancing_button.grid(row=3, column=0, pady=20)
-
-        back_button = Button(self.frame, text="Back", font=("Arial", 18), bg="red", command=app.show_page1)
-        back_button.grid(row=4, column=0, pady=20)
 
         # Add a button to set operator name
         set_operator_name_button = Button(self.frame, text="Check in", font=("Arial", 14), bg="orange",
@@ -62,4 +60,14 @@ class Page2:
         self.operator_name_label.config(text=f"Operator: {name}")
         self.app.page3.update_operator_name(name)
 
+    def calculate_balance(self):
+        balancing_path_finder = FindBalancingPath(self.app.original_matrix)
+        balancing_path_finder.solve_balancing()
+        self.app.balance_list = balancing_path_finder.description_list
+        descriptions = balancing_path_finder.description_list
+        steps = len(balancing_path_finder.description_list)
+        time_cost = balancing_path_finder.total_cost
+        self.app.show_balance_cost_page()
+        self.app.balance_cost_page.update_labels(steps, time_cost)
+        self.app.description_page.update_descriptions(descriptions)
 
