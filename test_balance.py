@@ -22,6 +22,18 @@ class FindBalancingPath:
         self.idle_descriptions = []
 
     def solve_balancing(self):
+        total_sum = sum(
+            self.start_matrix_tuple[i][j] if self.start_matrix_tuple[i][j] is not None else 0
+            for i in range(self.rows) for j in range(self.cols)
+        )
+        max_element = max(
+            self.start_matrix_tuple[i][j] if self.start_matrix_tuple[i][j] is not None else float('-inf')
+            for i in range(self.rows) for j in range(self.cols)
+        )
+        print("total sum and max:", total_sum, max_element)
+        if 0.9 * max_element > (total_sum - max_element):
+            print("无法找到结果")
+            return
         while self.queue:
             level_size = len(self.queue)
             for _ in range(level_size):
@@ -38,8 +50,10 @@ class FindBalancingPath:
                     current_matrix = copy.deepcopy(popped_matrix)
                     if self.solve_current_column(current_matrix, popped_matrix, col):
                         return
-
+        print("无法找到solution")
     def solve_current_column(self, matrix, original_matrix, col):
+        print("\n当前矩阵:", matrix)
+        print("当前列:", col)
         for row1 in range(self.rows):
             if matrix[row1][col] != 0 and matrix[row1][col] != None:
                 weight = matrix[row1][col]
@@ -49,12 +63,16 @@ class FindBalancingPath:
                     if col2 == col:
                         continue
                     for row2 in reversed(range(self.rows)):
-                        if matrix[0][col2] != 0:
+                        if matrix[row2][col2] != 0:
                             continue
                         if matrix[row2][col2] == 0:
                             matrix[row2][col2] = weight
+                            print("变化后的矩阵: ", matrix)
                             if tuple(map(tuple, matrix)) in self.visited:
-                                continue
+                                print("%%%%已经访问过")
+                                matrix[row2][col2] = 0
+                                break
+
                             self.matrix_parent[tuple(map(tuple, matrix))] = tuple(map(tuple, original_matrix))
 
                             if self.is_balanced(matrix):
@@ -92,10 +110,11 @@ class FindBalancingPath:
                                 return True
 
                             matrix_tuple = tuple(tuple(row) for row in matrix)
-                            if matrix_tuple in self.visited:
-                                continue  # 这里这种情况是无限循环的根源
+                            # if matrix_tuple in self.visited:
+                            #     continue  # 这里这种情况是无限循环的根源
 
                             self.visited.add(matrix_tuple)
+                            print("visited:", self.visited)
                             self.queue.append(copy.deepcopy(matrix))
                             matrix[row2][col2] = 0
                             break  # Exit the inner loop
@@ -107,7 +126,10 @@ class FindBalancingPath:
             matrix[i][j] if matrix[i][j] is not None else 0 for i in range(self.rows) for j in range(self.cols // 2))
         right_sum = sum(matrix[i][j] if matrix[i][j] is not None else 0 for i in range(self.rows) for j in
                         range(self.cols // 2, self.cols))
-
+        print("左面的和: ", left_sum)
+        print("右面的和: ", right_sum)
+        if left_sum == right_sum:
+            return True
         # Ensure that denominator is not zero
         max_sum = max(left_sum, right_sum)
         balancing_score = min(left_sum, right_sum) / max_sum if max_sum != 0 else 0
@@ -231,6 +253,13 @@ def main():
     #     [1, 1, 2, 7]
     # ]
 
+    # 无法平衡的情况
+    # matrix = [ # passed time cost test, passed idle
+    #     [0, 0, 0, 0],
+    #     [1, 0, 0, 0]
+    # ]
+
+
     matrix = [
         [0, 0, 0, 0, 3044, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 1100, 0, 0, 0, 0, 0, 0, 0],
@@ -241,6 +270,17 @@ def main():
         [None, 0, 0, 0, 2000, 0, 0, 0, 0, 0, 0, None],
         [None, None, None, None, None, None, None, None, None, None, None, None]
     ]
+
+    # matrix = [
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [None, 96, 8, 4, 4, 1, 0, 0, 0, 0, 0, None]
+    # ]
 
     balancing_path_finder = FindBalancingPath(matrix)
     balancing_path_finder.solve_balancing()
