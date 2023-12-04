@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import filedialog
 from tkinter.simpledialog import askstring  # Import askstring for input dialog
+from os.path import join, expanduser
 from balancing import FindBalancingPath
 import os
 
@@ -114,6 +115,19 @@ class Page1:
         self.app.container_weight = container_weight
         self.initialize_matrix()
 
+        # Get the desktop path
+        desktop_path = join(expanduser("~"), "Desktop")
+
+        # Generate the new filename for the outbound file on the desktop
+        outbound_file_path = join(desktop_path, f"{self.file_name}OUTBOUND.txt")
+
+        # Copy the content from the original file to the outbound file with the new name
+        with open(file_path, 'r') as original_file, open(outbound_file_path, 'w') as outbound_file:
+            for line in original_file:
+                outbound_file.write(line)
+
+        print(f"Outbound file created on the desktop: {outbound_file_path}")
+
     def show(self):
         self.frame.grid()
 
@@ -136,38 +150,9 @@ class Page1:
         self.app.page2.update_operator_name(operator_name)
 
     # For small test cases
-    def initialize_matrix(self):
-        # 初始化一个2x4的矩阵，内容都是0
-        original_matrix = [[0] * 4 for _ in range(2)]
-        # 遍历文件内容并更新矩阵
-        for coordinates, description in self.app.container_data.items():
-            row, col = coordinates
-            new_col = col - 1
-            new_row = len(original_matrix) - row
-            original_matrix[new_row][new_col] = self.app.container_weight.get(description, 0)
-
-        # 将矩阵存储到App对象中, 可以直接使用self.app.original_matrix调用
-        self.app.original_matrix = original_matrix
-
-        # 输出修改后的矩阵到控制台
-        print("\nModified Matrix:")
-        for row in original_matrix:
-            print(row)
-
-        balancing_path_finder = FindBalancingPath(original_matrix)
-        balancing_path_finder.solve_balancing()
-        total_cost = balancing_path_finder.total_cost
-        description_list = balancing_path_finder.description_list
-
-        for content in description_list:
-            print(content)
-
-        print("Total time cost:", total_cost, "minutes")
-
-    # For regular test cases
     # def initialize_matrix(self):
-    #     # 初始化一个8x12的矩阵，内容都是0
-    #     original_matrix = [[0] * 12 for _ in range(8)]
+    #     # 初始化一个2x4的矩阵，内容都是0
+    #     original_matrix = [[0] * 4 for _ in range(2)]
     #     # 遍历文件内容并更新矩阵
     #     for coordinates, description in self.app.container_data.items():
     #         row, col = coordinates
@@ -177,7 +162,27 @@ class Page1:
     #
     #     # 将矩阵存储到App对象中, 可以直接使用self.app.original_matrix调用
     #     self.app.original_matrix = original_matrix
+    #
     #     # 输出修改后的矩阵到控制台
     #     print("\nModified Matrix:")
     #     for row in original_matrix:
     #         print(row)
+
+
+    # For regular test cases
+    def initialize_matrix(self):
+        # 初始化一个8x12的矩阵，内容都是0
+        original_matrix = [[0] * 12 for _ in range(8)]
+        # 遍历文件内容并更新矩阵
+        for coordinates, description in self.app.container_data.items():
+            row, col = coordinates
+            new_col = col - 1
+            new_row = len(original_matrix) - row
+            original_matrix[new_row][new_col] = self.app.container_weight.get(description, 0)
+
+        # 将矩阵存储到App对象中, 可以直接使用self.app.original_matrix调用
+        self.app.original_matrix = original_matrix
+        # 输出修改后的矩阵到控制台
+        print("\nModified Matrix:")
+        for row in original_matrix:
+            print(row)

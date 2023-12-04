@@ -213,10 +213,10 @@ def main():
     #     [None, 2, 14, None]
     # ]
 
-    matrix = [ # passed time cost test,
-        [6, 4, 0, 0],
-        [None, 10, 0, None]
-    ]
+    # matrix = [ # passed time cost test,
+    #     [6, 4, 0, 0],
+    #     [None, 10, 0, None]
+    # ]
     # matrix = [ # passed time cost test,
     #     [0, 0, 0, 6],
     #     [None, 10, 4, None]
@@ -230,6 +230,17 @@ def main():
     #     [0, 2, 3, 0],
     #     [1, 1, 2, 7]
     # ]
+
+    matrix = [
+        [0, 0, 0, 0, 3044, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1100, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 2020, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 10000, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 2011, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 2007, 0, 0, 0, 0, 0, 0, 0],
+        [None, 0, 0, 0, 2000, 0, 0, 0, 0, 0, 0, None],
+        [None, None, None, None, None, None, None, None, None, None, None, None]
+    ]
 
     balancing_path_finder = FindBalancingPath(matrix)
     balancing_path_finder.solve_balancing()
