@@ -150,29 +150,9 @@ class Page1:
         self.app.page2.update_operator_name(operator_name)
 
     # For small test cases
-    def initialize_matrix(self):
-        # 初始化一个2x4的矩阵，内容都是0
-        original_matrix = [[0] * 4 for _ in range(2)]
-        # 遍历文件内容并更新矩阵
-        for coordinates, description in self.app.container_data.items():
-            row, col = coordinates
-            new_col = col - 1
-            new_row = len(original_matrix) - row
-            original_matrix[new_row][new_col] = self.app.container_weight.get(description, 0)
-
-        # 将矩阵存储到App对象中, 可以直接使用self.app.original_matrix调用
-        self.app.original_matrix = original_matrix
-
-        # 输出修改后的矩阵到控制台
-        print("\nModified Matrix:")
-        for row in original_matrix:
-            print(row)
-
-
-    # For regular test cases
     # def initialize_matrix(self):
-    #     # 初始化一个8x12的矩阵，内容都是0
-    #     original_matrix = [[0] * 12 for _ in range(8)]
+    #     # 初始化一个2x4的矩阵，内容都是0
+    #     original_matrix = [[0] * 4 for _ in range(2)]
     #     # 遍历文件内容并更新矩阵
     #     for coordinates, description in self.app.container_data.items():
     #         row, col = coordinates
@@ -182,7 +162,27 @@ class Page1:
     #
     #     # 将矩阵存储到App对象中, 可以直接使用self.app.original_matrix调用
     #     self.app.original_matrix = original_matrix
+    #
     #     # 输出修改后的矩阵到控制台
     #     print("\nModified Matrix:")
     #     for row in original_matrix:
     #         print(row)
+
+
+    # For regular test cases
+    def initialize_matrix(self):
+        # 初始化一个8x12的矩阵，内容都是0
+        original_matrix = [[0] * 12 for _ in range(8)]
+        # 遍历文件内容并更新矩阵
+        for coordinates, description in self.app.container_data.items():
+            row, col = coordinates
+            new_col = col - 1
+            new_row = len(original_matrix) - row
+            original_matrix[new_row][new_col] = self.app.container_weight.get(description, 0)
+
+        # 将矩阵存储到App对象中, 可以直接使用self.app.original_matrix调用
+        self.app.original_matrix = original_matrix
+        # 输出修改后的矩阵到控制台
+        print("\nModified Matrix:")
+        for row in original_matrix:
+            print(row)

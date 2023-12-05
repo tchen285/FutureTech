@@ -8,8 +8,8 @@ class ShowDescriptions:
         self.descriptions = []
         self.current_step = 0
 
-        self.label1 = Label(self.frame, text="", font=("Arial", 16), bg="white")
-        self.label1.grid(row=0, column=0, pady=10)
+        self.label1 = Label(self.frame, text="", font=("Arial", 20), bg="white", justify="center")
+        self.label1.grid(row=0, column=0, padx=20, pady=20)
 
         self.start_button = Button(self.frame, text="Next Step", font=("Arial", 18), bg="red", command=self.next_step, state=DISABLED)
         self.start_button.grid(row=1, column=0, pady=20)
