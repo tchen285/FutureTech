@@ -11,23 +11,23 @@ class Page2:
 
         self.file_content = []
 
-        self.file_name_label = Label(self.frame, text="", font=("Arial", 14), bg="white", fg="red")
+        self.file_name_label = Label(self.frame, text="", font=("Arial", 20), bg="white", fg="red")
         self.file_name_label.grid(row=0, column=0, padx=10, pady=10, sticky="e")
 
-        unload_button = Button(self.frame, text="Loading / Unloading", font=("Arial", 18), bg="white", command=self.show_file_content)
-        unload_button.grid(row=2, column=0, pady=20)
+        unload_button = Button(self.frame, text="Loading / Unloading", font=("Arial", 20), bg="white", command=self.show_file_content)
+        unload_button.grid(row=2, column=3, pady=20)
 
-        balancing_button = Button(self.frame, text="Balancing", font=("Arial", 18), bg="white", command=self.calculate_balance)
-        balancing_button.grid(row=3, column=0, pady=20)
+        balancing_button = Button(self.frame, text="Balancing", font=("Arial", 20), bg="white", command=self.calculate_balance)
+        balancing_button.grid(row=3, column=3, pady=20)
 
         # Add a button to set operator name
         set_operator_name_button = Button(self.frame, text="Check in", font=("Arial", 14), bg="orange",
                                           command=self.set_operator_name)
-        set_operator_name_button.grid(row=0, column=1, padx=10, pady=10)
+        set_operator_name_button.grid(row=0, column=4, padx=10, pady=10)
 
         # Display operator name label
         self.operator_name_label = Label(self.frame, text="Hello Name!", font=("Arial", 14), bg="white")
-        self.operator_name_label.grid(row=1, column=1, padx=10, pady=10)
+        self.operator_name_label.grid(row=1, column=4, padx=10, pady=10)
 
     def show(self):
         self.frame.grid()
