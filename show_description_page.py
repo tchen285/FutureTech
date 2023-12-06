@@ -40,7 +40,7 @@ class ShowDescriptions:
             self.current_step += 1
             self.update_label()
         else:
-            self.label1.config(text="Task done!\nDon't forget to send the updated manifest to the captain.")
+            self.label1.config(text="Task done!\n\nDon't forget to send the updated manifest to the captain.")
             self.start_button.grid_remove()
             self.new_task_button.grid()
 

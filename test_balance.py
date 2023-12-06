@@ -1,6 +1,8 @@
 from collections import deque
 import copy
-
+from os.path import join, expanduser
+from balancing import FindBalancingPath
+import os
 
 class FindBalancingPath:
     def __init__(self, matrix):
@@ -94,7 +96,7 @@ class FindBalancingPath:
                                     print("\n空转终点: ", idle_end)
                                     idle_distance = self.find_idle_distance(idle_start, idle_matrix_tuple, idle_end)
                                     print("\n空转距离", idle_distance)
-                                    idle_description = f"\nMove the crane from {idle_start} to {idle_end}. It takes {idle_distance} minutes."
+                                    idle_description = f"\nMove crane from {idle_start} to {idle_end}. It takes {idle_distance} minutes."
                                     self.idle_descriptions.append(idle_description)
                                     self.total_cost += idle_distance
                                     i += 1
@@ -159,7 +161,7 @@ class FindBalancingPath:
             distance = self.find_moving_distance(parent_tuple, current_tuple, start_col, end_col)
         self.total_cost += distance
 
-        move_description = f"\nMove the container at {moves[0]} to {moves[1]}. It takes {distance} minutes."
+        move_description = f"\nMove container at {moves[0]} to {moves[1]}. It takes {distance} minutes."
         self.move_descriptions.append(move_description)
         self.idle_ends.append(moves[0])
         self.idle_starts.append(moves[1])
@@ -260,16 +262,16 @@ def main():
     # ]
 
 
-    matrix = [
-        [0, 0, 0, 0, 3044, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1100, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 2020, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 10000, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 2011, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 2007, 0, 0, 0, 0, 0, 0, 0],
-        [None, 0, 0, 0, 2000, 0, 0, 0, 0, 0, 0, None],
-        [None, None, None, None, None, None, None, None, None, None, None, None]
-    ]
+    # matrix = [
+    #     [0, 0, 0, 0, 3044, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 1100, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 2020, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 10000, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 2011, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 2007, 0, 0, 0, 0, 0, 0, 0],
+    #     [None, 0, 0, 0, 2000, 0, 0, 0, 0, 0, 0, None],
+    #     [None, None, None, None, None, None, None, None, None, None, None, None]
+    # ]
 
     # matrix = [
     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -282,9 +284,41 @@ def main():
     #     [None, 96, 8, 4, 4, 1, 0, 0, 0, 0, 0, None]
     # ]
 
+    matrix = [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [6, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [None, 10, 0, None, 0, 0, 0, 0, 0, 0, 0, 0]
+    ]
+
     balancing_path_finder = FindBalancingPath(matrix)
     balancing_path_finder.solve_balancing()
 
+    # Open the existing file in append mode
+    # desktop_path = join(expanduser("~"), "Desktop")
+    # filename = "testOUTBOUND.txt"
+    # file_path = join(desktop_path, filename)
+    #
+    # with open(file_path, 'a') as file:
+    #     # Append the move descriptions to the file
+    #     file.write("You've got modified")
+    desktop_path = join(expanduser("~"), "Desktop")
+    filename = "testOUTBOUND.txt"
+    file_path = join(desktop_path, filename)
+
+    with open(file_path, 'r') as file:
+        lines = file.readlines()
+
+    for i in range(len(lines)):
+        # Assuming [01, 01] is present in each line
+        lines[i] = lines[i].replace('[01,01]', '[11,11]')
+
+    with open(file_path, 'w') as file:
+        file.writelines(lines)
 
 if __name__ == "__main__":
     main()

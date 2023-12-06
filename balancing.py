@@ -93,7 +93,7 @@ class FindBalancingPath:
                                     print("\n空转终点: ", idle_end)
                                     idle_distance = self.find_idle_distance(idle_start, idle_matrix_tuple, idle_end)
                                     print("\n空转距离", idle_distance)
-                                    idle_description = f"\nMove the crane from {idle_start} to {idle_end}. It takes {idle_distance} minutes."
+                                    idle_description = f"\nMove crane from {idle_start} to {idle_end}. It takes {idle_distance} minutes."
                                     self.idle_descriptions.append(idle_description)
                                     self.total_cost += idle_distance
                                     i += 1
@@ -157,7 +157,7 @@ class FindBalancingPath:
             distance = self.find_moving_distance(parent_tuple, current_tuple, start_col, end_col)
         self.total_cost += distance
 
-        move_description = f"\nMove the container at {moves[0]} to {moves[1]}. It takes {distance} minutes."
+        move_description = f"\nMove container at {moves[0]} to {moves[1]}. It takes {distance} minutes."
         self.move_descriptions.append(move_description)
         self.idle_ends.append(moves[0])
         self.idle_starts.append(moves[1])
