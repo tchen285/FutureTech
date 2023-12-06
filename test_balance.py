@@ -3,6 +3,7 @@ import copy
 from os.path import join, expanduser
 from balancing import FindBalancingPath
 import os
+import re
 
 class FindBalancingPath:
     def __init__(self, matrix):
@@ -54,8 +55,6 @@ class FindBalancingPath:
                         return
         print("无法找到solution")
     def solve_current_column(self, matrix, original_matrix, col):
-        print("\n当前矩阵:", matrix)
-        print("当前列:", col)
         for row1 in range(self.rows):
             if matrix[row1][col] != 0 and matrix[row1][col] != None:
                 weight = matrix[row1][col]
@@ -69,9 +68,7 @@ class FindBalancingPath:
                             continue
                         if matrix[row2][col2] == 0:
                             matrix[row2][col2] = weight
-                            print("变化后的矩阵: ", matrix)
                             if tuple(map(tuple, matrix)) in self.visited:
-                                print("%%%%已经访问过")
                                 matrix[row2][col2] = 0
                                 break
 
@@ -116,7 +113,6 @@ class FindBalancingPath:
                             #     continue  # 这里这种情况是无限循环的根源
 
                             self.visited.add(matrix_tuple)
-                            print("visited:", self.visited)
                             self.queue.append(copy.deepcopy(matrix))
                             matrix[row2][col2] = 0
                             break  # Exit the inner loop
@@ -128,8 +124,6 @@ class FindBalancingPath:
             matrix[i][j] if matrix[i][j] is not None else 0 for i in range(self.rows) for j in range(self.cols // 2))
         right_sum = sum(matrix[i][j] if matrix[i][j] is not None else 0 for i in range(self.rows) for j in
                         range(self.cols // 2, self.cols))
-        print("左面的和: ", left_sum)
-        print("右面的和: ", right_sum)
         if left_sum == right_sum:
             return True
         # Ensure that denominator is not zero
@@ -154,6 +148,10 @@ class FindBalancingPath:
                     moves.append((i2, j2))
                     end_row, end_col = i2, j2
                     height = max(height, self.rows - end_row)
+        print("打印moves:", moves)
+        print("打印moves[0]:", moves[0])
+        print("打印moves[1]:", moves[1])
+        self.replace_coordinates(moves[0], moves[1])
 
         if abs(start_col - end_col) == 1:
             distance = abs(moves[0][0] - moves[1][0]) + abs(moves[0][1] - moves[1][1])
@@ -209,6 +207,25 @@ class FindBalancingPath:
 
         return mid_height - start_height + 2 + mid_height - end_height + abs(idle_start[1] - idle_end[1])
 
+    def replace_coordinates(self, old_coordinates, new_coordinates):
+        desktop_path = join(expanduser("~"), "Desktop")
+        filename = "testOUTBOUND.txt"
+        file_path = join(desktop_path, filename)
+
+        with open(file_path, 'r') as file:
+            lines = file.readlines()
+
+        # Convert old and new coordinates to the formatted strings
+        old_coordinates_str = '[{:02d},{:02d}]'.format(*old_coordinates)
+        new_coordinates_str = '[{:02d},{:02d}]'.format(*new_coordinates)
+
+        for i in range(len(lines)):
+            # Assuming [01, 01] is present in each line
+            lines[i] = lines[i].replace(old_coordinates_str, new_coordinates_str)
+
+        # Write the modified content back to the file
+        with open(file_path, 'w') as file:
+            file.writelines(lines)
 
 def main():
     # matrix = [
@@ -298,27 +315,20 @@ def main():
     balancing_path_finder = FindBalancingPath(matrix)
     balancing_path_finder.solve_balancing()
 
-    # Open the existing file in append mode
     # desktop_path = join(expanduser("~"), "Desktop")
     # filename = "testOUTBOUND.txt"
     # file_path = join(desktop_path, filename)
     #
-    # with open(file_path, 'a') as file:
-    #     # Append the move descriptions to the file
-    #     file.write("You've got modified")
-    desktop_path = join(expanduser("~"), "Desktop")
-    filename = "testOUTBOUND.txt"
-    file_path = join(desktop_path, filename)
-
-    with open(file_path, 'r') as file:
-        lines = file.readlines()
-
-    for i in range(len(lines)):
-        # Assuming [01, 01] is present in each line
-        lines[i] = lines[i].replace('[01,01]', '[11,11]')
-
-    with open(file_path, 'w') as file:
-        file.writelines(lines)
+    # with open(file_path, 'r') as file:
+    #     lines = file.readlines()
+    #
+    # for i in range(len(lines)):
+    #     # Assuming [01, 01] is present in each line
+    #     lines[i] = lines[i].replace('[01,01]', '[11,11]')
+    #
+    # # Write the modified content back to the file
+    # with open(file_path, 'w') as file:
+    #     file.writelines(lines)
 
 if __name__ == "__main__":
     main()
