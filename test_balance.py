@@ -209,7 +209,7 @@ class FindBalancingPath:
 
     def replace_coordinates(self, old_coordinates, new_coordinates):
         desktop_path = join(expanduser("~"), "Desktop")
-        filename = "testOUTBOUND.txt"
+        filename = self.app.page1.file_name
         file_path = join(desktop_path, filename)
 
         with open(file_path, 'r') as file:

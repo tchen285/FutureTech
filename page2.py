@@ -61,7 +61,7 @@ class Page2:
         self.app.page3.update_operator_name(name)
 
     def calculate_balance(self):
-        balancing_path_finder = FindBalancingPath(self.app.original_matrix)
+        balancing_path_finder = FindBalancingPath(self.app.original_matrix, self.app.page1.file_name)
         balancing_path_finder.solve_balancing()
         self.app.balance_list = balancing_path_finder.description_list
         descriptions = balancing_path_finder.description_list

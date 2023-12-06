@@ -121,6 +121,8 @@ class Page1:
         # Generate the new filename for the outbound file on the desktop
         outbound_file_path = join(desktop_path, f"{self.file_name}OUTBOUND.txt")
 
+        self.file_name = f"{self.file_name}OUTBOUND.txt"
+
         # Copy the content from the original file to the outbound file with the new name
         with open(file_path, 'r') as original_file, open(outbound_file_path, 'w') as outbound_file:
             for line in original_file:
