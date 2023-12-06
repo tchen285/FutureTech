@@ -1,10 +1,12 @@
 from collections import deque
+from os.path import join, expanduser
 import copy
 
 
 class FindBalancingPath:
-    def __init__(self, matrix):
+    def __init__(self, matrix, file_name):
         self.start_matrix_tuple = tuple(map(tuple, matrix))
+        self.file_name = file_name
         self.cols = len(matrix[0])
         self.rows = len(matrix)
         self.queue = deque()
@@ -151,6 +153,8 @@ class FindBalancingPath:
                     end_row, end_col = i2, j2
                     height = max(height, self.rows - end_row)
 
+        self.replace_coordinates(moves[0], moves[1])
+
         if abs(start_col - end_col) == 1:
             distance = abs(moves[0][0] - moves[1][0]) + abs(moves[0][1] - moves[1][1])
         else:
@@ -204,6 +208,28 @@ class FindBalancingPath:
             return abs(idle_start[0] - idle_end[0]) + abs(idle_start[1] - idle_end[1])
 
         return mid_height - start_height + 2 + mid_height - end_height + abs(idle_start[1] - idle_end[1])
+
+    def replace_coordinates(self, old_coordinates, new_coordinates):
+        desktop_path = join(expanduser("~"), "Desktop")
+        filename = self.file_name
+
+        print("打印文件名:", filename)
+        file_path = join(desktop_path, filename)
+
+        with open(file_path, 'r') as file:
+            lines = file.readlines()
+
+        # Convert old and new coordinates to the formatted strings
+        old_coordinates_str = '[{:02d},{:02d}]'.format(*old_coordinates)
+        new_coordinates_str = '[{:02d},{:02d}]'.format(*new_coordinates)
+
+        for i in range(len(lines)):
+            # Assuming [01, 01] is present in each line
+            lines[i] = lines[i].replace(old_coordinates_str, new_coordinates_str)
+
+        # Write the modified content back to the file
+        with open(file_path, 'w') as file:
+            file.writelines(lines)
 
 
 # def main():
