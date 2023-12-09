@@ -5,6 +5,7 @@ from balancing import FindBalancingPath
 import os
 import re
 
+
 class FindBalancingPath:
     def __init__(self, matrix):
         self.start_matrix_tuple = tuple(map(tuple, matrix))
@@ -45,6 +46,7 @@ class FindBalancingPath:
                 if self.is_balanced(popped_matrix):
                     return
 
+                # skip the all 0s and None column
                 for col in range(self.cols):
                     if popped_matrix[-1][col] == 0 or (popped_matrix[-1][col] is None and any(
                             popped_matrix[i][col] == 0 for i in range(self.rows - 1, -1, -1))):
@@ -54,6 +56,7 @@ class FindBalancingPath:
                     if self.solve_current_column(current_matrix, popped_matrix, col):
                         return
         print("无法找到solution")
+
     def solve_current_column(self, matrix, original_matrix, col):
         for row1 in range(self.rows):
             if matrix[row1][col] != 0 and matrix[row1][col] != None:
@@ -84,7 +87,8 @@ class FindBalancingPath:
                                     current = self.matrix_parent[current]
 
                                 i = 1
-                                while self.idle_matrix_tuple[-i] != self.goal_matrix_tuple and self.idle_matrix_tuple[-i] != self.start_matrix_tuple:
+                                while self.idle_matrix_tuple[-i] != self.goal_matrix_tuple and self.idle_matrix_tuple[
+                                    -i] != self.start_matrix_tuple:
                                     idle_start = self.idle_starts[-i]
                                     print("\n空转起点: ", idle_start)
                                     idle_matrix_tuple = self.idle_matrix_tuple[-i]
@@ -227,6 +231,7 @@ class FindBalancingPath:
         with open(file_path, 'w') as file:
             file.writelines(lines)
 
+
 def main():
     # matrix = [
     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -278,7 +283,6 @@ def main():
     #     [1, 0, 0, 0]
     # ]
 
-
     # matrix = [
     #     [0, 0, 0, 0, 3044, 0, 0, 0, 0, 0, 0, 0],
     #     [0, 0, 0, 0, 1100, 0, 0, 0, 0, 0, 0, 0],
@@ -329,6 +333,7 @@ def main():
     # # Write the modified content back to the file
     # with open(file_path, 'w') as file:
     #     file.writelines(lines)
+
 
 if __name__ == "__main__":
     main()
