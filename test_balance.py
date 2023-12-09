@@ -59,7 +59,7 @@ class FindBalancingPath:
 
     def solve_current_column(self, matrix, original_matrix, col):
         for row1 in range(self.rows):
-            if matrix[row1][col] != 0 and matrix[row1][col] != None:
+            if matrix[row1][col] != 0 and matrix[row1][col] is not None:
                 weight = matrix[row1][col]
                 matrix[row1][col] = 0
 
