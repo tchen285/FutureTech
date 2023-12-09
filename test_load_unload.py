@@ -23,12 +23,16 @@ class FindLoadUnloadPath:
         self.idle_descriptions = []
         self.unload_set = set()  # store the container coordinates that need to unload
 
-        self.unload_set.add((1, 0))
+        # self.unload_set.add((1, 0))
         #self.unload_set.add((1, 1))
-        self.unload_set.add((0, 0))
+        # self.unload_set.add((1, 3))
+        # self.unload_set.add((1, 2))
 
-        # self.unload_set.add((5, 3))
-        # self.unload_set.add((6, 3))
+        self.unload_set.add((6, 3))
+        self.unload_set.add((5, 3))
+        self.unload_set.add((7, 2))
+
+
         self.unload_sequence = []  # store the unload sequence
 
     def solve_load_unload(self):
@@ -48,7 +52,7 @@ class FindLoadUnloadPath:
 
         print(self.unload_sequence)
         print(self.unload_set)
-        print(self.queue)
+        #print(self.queue)
 
     def solve_current_column(self, matrix, original_matrix, col):
         for row1 in range(self.rows):
@@ -66,7 +70,7 @@ class FindLoadUnloadPath:
                 # if len(self.unload_set) == 0:
                 #     return True
                 return
-            if matrix[row1][col] != 0 and matrix[row1][col] is not None:
+            if matrix[row1][col] != 0 and matrix[row1][col] != None:
                 weight = matrix[row1][col]
                 matrix[row1][col] = 0
 
@@ -86,8 +90,6 @@ class FindLoadUnloadPath:
 
                             matrix_tuple = tuple(tuple(row) for row in matrix)
 
-                            print("打印matrix: ", matrix_tuple)
-
                             self.visited.add(matrix_tuple)
                             self.queue.append(copy.deepcopy(matrix))
                             matrix[row2][col2] = 0
@@ -96,21 +98,40 @@ class FindLoadUnloadPath:
 
 
 def main():
+    matrix = [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 6, 4, 0, 0, 0, 0, 0, 0, 0],
+        [None, 8, 9, None, 10, 11, 0, 0, 0, 0, 0, 0]
+    ]
     # matrix = [
-    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #     [0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0],
-    #     [0, 0, 0, 6, 4, 0, 0, 0, 0, 0, 0, 0],
-    #     [None, 8, 9, None, 10, 11, 0, 0, 0, 0, 0, 0]
+    #
+    #     [0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 2, 0, 0],
+    #     [0, 0, 0, 6, 4, 0],
+    #     [None, 8, 9, None, 10, 11]
     # ]
 
-    matrix = [
-        [4, 0, 0, 0],
-        [6, 10, 0, 0]
-    ]
+
+    # matrix = [
+    #     [4, 0, 0, 0],
+    #     [6, 10, 0, 0]
+    # ]
+
+    # matrix = [ # passed time cost test,
+    #     [0, 0, 0, 6],
+    #     [None, 10, 4, None]
+    # ]
+
+    # matrix = [ # passed time cost test,
+    #     [0, 0, 3, 1],
+    #     [5, 9, 1, 1]
+    # ]
+
 
     load_unload_path_finder = FindLoadUnloadPath(matrix)
     load_unload_path_finder.solve_load_unload()
