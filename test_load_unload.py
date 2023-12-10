@@ -22,16 +22,17 @@ class FindLoadUnloadPath:
         self.idle_ends = []
         self.idle_descriptions = []
         self.unload_set = set()  # store the container coordinates that need to unload
+        self.unload_descriptions = []
 
         # self.unload_set.add((1, 0))
-        #self.unload_set.add((1, 1))
+        # self.unload_set.add((1, 1))
         # self.unload_set.add((1, 3))
         # self.unload_set.add((1, 2))
 
         # self.unload_set.add((6, 3))
-        self.unload_set.add((7, 3))
-        self.unload_set.add((7, 4))
-
+        self.unload_set.add((0, 0))
+        self.unload_set.add((1, 0))
+        self.unload_set.add((1, 1))
 
         self.unload_sequence = []  # store the unload sequence
 
@@ -40,7 +41,7 @@ class FindLoadUnloadPath:
             level_size = len(self.queue)
             for _ in range(level_size):
                 popped_matrix = self.queue.popleft()
-                print(popped_matrix)  # 可以正常输出矩阵, 无限循环
+                print("\n$$$$$新pop出来的矩阵:", popped_matrix)  # 可以正常输出矩阵, 无限循环
 
                 for col in range(self.cols):
                     if popped_matrix[-1][col] == 0 or (popped_matrix[-1][col] is None and any(
@@ -48,29 +49,37 @@ class FindLoadUnloadPath:
                         continue
 
                     current_matrix = copy.deepcopy(popped_matrix)
-                    self.solve_current_column(current_matrix, popped_matrix, col)
+                    if self.solve_current_column(current_matrix, popped_matrix, col):
+                        break
 
         print(self.unload_sequence)
         print(self.unload_set)
-        #print(self.queue)
+        # print(self.queue)
 
     def solve_current_column(self, matrix, original_matrix, col):
         for row1 in range(self.rows):
+            # 这里打印两次是因为, 最上面是0, 然后下一次在输出同样的内容才是非0
+            print("\n*****打印当前矩阵: ", matrix)
+            print("打印正在处理的column:", col)
+            print("%%%%打印当前matrix的parent: ", self.matrix_parent[tuple(map(tuple, matrix))])
             if (row1, col) in self.unload_set:
+                # print("打印当前matrix的parent:", self.matrix_parent[tuple(tuple(row) for row in matrix_copy)])
                 print("找到一个目标点")
                 self.unload_sequence.append((row1, col))
                 self.unload_set.remove((row1, col))
                 matrix[row1][col] = 0
                 matrix_tuple = tuple(tuple(row) for row in matrix)
+
+                self.matrix_parent[matrix_tuple] = tuple(map(tuple, original_matrix))
                 self.visited.add(matrix_tuple)
+                self.queue.clear()
                 self.queue.append(copy.deepcopy(matrix))
-                print("打印unload_sequence:", self.unload_sequence)
-                print("打印unload_set:", self.unload_set)
                 # 后续这里要增加距离, 目前只是看能不能把sequence输出来
                 # if len(self.unload_set) == 0:
                 #     return True
-                return
+                return True
             if matrix[row1][col] != 0 and matrix[row1][col] != None:
+                print("进入正常的span Tree")
                 weight = matrix[row1][col]
                 matrix[row1][col] = 0
 
@@ -94,7 +103,7 @@ class FindLoadUnloadPath:
                             self.queue.append(copy.deepcopy(matrix))
                             matrix[row2][col2] = 0
                             break  # Exit the inner loop
-        return
+        return False
 
 
 def main():
@@ -116,11 +125,10 @@ def main():
     #     [None, 8, 9, None, 10, 11]
     # ]
 
-
-    # matrix = [
-    #     [4, 0, 0, 0],
-    #     [6, 10, 0, 0]
-    # ]
+    matrix = [
+        [4, 0, 0, 0],
+        [6, 10, 0, 0]
+    ]
 
     # matrix = [ # passed time cost test,
     #     [0, 0, 0, 6],
@@ -182,17 +190,16 @@ def main():
 
     # ShipCase 5 ------- Balance
     # Unload right 4 and unload left 4, and input for comment for left 4, load 153 and 2321
-    matrix = [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [None, 96, 8, 4, 4, 1, 0, 0, 0, 0, 0, None]
-    ]
-
+    # matrix = [
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [None, 96, 8, 4, 4, 1, 0, 0, 0, 0, 0, None]
+    # ]
 
     load_unload_path_finder = FindLoadUnloadPath(matrix)
     load_unload_path_finder.solve_load_unload()
