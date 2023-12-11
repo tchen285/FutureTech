@@ -30,18 +30,23 @@ class FindLoadUnloadPath:
         # self.unload_set.add((1, 2))
 
         # self.unload_set.add((6, 3))
-        self.unload_set.add((0, 0))
+        # self.unload_set.add((0, 0))
         self.unload_set.add((1, 0))
         self.unload_set.add((1, 1))
 
         self.unload_sequence = []  # store the unload sequence
+        self.final_matrix = None
 
     def solve_load_unload(self):
-        while self.queue and len(self.unload_set) != 0:
+        while self.queue:
+            if not self.unload_set:
+                print("unload_set为空")
+                break
             level_size = len(self.queue)
             for _ in range(level_size):
                 popped_matrix = self.queue.popleft()
                 print("\n$$$$$新pop出来的矩阵:", popped_matrix)  # 可以正常输出矩阵, 无限循环
+                print("unload_set长度: ", len(self.unload_set))
 
                 for col in range(self.cols):
                     if popped_matrix[-1][col] == 0 or (popped_matrix[-1][col] is None and any(
@@ -51,6 +56,7 @@ class FindLoadUnloadPath:
                     current_matrix = copy.deepcopy(popped_matrix)
                     if self.solve_current_column(current_matrix, popped_matrix, col):
                         break
+                break
 
         print(self.unload_sequence)
         print(self.unload_set)
@@ -61,7 +67,7 @@ class FindLoadUnloadPath:
             # 这里打印两次是因为, 最上面是0, 然后下一次在输出同样的内容才是非0
             print("\n*****打印当前矩阵: ", matrix)
             print("打印正在处理的column:", col)
-            print("%%%%打印当前matrix的parent: ", self.matrix_parent[tuple(map(tuple, matrix))])
+            # print("%%%%打印当前matrix的parent: ", self.matrix_parent[tuple(map(tuple, matrix))])
             if (row1, col) in self.unload_set:
                 # print("打印当前matrix的parent:", self.matrix_parent[tuple(tuple(row) for row in matrix_copy)])
                 print("找到一个目标点")
@@ -74,9 +80,10 @@ class FindLoadUnloadPath:
                 self.visited.add(matrix_tuple)
                 self.queue.clear()
                 self.queue.append(copy.deepcopy(matrix))
-                # 后续这里要增加距离, 目前只是看能不能把sequence输出来
-                # if len(self.unload_set) == 0:
-                #     return True
+                if not self.unload_set:
+                    self.final_matrix = matrix
+                    print("final_matrix的parent:", self.matrix_parent[tuple(tuple(row) for row in self.final_matrix)])
+                    print("打印final Matrix:", self.final_matrix)
                 return True
             if matrix[row1][col] != 0 and matrix[row1][col] != None:
                 print("进入正常的span Tree")
@@ -98,11 +105,14 @@ class FindLoadUnloadPath:
                             self.matrix_parent[tuple(map(tuple, matrix))] = tuple(map(tuple, original_matrix))
 
                             matrix_tuple = tuple(tuple(row) for row in matrix)
-
+                            print("打印变化后的矩阵: ", matrix)
                             self.visited.add(matrix_tuple)
                             self.queue.append(copy.deepcopy(matrix))
+                            print("队列长度: ", len(self.queue))
+                            print("队列内容:", self.queue)
                             matrix[row2][col2] = 0
                             break  # Exit the inner loop
+                break
         return False
 
 
@@ -126,8 +136,8 @@ def main():
     # ]
 
     matrix = [
-        [4, 0, 0, 0],
-        [6, 10, 0, 0]
+        [6, 0, 0, 0],
+        [4, 10, 0, 0]
     ]
 
     # matrix = [ # passed time cost test,
