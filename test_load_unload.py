@@ -14,13 +14,6 @@ class FindLoadUnloadPath:
         matrix_tuple = tuple(map(tuple, matrix))
         self.visited.add(matrix_tuple)
         self.matrix_parent = {tuple(map(tuple, matrix)): None}
-        self.move_descriptions = []
-        self.total_cost = 0
-        self.goal_matrix_tuple = None
-        self.idle_starts = []
-        self.idle_matrix_tuple = []
-        self.idle_ends = []
-        self.idle_descriptions = []
         self.unload_set = set()  # store the container coordinates that need to unload
         self.unload_descriptions = []
 
@@ -31,8 +24,7 @@ class FindLoadUnloadPath:
 
         # self.unload_set.add((6, 3))
         # self.unload_set.add((0, 0))
-        self.unload_set.add((1, 0))
-        self.unload_set.add((1, 1))
+        self.unload_set.add((1, 4))
 
         self.unload_sequence = []  # store the unload sequence
         self.final_matrix = None
@@ -45,7 +37,9 @@ class FindLoadUnloadPath:
             level_size = len(self.queue)
             for _ in range(level_size):
                 popped_matrix = self.queue.popleft()
-                print("\n$$$$$新pop出来的矩阵:", popped_matrix)  # 可以正常输出矩阵, 无限循环
+                print("\n$$$$$新pop出来的矩阵:")
+                for row in popped_matrix:
+                    print(row)
                 print("unload_set长度: ", len(self.unload_set))
 
                 for col in range(self.cols):
@@ -85,7 +79,7 @@ class FindLoadUnloadPath:
                     print("final_matrix的parent:", self.matrix_parent[tuple(tuple(row) for row in self.final_matrix)])
                     print("打印final Matrix:", self.final_matrix)
                 return True
-            if matrix[row1][col] != 0 and matrix[row1][col] != None:
+            if matrix[row1][col] != 0 and matrix[row1][col] is not None:
                 print("进入正常的span Tree")
                 weight = matrix[row1][col]
                 matrix[row1][col] = 0
@@ -99,6 +93,10 @@ class FindLoadUnloadPath:
                         if matrix[row2][col2] == 0:
                             matrix[row2][col2] = weight
                             if tuple(map(tuple, matrix)) in self.visited:
+                                print("当前矩阵:")
+                                for row in matrix:
+                                    print(row)
+                                print("当前矩阵已经访问过visited")
                                 matrix[row2][col2] = 0
                                 break
 
@@ -135,10 +133,10 @@ def main():
     #     [None, 8, 9, None, 10, 11]
     # ]
 
-    matrix = [
-        [6, 0, 0, 0],
-        [4, 10, 0, 0]
-    ]
+    # matrix = [
+    #     [6, 0, 0, 0],
+    #     [4, 10, 0, 0]
+    # ]
 
     # matrix = [ # passed time cost test,
     #     [0, 0, 0, 6],
@@ -187,16 +185,16 @@ def main():
     # ]
 
     # ShipCase 4 ------- Balance ------ Unload 1100, load 2543
-    # matrix = [
-    #     [0, 0, 0, 0, 3044, 0, 0, 0, 0, 0, 0, 0],
-    #     [0, 0, 0, 0, 1100, 0, 0, 0, 0, 0, 0, 0],
-    #     [0, 0, 0, 0, 2020, 0, 0, 0, 0, 0, 0, 0],
-    #     [0, 0, 0, 0, 10000, 0, 0, 0, 0, 0, 0, 0],
-    #     [0, 0, 0, 0, 2011, 0, 0, 0, 0, 0, 0, 0],
-    #     [0, 0, 0, 0, 2007, 0, 0, 0, 0, 0, 0, 0],
-    #     [None, 0, 0, 0, 2000, 0, 0, 0, 0, 0, 0, None],
-    #     [None, None, None, None, None, None, None, None, None, None, None, None]
-    # ]
+    matrix = [
+        [0, 0, 0, 0, 3044, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1100, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 2020, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 10000, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 2011, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 2007, 0, 0, 0, 0, 0, 0, 0],
+        [None, 0, 0, 0, 2000, 0, 0, 0, 0, 0, 0, None],
+        [None, None, None, None, None, None, None, None, None, None, None, None]
+    ]
 
     # ShipCase 5 ------- Balance
     # Unload right 4 and unload left 4, and input for comment for left 4, load 153 and 2321
