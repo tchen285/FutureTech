@@ -48,9 +48,15 @@ class FindBalancingPath:
 
                 # skip the all 0s and None column
                 for col in range(self.cols):
-                    if popped_matrix[-1][col] == 0 or (popped_matrix[-1][col] is None and any(
-                            popped_matrix[i][col] == 0 for i in range(self.rows - 1, -1, -1))):
+                    if popped_matrix[-1][col] == 0:
                         continue
+                    if popped_matrix[-1][col] is None:
+                        find_a_container = False
+                        for r in range(self.rows):
+                            if popped_matrix[r][col] != 0 or popped_matrix[r][col] is not None:
+                                find_a_container = True
+                        if find_a_container is False:
+                            continue
 
                     current_matrix = copy.deepcopy(popped_matrix)
                     if self.solve_current_column(current_matrix, popped_matrix, col):
