@@ -3,12 +3,12 @@ from tkinter import filedialog
 from tkinter.simpledialog import askstring  # Import askstring for input dialog
 from balancing import FindBalancingPath
 import os
-
+from datetime import datetime
 class Page2:
     def __init__(self, app):
+        self.operator_name_label = None
         self.app = app
         self.frame = Frame(app.root, bg="white")
-
         self.file_content = []
 
         self.file_name_label = Label(self.frame, text="", font=("Arial", 20), bg="white", fg="red")
@@ -50,9 +50,14 @@ class Page2:
     def set_operator_name(self):
         # Use askstring to get operator name from user
         operator_name = askstring("Operator Name", "Enter Your Name:")
+        current_operator = self.operator_name_label.cget("text").replace("Operator: ", "")
+
         if operator_name:
+            if current_operator != "":
+                self.write_to_log(current_operator, "signs out", "page2")
             # Display operator name in the label
             self.operator_name_label.config(text=f"Operator: {operator_name}")
+            self.write_to_log(operator_name, "signs in", "page2")
 
         self.app.page3.update_operator_name(operator_name)
 
@@ -60,6 +65,10 @@ class Page2:
         self.operator_name_label.config(text=f"Operator: {name}")
         self.app.page3.update_operator_name(name)
 
+    def write_to_log(self, operator_name, action, page):
+        current_time = datetime.now().strftime("%d/%m/%Y: %H:%M")
+        with open('log.txt', 'a') as file:
+            file.write(f"{current_time} {operator_name} {action} {page}\n")
     def calculate_balance(self):
         balancing_path_finder = FindBalancingPath(self.app.original_matrix, self.app.page1.file_name)
         balancing_path_finder.solve_balancing()

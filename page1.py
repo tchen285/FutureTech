@@ -4,11 +4,12 @@ from tkinter.simpledialog import askstring  # Import askstring for input dialog
 from os.path import join, expanduser
 from balancing import FindBalancingPath
 import os
-
+from datetime import datetime
 class Page1:
+    last_operator = None
     def __init__(self, app):
         self.app = app
-
+        self.operator_name_label = None  # This should be initialized appropriately
         self.frame = Frame(app.root, bg="white")
         self.frame.grid(row=0, column=0, padx=10, pady=10)
         self.file_name = None
@@ -142,14 +143,25 @@ class Page1:
         self.app.page3.set_file_content(self.file_content)
         self.app.show_page3()
 
+
     def set_operator_name(self):
         # Use askstring to get operator name from user
         operator_name = askstring("Operator Name", "Enter Your Name:")
+        current_operator = self.operator_name_label.cget("text").replace("Operator: ", "")
+
         if operator_name:
+            if current_operator != "":
+                self.write_to_log(current_operator, "signs out", "page1")
             # Display operator name in the label
             self.operator_name_label.config(text=f"Operator: {operator_name}")
+            self.write_to_log(operator_name, "signs in", "page1")
 
         self.app.page2.update_operator_name(operator_name)
+
+    def write_to_log(self, operator_name, action, page):
+        current_time = datetime.now().strftime("%d/%m/%Y: %H:%M")
+        with open('log.txt', 'a') as file:
+            file.write(f"{current_time} {operator_name} {action} {page}\n")
 
     # For small test cases
     # def initialize_matrix(self):
