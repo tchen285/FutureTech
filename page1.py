@@ -116,12 +116,15 @@ class Page1:
         self.initialize_matrix()
 
         # Get the desktop path
-        desktop_path = join(expanduser("~"), "Desktop")
+        desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
 
         # Generate the new filename for the outbound file on the desktop
-        outbound_file_path = join(desktop_path, f"{self.file_name}OUTBOUND.txt")
+        outbound_file_path = os.path.join(desktop_path, f"{self.file_name}OUTBOUND.txt")
 
         self.file_name = f"{self.file_name}OUTBOUND.txt"
+
+        # Create the necessary directories if they don't exist
+        os.makedirs(os.path.dirname(outbound_file_path), exist_ok=True)
 
         # Copy the content from the original file to the outbound file with the new name
         with open(file_path, 'r') as original_file, open(outbound_file_path, 'w') as outbound_file:
