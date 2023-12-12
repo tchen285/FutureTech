@@ -22,8 +22,8 @@ class FindLoadUnloadPath:
 
         # self.unload_set.add((6, 3))
         # self.unload_set.add((0, 0))
-        self.unload_set.add((1, 1))
-        self.unload_set.add((1, 0))
+        # self.unload_set.add((1, 1))
+        #self.unload_set.add((1, 0))
 
         self.unload_sequence = []  # store the unload sequence
         self.load_list = [3, 7] # store the load containers
@@ -36,10 +36,14 @@ class FindLoadUnloadPath:
             level_size = len(self.queue)
             for _ in range(level_size):
                 popped_matrix = self.queue.popleft()
-                print("\n$$$$$新pop出来的矩阵:")
-                for row in popped_matrix:
-                    print(row)
-                print("unload_set长度: ", len(self.unload_set))
+                if not self.unload_set:
+                    while self.load_list:
+                        curr_matrix = self.load_a_container(popped_matrix)
+                        self.matrix_parent[tuple(map(tuple, curr_matrix))] = tuple(map(tuple, popped_matrix))
+                        popped_matrix = copy.deepcopy(curr_matrix)
+                        print("&&&&&&&&矩阵:", curr_matrix)
+                    break
+
 
                 for col in range(self.cols):
                     # if popped_matrix[-1][col] == 0 or (popped_matrix[-1][col] is None and any(
