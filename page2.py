@@ -50,14 +50,14 @@ class Page2:
     def set_operator_name(self):
         # Use askstring to get operator name from user
         operator_name = askstring("Operator Name", "Enter Your Name:")
-        current_operator = self.operator_name_label.cget("text").replace("Operator: ", "")
+        #current_operator = self.operator_name_label.cget("text").replace("Operator: ", "")
 
         if operator_name:
-            if current_operator != "":
-                self.write_to_log(current_operator, "signs out", "page2")
+            #if current_operator != "":
+            # self.write_to_log(current_operator, "signs out", "page2")
             # Display operator name in the label
             self.operator_name_label.config(text=f"Operator: {operator_name}")
-            self.write_to_log(operator_name, "signs in", "page2")
+            self.write_to_log(operator_name, "signs in")
 
         self.app.page3.update_operator_name(operator_name)
 
@@ -65,10 +65,10 @@ class Page2:
         self.operator_name_label.config(text=f"Operator: {name}")
         self.app.page3.update_operator_name(name)
 
-    def write_to_log(self, operator_name, action, page):
+    def write_to_log(self, operator_name, action):
         current_time = datetime.now().strftime("%d/%m/%Y: %H:%M")
         with open('log.txt', 'a') as file:
-            file.write(f"{current_time} {operator_name} {action} {page}\n")
+            file.write(f"{current_time} {operator_name} {action} \n")
     def calculate_balance(self):
         balancing_path_finder = FindBalancingPath(self.app.original_matrix, self.app.page1.file_name)
         balancing_path_finder.solve_balancing()
