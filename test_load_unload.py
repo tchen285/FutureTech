@@ -17,22 +17,21 @@ class FindLoadUnloadPath:
         self.unload_set = set()  # store the container coordinates that need to unload
         self.unload_descriptions = []
 
-        # self.unload_set.add((1, 0))
-        # self.unload_set.add((1, 1))
         # self.unload_set.add((1, 3))
         # self.unload_set.add((1, 2))
 
         # self.unload_set.add((6, 3))
         # self.unload_set.add((0, 0))
-        self.unload_set.add((1, 4))
+        self.unload_set.add((1, 1))
+        self.unload_set.add((1, 0))
 
         self.unload_sequence = []  # store the unload sequence
+        self.load_list = [3, 7] # store the load containers
         self.final_matrix = None
 
     def solve_load_unload(self):
         while self.queue:
-            if not self.unload_set:
-                print("unload_set为空")
+            if not self.unload_set and not self.load_list:
                 break
             level_size = len(self.queue)
             for _ in range(level_size):
@@ -77,6 +76,10 @@ class FindLoadUnloadPath:
                 self.unload_sequence.append((row1, col))
                 self.unload_set.remove((row1, col))
                 matrix[row1][col] = 0
+                if self.load_list:
+                    matrix = self.load_a_container(matrix)
+                    print("&&&&&加上装船的矩阵:", matrix)
+
                 matrix_tuple = tuple(tuple(row) for row in matrix)
 
                 self.matrix_parent[matrix_tuple] = tuple(map(tuple, original_matrix))
@@ -123,6 +126,29 @@ class FindLoadUnloadPath:
         return False
 
 
+    def load_a_container(self, matrix):
+        curr_matrix = copy.deepcopy(matrix)
+        print(curr_matrix)
+        curr_weight = self.load_list.pop(0)
+        min_dist = float("inf")
+        min_dist_coordinates = None
+
+        for col in range(self.cols):
+            for row in reversed(range(self.rows)):
+                if curr_matrix[row][col] == 0:
+                    current_dist = row + col
+                    if current_dist < min_dist:
+                        min_dist = current_dist
+                        min_dist_coordinates = (row, col)
+                        break
+
+        if min_dist_coordinates is not None:
+            row, col = min_dist_coordinates
+            curr_matrix[row][col] = curr_weight
+
+        return curr_matrix
+
+
 def main():
     # matrix = [
     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -142,10 +168,10 @@ def main():
     #     [None, 8, 9, None, 10, 11]
     # ]
 
-    # matrix = [
-    #     [6, 0, 0, 0],
-    #     [4, 10, 0, 0]
-    # ]
+    matrix = [
+        [6, 0, 0, 0],
+        [4, 10, 0, 0]
+    ]
 
     # matrix = [ # passed time cost test,
     #     [0, 0, 0, 6],
@@ -194,16 +220,16 @@ def main():
     # ]
 
     # ShipCase 4 ------- Balance ------ Unload 1100, load 2543
-    matrix = [
-        [0, 0, 0, 0, 3044, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1100, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 2020, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 10000, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 2011, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 2007, 0, 0, 0, 0, 0, 0, 0],
-        [None, 0, 0, 0, 2000, 0, 0, 0, 0, 0, 0, None],
-        [None, None, None, None, None, None, None, None, None, None, None, None]
-    ]
+    # matrix = [
+    #     [0, 0, 0, 0, 3044, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 1100, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 2020, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 10000, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 2011, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 2007, 0, 0, 0, 0, 0, 0, 0],
+    #     [None, 0, 0, 0, 2000, 0, 0, 0, 0, 0, 0, None],
+    #     [None, None, None, None, None, None, None, None, None, None, None, None]
+    # ]
 
     # ShipCase 5 ------- Balance
     # Unload right 4 and unload left 4, and input for comment for left 4, load 153 and 2321
