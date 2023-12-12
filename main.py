@@ -6,8 +6,14 @@ from page4 import Page4
 from show_balance_cost_page import ShowBalanceCost
 from show_description_page import ShowDescriptions
 
+# KG
+from tkinter import Tk, Canvas, Button, filedialog
+import os
+
 class ShipManagementApp:
+
     def __init__(self, root):
+
         self.root = root
         self.root.title("Ship Management System")
         self.root.config(padx=20, pady=20, bg="white")
@@ -29,7 +35,6 @@ class ShipManagementApp:
         self.container_weight = {}
 
         self.show_page1()
-
 
     def show_page1(self):
         self.page2.hide()
@@ -78,6 +83,7 @@ class ShipManagementApp:
         self.page4.hide()
         self.balance_cost_page.hide()
         self.description_page.show()
+
 
 if __name__ == "__main__":
     root = Tk()
