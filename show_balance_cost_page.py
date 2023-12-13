@@ -7,10 +7,10 @@ class ShowBalanceCost:
         self.frame = Frame(app.root, bg="white")
 
         # Initialize labels
-        self.label1 = Label(self.frame, text=f"The balance process has 2 steps.", font=("Arial", 20), bg="black")
+        self.label1 = Label(self.frame, text=f"The balance process has 2 steps.", font=("Arial", 20), bg="white")
         self.label1.grid(row=0, column=0, pady=10)
 
-        self.label2 = Label(self.frame, text="Takes 12 minutes to complete.", font=("Arial", 20), bg="black")
+        self.label2 = Label(self.frame, text="Takes 12 minutes to complete.", font=("Arial", 20), bg="white")
         self.label2.grid(row=1, column=0, pady=10)
 
         self.start_button = Button(self.frame, text="Start", font=("Arial", 18), bg="red", command=self.app.show_description_page)

@@ -39,7 +39,7 @@ class Page4:
         self.frame.grid()
         self.show_selected_descriptions()
         _, target_containers = self.app.page3.get_selected_coordinates()
-        print(target_containers)
+        print("目标containers: ", target_containers)
 
 
     def hide(self):
