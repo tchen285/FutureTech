@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter.simpledialog import askstring  # Import askstring for input dialog
 import os
 from datetime import datetime
+from load_unload import FindLoadUnloadPath
 
 
 class Page3:
@@ -60,6 +61,16 @@ class Page3:
                     if self.app.container_data[coordinates] == description:
                         print(coordinates)
                         target_coordinates.append(coordinates)
+        print("^^^^^^打印target_coordinates: ", target_coordinates)
+        # 测试起点
+        unload_finder = FindLoadUnloadPath(self.app.original_matrix)
+        # load_unload_finder.unload_set = target_coordinates
+        for target_coordinate in target_coordinates:
+            unload_finder.unload_set.add((8 - target_coordinate[0], target_coordinate[1] - 1))
+        print("&&&&&&&&打印unload_set: ", unload_finder.unload_set)
+        unload_finder.solve_load_unload()
+
+
         return selected_coordinates, target_coordinates
 
     def show(self):

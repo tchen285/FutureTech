@@ -69,6 +69,7 @@ class Page2:
         current_time = datetime.now().strftime("%d/%m/%Y: %H:%M")
         with open('log.txt', 'a') as file:
             file.write(f"{current_time} {operator_name} {action} \n")
+
     def calculate_balance(self):
         balancing_path_finder = FindBalancingPath(self.app.original_matrix, self.app.page1.file_name)
         balancing_path_finder.solve_balancing()
