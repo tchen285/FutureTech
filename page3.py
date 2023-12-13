@@ -2,19 +2,29 @@ from tkinter import *
 from tkinter.simpledialog import askstring  # Import askstring for input dialog
 import os
 from datetime import datetime
+
+
 class Page3:
     def __init__(self, app):
         self.app = app
         self.frame = Frame(app.root, bg="white")
-        self.selected_descriptions = []  # To store the selected descriptions
+        self.selected_descriptions = []
 
         file_name = self.app.page1.file_name
 
         self.file_name_label = Label(self.frame, text=file_name, font=("Arial", 14), bg="white", fg="red")
         self.file_name_label.pack(pady=20)
 
-        continue_button = Button(self.frame, text="Continue", font=("Arial", 18), bg="red", command=app.show_page4)
-        continue_button.pack(side="bottom", pady=20, anchor="center")
+        self.the_label = Label(self.frame, text="Select the containers you want to unload", font=("Arial", 24), bg="white")
+        self.the_label.pack(pady=20)
+
+        continue_with_loading_button = Button(self.frame, text="Adding loading containers", font=("Arial", 18),
+                                              bg="red")
+        continue_with_loading_button.pack(side="bottom", pady=(10, 50))
+
+        continue_button = Button(self.frame, text="Continue without loading containers", font=("Arial", 18), bg="white",
+                                 command=app.show_page4)
+        continue_button.pack(side="bottom", pady=10)
 
         # Add a button to set operator name
         set_operator_name_button = Button(self.frame, text="Check in", font=("Arial", 14), bg="orange",
