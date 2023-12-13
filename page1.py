@@ -15,7 +15,7 @@ class Page1:
         self.file_name = None
         self.operator_name = None
 
-        logo = PhotoImage(file="Logo.png")
+        logo = PhotoImage(file="logologo.png")
 
         def resize_image(image, width, height):
             return image.subsample(5) # 5 represents the image is going to be 1/5 size of original

@@ -158,9 +158,7 @@ class FindBalancingPath:
                     moves.append((i2, j2))
                     end_row, end_col = i2, j2
                     height = max(height, self.rows - end_row)
-        print("打印moves:", moves)
-        print("打印moves[0]:", moves[0])
-        print("打印moves[1]:", moves[1])
+
         self.replace_coordinates(moves[0], moves[1])
 
         if abs(start_col - end_col) == 1:
