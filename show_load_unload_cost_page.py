@@ -22,6 +22,7 @@ class ShowLoadUnloadCost:
     def hide(self):
         self.frame.grid_remove()
 
+
     # def update_labels(self, steps, time):
     #     self.label1.config(text=f'The balance process has {steps} steps.')
     #     self.label2.config(text=f'Takes {time} minutes to complete.')
