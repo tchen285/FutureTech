@@ -1,4 +1,6 @@
 from tkinter import *
+
+from load_unload import FindLoadUnloadPath
 from page1 import Page1
 from page2 import Page2
 from page3 import Page3
@@ -25,6 +27,7 @@ class ShipManagementApp:
         self.balance_cost_page = ShowBalanceCost(self)
         self.description_page = ShowDescriptions(self)
         self.load_unload_page = ShowLoadUnloadCost(self)
+        # self.load_unload = FindLoadUnloadPath(self, self.original_matrix)
 
         # 初始化两个字典
         self.container_data = {}   # self.container_datap[coordinate] = description

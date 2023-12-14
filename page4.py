@@ -12,6 +12,7 @@ class Page4:
         self.frame = Frame(app.root, bg="white")
         self.sequence = []  # Initialize sequence attribute
         self.descriptions = []  # Initialize descriptions attribute
+        self.loading_containers = []
 
         self.file_name_label = Label(self.frame, text=self.app.page1.file_name, font=("Arial", 14), bg="white",
                                      fg="red")
@@ -38,15 +39,18 @@ class Page4:
         self.unload_time_cost_var = StringVar()  # Add this line
 
 
-    def update_unload_result(self, descriptions, sequence, time_cost):
+    def update_unload_result(self, descriptions, sequence, time_cost, loading_containers):
         # Method to update the unload result
         self.sequence = sequence
         self.descriptions = descriptions
         self.time_cost = time_cost
+        self.loading_containers = loading_containers
 
         # Print the received data for debugging
         print("Debug: Page4 - Updated Sequence:", self.sequence)
         print("Debug: Page4 - Updated Descriptions:", self.descriptions)
+        print("Debug: Page4 - Updated Loading_containers:", self.loading_containers)
+        print(self.app.container_data[(1, 2)])  # 可以用这个方法调用
 
         # Update the GUI elements with the received data
         self.unload_sequence_var.set(f"Unload Sequence: {self.sequence}")

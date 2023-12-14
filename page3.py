@@ -45,7 +45,7 @@ class Page3:
     def continue_clicked(self):
         selected_coordinates, target_coordinates = self.get_selected_coordinates()
         print("dayindayin&&&&&&&&&", self.sequence)
-        self.app.page4.update_unload_result(self.sequence, self.descriptions, self.time_cost)
+        self.app.page4.update_unload_result(self.sequence, self.descriptions, self.time_cost, self.loading_containers)
         self.app.page4.show_load_unload_cost_page()
         self.app.show_page4()
 
@@ -77,7 +77,7 @@ class Page3:
                         target_coordinates.append(coordinates)
 
         # 测试起点
-        unload_finder = FindLoadUnloadPath(self.app.original_matrix)
+        unload_finder = FindLoadUnloadPath(self.app.original_matrix, self.app.container_data, self.app.container_weight)
         # load_unload_finder.unload_set = target_coordinates
         for target_coordinate in target_coordinates:
             unload_finder.unload_set.add((8 - target_coordinate[0], target_coordinate[1] - 1))

@@ -3,8 +3,10 @@ import copy
 
 
 class FindLoadUnloadPath:
-    def __init__(self, matrix):
+    def __init__(self, matrix, container_data, container_weight):
         self.matrix = matrix
+        self.container_data = container_data
+        self.container_weight = container_weight
         self.unload_set = set()
         self.load_list = []
         self.start_matrix_tuple = tuple(map(tuple, matrix))
@@ -82,6 +84,7 @@ class FindLoadUnloadPath:
             print(row)
 
         print("\ntotal cost is: ", self.total_cost)
+        print("********shishishishishih ", self.container_data[(1, 2)])  # 成功!!!
         return self.unload_sequence, self.total_description, self.total_cost
 
 
