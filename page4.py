@@ -21,8 +21,9 @@ class Page4:
                                           command=self.set_operator_name)
         set_operator_name_button.pack(pady=20)
 
+
         continue_button = Button(self.frame, text="Continue", font=("Arial", 18), bg="white",
-                                 command=self.continue_clicked)
+                                 command=self.continue_clicked
         continue_button.pack(side="bottom", pady=20)
 
         # Add the comment button
