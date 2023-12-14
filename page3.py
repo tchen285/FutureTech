@@ -10,6 +10,7 @@ class Page3:
         self.app = app
         self.frame = Frame(app.root, bg="white")
         self.selected_descriptions = []
+        self.loading_containers = []
 
         file_name = self.app.page1.file_name
 
@@ -19,13 +20,12 @@ class Page3:
         self.the_label = Label(self.frame, text="Select the containers you want to unload", font=("Arial", 24), bg="white")
         self.the_label.pack(pady=20)
 
-        continue_with_loading_button = Button(self.frame, text="Adding loading containers", font=("Arial", 18),
-                                              bg="red")
-        continue_with_loading_button.pack(side="bottom", pady=(10, 50))
+        continue_button = Button(self.frame, text="Continue", font=("Arial", 18), bg="white", command=app.show_page4)
+        continue_button.pack(side="bottom", pady=(10, 50))
 
-        continue_button = Button(self.frame, text="Continue without loading containers", font=("Arial", 18), bg="white",
-                                 command=app.show_page4)
-        continue_button.pack(side="bottom", pady=10)
+        continue_with_loading_button = Button(self.frame, text="Adding loading containers", font=("Arial", 18),
+                                              bg="red", command=self.add_loading_containers)
+        continue_with_loading_button.pack(side="bottom", pady=10)
 
         # Add a button to set operator name
         set_operator_name_button = Button(self.frame, text="Check in", font=("Arial", 14), bg="orange",
@@ -68,8 +68,13 @@ class Page3:
         for target_coordinate in target_coordinates:
             unload_finder.unload_set.add((8 - target_coordinate[0], target_coordinate[1] - 1))
         print("&&&&&&&&打印unload_set: ", unload_finder.unload_set)
-        unload_finder.solve_load_unload()
 
+        for loading_container in self.loading_containers:
+            weight = loading_container["id"]
+            unload_finder.load_list.append(weight)
+            print(weight)
+
+        unload_finder.solve_load_unload()
 
         return selected_coordinates, target_coordinates
 
@@ -106,3 +111,24 @@ class Page3:
         current_time = datetime.now().strftime("%d/%m/%Y: %H:%M")
         with open('log.txt', 'a') as file:
             file.write(f"{current_time} {operator_name} {action} \n")
+
+    def add_loading_containers(self):
+        container_name = askstring("Add Loading Containers", "Enter the container name:")
+        if container_name:
+            loading_container_id = len(self.loading_containers) + 100000
+            loading_container_name = f"{container_name} (loading)"
+            var = IntVar()
+            check_button = Checkbutton(self.frame, text=loading_container_name, font=("Arial", 18), variable=var)
+            check_button.var = var
+            check_button.pack(anchor=W)
+            check_button.deselect()
+
+            # Store the loading container information in the list
+            loading_container_info = {
+                "id": loading_container_id,
+                "name": container_name,
+                "display_name": loading_container_name
+            }
+            self.loading_containers.append(loading_container_info)
+            print("&&&&&&&&&&&输出containers的重量: ", loading_container_id)
+
