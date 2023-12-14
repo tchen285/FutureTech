@@ -25,6 +25,10 @@ class Page2:
                                           command=self.set_operator_name)
         set_operator_name_button.grid(row=0, column=4, padx=10, pady=10)
 
+        # Add the comment button
+        comment_button = Button(self.frame, text="Comment", font=("Arial", 14), bg="red", command=self.handle_comment)
+        comment_button.grid(row=5, column=1, padx=10, pady=10)
+
         # Display operator name label
         self.operator_name_label = Label(self.frame, text="Hello Name!", font=("Arial", 14), bg="white")
         self.operator_name_label.grid(row=1, column=4, padx=10, pady=10)
@@ -65,10 +69,18 @@ class Page2:
         self.operator_name_label.config(text=f"Operator: {name}")
         self.app.page3.update_operator_name(name)
 
-    def write_to_log(self, operator_name, action):
-        current_time = datetime.now().strftime("%d/%m/%Y: %H:%M")
+    def write_to_log(self, txt, action):
+        current_time = datetime.now().strftime("%m/%d/%Y: %H:%M")
         with open('log.txt', 'a') as file:
-            file.write(f"{current_time} {operator_name} {action} \n")
+            file.write(f"{current_time} {txt} {action} \n")
+
+    def handle_comment(self):
+        # Prompt the user to enter an event
+        current_operator = self.operator_name_label.cget("text").replace("Operator: ", "")+ ":"
+        event_comment = askstring("Comment", "Enter the event:")
+        if event_comment:
+            event_comment = '"'+  event_comment+ '"'
+            self.write_to_log(current_operator, event_comment)
 
     def calculate_balance(self):
         balancing_path_finder = FindBalancingPath(self.app.original_matrix, self.app.page1.file_name)
