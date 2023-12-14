@@ -1,30 +1,15 @@
-13/12/2023: 17:10 1 signs in 
-13/12/2023: 17:10 2 signs in 
-13/12/2023: 17:11 2 signs in 
-13/12/2023: 17:11 4 signs in 
-13/12/2023: 17:11 1 signs in 
-13/12/2023: 17:11 2 signs in 
-13/12/2023: 17:13 Jack signs in 
-13/12/2023: 17:13 Tony signs in 
-13/12/2023: 17:13 Jack signs in 
-13/12/2023: 17:14 Tony signs in 
-13/12/2023: 17:26 1 signs in 
-13/12/2023: 17:26 tony signs in 
-13/12/2023: 17:33 something broken  
-13/12/2023: 17:41  1 
-13/12/2023: 17:41 Tony signs in 
-13/12/2023: 17:41 Tony 123314 
-13/12/2023: 17:44 Jack signs in 
-13/12/2023: 17:45 Jackreport somthing bad happen,a container broken
-13/12/2023: 17:45 Andy signs in 
-13/12/2023: 17:46 Andy report Jack leave, no one in here 
-13/12/2023: 17:47 Jack signs in 
-13/12/2023: 17:48 Jack report "I am here early 10 min" 
-13/12/2023: 17:48 Tim signs in 
-13/12/2023: 17:48 Tim: "badifhai" 
-13/12/2023: 18:17 Tony signs in 
-13/12/2023: 18:17 Tony: "1" 
-13/12/2023: 18:17 Tony: "2" 
-13/12/2023: 18:18 Tony: "3" 
-13/12/2023: 18:18 Tony: "4" 
-12/13/2023: 18:58 : "people walking" 
+12/14/2023: 15:52 Manifest test.txt is opened, there are 8 containers on the ship.
+12/14/2023: 15:52 Manifest Titanic.txt is opened, there are 9 containers on the ship.
+12/14/2023: 15:53 Tony signs in 
+12/14/2023: 15:53 Tony report: "111"
+12/14/2023: 15:53 Tony: "page 2" 
+12/14/2023: 15:53 Andy signs in 
+12/14/2023: 15:53 Andy: "test Page 3" 
+12/14/2023: 15:53 Jack signs in 
+12/14/2023: 15:55 Operater1 signs in 
+12/14/2023: 15:55 Operator1 signs in 
+12/14/2023: 15:55 Operator1 report: "test page 1" 
+12/14/2023: 15:55 Operator 2 signs in 
+12/14/2023: 15:55 Operator 2 report: "test page 2" 
+12/14/2023: 15:55 Operator 3 signs in 
+12/14/2023: 15:55 Operator 3 report: "test page 3" 

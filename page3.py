@@ -130,7 +130,7 @@ class Page3:
 
     def handle_comment(self):
         # Prompt the user to enter an event
-        current_operator = self.operator_name_label.cget("text").replace("Operator: ", "")+ ":"
+        current_operator = self.operator_name_label.cget("text").replace("Operator: ", "")+ " report:"
         event_comment = askstring("Comment", "Enter the event:")
         if event_comment:
             event_comment = '"'+  event_comment+ '"'

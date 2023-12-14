@@ -56,12 +56,14 @@ class Page1:
 
     def browse_file(self):
         file_path = filedialog.askopenfilename(filetypes=[("Text Files", "*.txt")])
+        base_name = os.path.basename(file_path)
         self.file_entry.delete(0, END)
         self.file_entry.insert(0, file_path)
         self.app.page2.update_file_name(file_path)
         self.app.page3.update_file_name(file_path)
         self.app.page4.update_file_name(file_path)
         self.file_name = os.path.splitext(os.path.basename(file_path))[0]
+        self.write_Manifest_log(base_name)
         print(self.file_name)
 
         # 初始化两个字典
@@ -164,7 +166,7 @@ class Page1:
 
     def handle_comment(self):
         # Prompt the user to enter an event
-        current_operator = self.operator_name_label.cget("text").replace("Operator: ", "")+ ":"
+        current_operator = self.operator_name_label.cget("text").replace("Operator: ", "")+ " report:"
         event_comment = askstring("Comment", "Enter the event:")
         if event_comment:
             event_comment = '"'+  event_comment+ '"'
@@ -175,6 +177,20 @@ class Page1:
         current_time = datetime.now().strftime("%m/%d/%Y: %H:%M")
         with open('log.txt', 'a') as file:
             file.write(f"{current_time} {txt} {action} \n")
+
+    def write_Manifest_log(self,base_path):
+        current_time = datetime.now().strftime("%m/%d/%Y: %H:%M")
+        # Initialize the container count
+        container_count = 0
+        # Read the file and count the number of non-empty lines
+        with open(base_path, 'r') as file:
+            container_count = sum(1 for line in file if line.strip())
+
+        # Log the information to the log file
+        with open('log.txt', 'a') as log_file:
+            log_file.write(f"{current_time} Manifest {base_path} is opened, there are {container_count} containers on the ship.\n")
+
+        #print(f"{current_time} Manifest {file_path} is opened, there are {container_count} containers on the ship.")
 
     # For small test cases
     # def initialize_matrix(self):
