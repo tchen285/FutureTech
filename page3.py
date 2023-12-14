@@ -11,6 +11,8 @@ class Page3:
         self.frame = Frame(app.root, bg="white")
         self.selected_descriptions = []
         self.loading_containers = []
+        self.descriptions = []
+        self.sequence = []
 
         file_name = self.app.page1.file_name
 
@@ -20,7 +22,7 @@ class Page3:
         self.the_label = Label(self.frame, text="Select the containers you want to unload", font=("Arial", 24), bg="white")
         self.the_label.pack(pady=20)
 
-        continue_button = Button(self.frame, text="Continue", font=("Arial", 18), bg="white", command=app.show_page4)
+        continue_button = Button(self.frame, text="Continue", font=("Arial", 18), bg="white", command=self.continue_clicked)
         continue_button.pack(side="bottom", pady=(10, 50))
 
         continue_with_loading_button = Button(self.frame, text="Adding loading containers", font=("Arial", 18),
@@ -38,6 +40,12 @@ class Page3:
 
         self.operator_name_label = Label(self.frame, text="", font=("Arial", 14), bg="white")
         self.operator_name_label.pack(pady=20)
+
+    def continue_clicked(self):
+        selected_coordinates, target_coordinates = self.get_selected_coordinates()
+        print("dayindayin&&&&&&&&&", self.sequence)
+        self.app.page4.update_unload_result(self.sequence, self.descriptions)
+        self.app.page4.show_load_unload_cost_page()
 
     def set_file_content(self, descriptions):
         # Create Checkbuttons for each description
@@ -65,20 +73,22 @@ class Page3:
                     if self.app.container_data[coordinates] == description:
                         print(coordinates)
                         target_coordinates.append(coordinates)
-        print("^^^^^^打印target_coordinates: ", target_coordinates)
+
         # 测试起点
         unload_finder = FindLoadUnloadPath(self.app.original_matrix)
         # load_unload_finder.unload_set = target_coordinates
         for target_coordinate in target_coordinates:
             unload_finder.unload_set.add((8 - target_coordinate[0], target_coordinate[1] - 1))
-        print("&&&&&&&&打印unload_set: ", unload_finder.unload_set)
 
         for loading_container in self.loading_containers:
-            weight = loading_container["id"]
-            unload_finder.load_list.append(weight)
-            print(weight)
+            if isinstance(loading_container, dict):
+                weight = loading_container["id"]
+                unload_finder.load_list.append(weight)
+                print(weight)
 
-        unload_finder.solve_load_unload()
+        self.sequence, self.descriptions = unload_finder.solve_load_unload()
+        print("&&&&&&&&&&&", self.sequence)
+        print("************", self.descriptions)
 
         return selected_coordinates, target_coordinates
 
@@ -144,3 +154,6 @@ class Page3:
             self.loading_containers.append(loading_container_info)
             print("&&&&&&&&&&&输出containers的重量: ", loading_container_id)
 
+            # self.container_weight[loading_container_name] = loading_container_id
+
+            print("输出出*********", self.loading_containers)

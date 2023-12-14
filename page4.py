@@ -2,12 +2,16 @@ from tkinter import *
 from tkinter.simpledialog import askstring  # Import askstring for input dialog
 import os
 from datetime import datetime
+from show_load_unload_cost_page import ShowLoadUnloadCost  # Import the relevant class
+
 
 
 class Page4:
     def __init__(self, app):
         self.app = app
         self.frame = Frame(app.root, bg="white")
+        self.sequence = []  # Initialize sequence attribute
+        self.descriptions = []  # Initialize descriptions attribute
 
         self.file_name_label = Label(self.frame, text=self.app.page1.file_name, font=("Arial", 14), bg="white", fg="red")
         self.file_name_label.pack(pady=20)
@@ -17,12 +21,45 @@ class Page4:
                                           command=self.set_operator_name)
         set_operator_name_button.pack(pady=20)
 
+        continue_button = Button(self.frame, text="Continue", font=("Arial", 18), bg="white",
+                                 command=self.continue_clicked)
+        continue_button.pack(side="bottom", pady=20)
+
         # Add the comment button
         comment_button = Button(self.frame, text="Comment", font=("Arial", 14), bg="red", command=self.handle_comment)
         comment_button.pack(pady=20)
 
         self.operator_name_label = Label(self.frame, text="", font=("Arial", 14), bg="white")
         self.operator_name_label.pack(pady=20)
+
+        self.unload_sequence_var = StringVar()
+        self.unload_descriptions_var = StringVar()
+
+        # Create labels to display sequence and descriptions
+        self.sequence_label = Label(self.frame, textvariable=self.unload_sequence_var, font=("Arial", 14), bg="white")
+        self.sequence_label.pack(pady=20)
+
+        self.descriptions_label = Label(self.frame, textvariable=self.unload_descriptions_var, font=("Arial", 14),
+                                        bg="white")
+        self.descriptions_label.pack(pady=20)
+
+    def update_unload_result(self, descriptions, sequence):
+        # Method to update the unload result
+        self.sequence = sequence
+        self.descriptions = descriptions
+
+        # Print the received data for debugging
+        print("Debug: Page4 - Updated Sequence:", self.sequence)
+        print("Debug: Page4 - Updated Descriptions:", self.descriptions)
+
+        # Update the GUI elements with the received data
+        self.unload_sequence_var.set(f"Unload Sequence: {self.sequence}")
+        self.unload_descriptions_var.set(f"Descriptions: {self.descriptions}")
+
+    def get_selected_coordinates(self):
+        # Your implementation for get_selected_coordinates in Page4
+        pass
+
 
 
     def show_selected_descriptions(self):
@@ -44,8 +81,9 @@ class Page4:
     def show(self):
         self.frame.grid()
         self.show_selected_descriptions()
-        self.app.page3.get_selected_coordinates()
-        # print("目标containers: ", target_containers)
+        # self.app.page3.get_selected_coordinates()  # Remove this line
+        print("********", self.sequence)
+        print("********", self.descriptions)
 
 
     def hide(self):
@@ -83,3 +121,21 @@ class Page4:
         if event_comment:
             event_comment = '"'+  event_comment+ '"'
             self.write_to_log(current_operator, event_comment)
+
+    def continue_clicked(self):
+        selected_coordinates, target_coordinates = self.app.page3.get_selected_coordinates()
+        self.show_load_unload_cost_page()
+
+    def show_load_unload_cost_page(self):
+        # Update the labels with the received data
+        self.sequence_label.config(text=f"Unload Sequence: {self.sequence}")
+        self.descriptions_label.config(text=f"Descriptions: {self.descriptions}")
+
+        # Print for debugging
+        print("Debug: Load/Unload Cost Page - Sequence:", self.sequence)
+        print("Debug: Load/Unload Cost Page - Descriptions:", self.descriptions)
+
+    def get_sequence_and_descriptions(self):
+        print("Page4 - Get Sequence and Descriptions - Sequence:", self.sequence)
+        print("Page4 - Get Sequence and Descriptions - Descriptions:", self.descriptions)
+        return self.sequence, self.descriptions
