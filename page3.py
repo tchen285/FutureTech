@@ -46,6 +46,7 @@ class Page3:
         print("dayindayin&&&&&&&&&", self.sequence)
         self.app.page4.update_unload_result(self.sequence, self.descriptions)
         self.app.page4.show_load_unload_cost_page()
+        self.app.show_page4()
 
     def set_file_content(self, descriptions):
         # Create Checkbuttons for each description

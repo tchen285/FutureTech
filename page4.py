@@ -13,7 +13,8 @@ class Page4:
         self.sequence = []  # Initialize sequence attribute
         self.descriptions = []  # Initialize descriptions attribute
 
-        self.file_name_label = Label(self.frame, text=self.app.page1.file_name, font=("Arial", 14), bg="white", fg="red")
+        self.file_name_label = Label(self.frame, text=self.app.page1.file_name, font=("Arial", 14), bg="white",
+                                     fg="red")
         self.file_name_label.pack(pady=20)
 
         # Add a button to set operator name
@@ -35,13 +36,6 @@ class Page4:
         self.unload_sequence_var = StringVar()
         self.unload_descriptions_var = StringVar()
 
-        # Create labels to display sequence and descriptions
-        self.sequence_label = Label(self.frame, textvariable=self.unload_sequence_var, font=("Arial", 14), bg="white")
-        self.sequence_label.pack(pady=20)
-
-        self.descriptions_label = Label(self.frame, textvariable=self.unload_descriptions_var, font=("Arial", 14),
-                                        bg="white")
-        self.descriptions_label.pack(pady=20)
 
     def update_unload_result(self, descriptions, sequence):
         # Method to update the unload result
@@ -116,7 +110,7 @@ class Page4:
 
     def handle_comment(self):
         # Prompt the user to enter an event
-        current_operator = self.operator_name_label.cget("text").replace("Operator: ", "")+ ":"
+        current_operator = self.operator_name_label.cget("text").replace("Operator: ", "") + ":"
         event_comment = askstring("Comment", "Enter the event:")
         if event_comment:
             event_comment = '"'+  event_comment+ '"'
@@ -124,14 +118,9 @@ class Page4:
 
     def continue_clicked(self):
         selected_coordinates, target_coordinates = self.app.page3.get_selected_coordinates()
-        self.show_load_unload_cost_page()
+        self.app.show_load_unload_cost_page()
 
     def show_load_unload_cost_page(self):
-        # Update the labels with the received data
-        self.sequence_label.config(text=f"Unload Sequence: {self.sequence}")
-        self.descriptions_label.config(text=f"Descriptions: {self.descriptions}")
-
-        # Print for debugging
         print("Debug: Load/Unload Cost Page - Sequence:", self.sequence)
         print("Debug: Load/Unload Cost Page - Descriptions:", self.descriptions)
 

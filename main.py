@@ -5,6 +5,7 @@ from page3 import Page3
 from page4 import Page4
 from show_balance_cost_page import ShowBalanceCost
 from show_description_page import ShowDescriptions
+from show_load_unload_cost_page import ShowLoadUnloadCost
 
 class ShipManagementApp:
     def __init__(self, root):
@@ -23,6 +24,7 @@ class ShipManagementApp:
         self.page4 = Page4(self)
         self.balance_cost_page = ShowBalanceCost(self)
         self.description_page = ShowDescriptions(self)
+        self.load_unload_page = ShowLoadUnloadCost(self)
 
         # 初始化两个字典
         self.container_data = {}   # self.container_datap[coordinate] = description
@@ -38,6 +40,7 @@ class ShipManagementApp:
         self.page4.hide()
         self.balance_cost_page.hide()
         self.description_page.hide()
+        self.load_unload_page.hide()
 
     def show_page2(self):
         self.page1.hide()
@@ -46,6 +49,7 @@ class ShipManagementApp:
         self.page4.hide()
         self.balance_cost_page.hide()
         self.description_page.hide()
+        self.load_unload_page.hide()
 
     def show_page3(self):
         self.page1.hide()
@@ -54,6 +58,7 @@ class ShipManagementApp:
         self.page4.hide()
         self.balance_cost_page.hide()
         self.description_page.hide()
+        self.load_unload_page.hide()
 
     def show_page4(self):
         self.page1.hide()
@@ -62,6 +67,7 @@ class ShipManagementApp:
         self.page4.show()
         self.balance_cost_page.hide()
         self.description_page.hide()
+        self.load_unload_page.hide()
 
     def show_balance_cost_page(self):
         self.page1.hide()
@@ -70,6 +76,7 @@ class ShipManagementApp:
         self.page4.hide()
         self.balance_cost_page.show()
         self.description_page.hide()
+        self.load_unload_page.hide()
 
     def show_description_page(self):
         self.page1.hide()
@@ -78,6 +85,16 @@ class ShipManagementApp:
         self.page4.hide()
         self.balance_cost_page.hide()
         self.description_page.show()
+        self.load_unload_page.hide()
+
+    def show_load_unload_cost_page(self):
+        self.page1.hide()
+        self.page2.hide()
+        self.page3.hide()
+        self.page4.hide()
+        self.balance_cost_page.hide()
+        self.description_page.hide()
+        self.load_unload_page.show()
 
 if __name__ == "__main__":
     root = Tk()
