@@ -66,7 +66,7 @@ class FindLoadUnloadPath:
 
         self.interpret_final_matrix(self.final_matrix)
         reversed_array = self.unload_load_description[::-1]
-        keyword = "Move the container located"
+        keyword = "Move"
         for i in range(len(reversed_array)):
             if keyword in reversed_array[i]:
                 idle_dist = abs(self.idle_start[0] - self.idle_end[0]) + abs(self.idle_start[1] - self.idle_end[1])
