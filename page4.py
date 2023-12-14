@@ -35,12 +35,14 @@ class Page4:
 
         self.unload_sequence_var = StringVar()
         self.unload_descriptions_var = StringVar()
+        self.unload_time_cost_var = StringVar()  # Add this line
 
 
-    def update_unload_result(self, descriptions, sequence):
+    def update_unload_result(self, descriptions, sequence, time_cost):
         # Method to update the unload result
         self.sequence = sequence
         self.descriptions = descriptions
+        self.time_cost = time_cost
 
         # Print the received data for debugging
         print("Debug: Page4 - Updated Sequence:", self.sequence)
@@ -49,6 +51,7 @@ class Page4:
         # Update the GUI elements with the received data
         self.unload_sequence_var.set(f"Unload Sequence: {self.sequence}")
         self.unload_descriptions_var.set(f"Descriptions: {self.descriptions}")
+        self.unload_time_cost_var.set(f"Time Cost: {self.time_cost}")
 
     def get_selected_coordinates(self):
         # Your implementation for get_selected_coordinates in Page4
@@ -119,6 +122,9 @@ class Page4:
     def continue_clicked(self):
         selected_coordinates, target_coordinates = self.app.page3.get_selected_coordinates()
         self.app.show_load_unload_cost_page()
+        steps = len(self.descriptions)
+        time_cost = self.time_cost
+        self.app.load_unload_page.update_labels(steps, time_cost)
 
     def show_load_unload_cost_page(self):
         print("Debug: Load/Unload Cost Page - Sequence:", self.sequence)

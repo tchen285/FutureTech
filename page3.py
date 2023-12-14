@@ -13,6 +13,7 @@ class Page3:
         self.loading_containers = []
         self.descriptions = []
         self.sequence = []
+        self.time_cost = 0
 
         file_name = self.app.page1.file_name
 
@@ -44,7 +45,7 @@ class Page3:
     def continue_clicked(self):
         selected_coordinates, target_coordinates = self.get_selected_coordinates()
         print("dayindayin&&&&&&&&&", self.sequence)
-        self.app.page4.update_unload_result(self.sequence, self.descriptions)
+        self.app.page4.update_unload_result(self.sequence, self.descriptions, self.time_cost)
         self.app.page4.show_load_unload_cost_page()
         self.app.show_page4()
 
@@ -87,7 +88,7 @@ class Page3:
                 unload_finder.load_list.append(weight)
                 print(weight)
 
-        self.sequence, self.descriptions = unload_finder.solve_load_unload()
+        self.sequence, self.descriptions, self.time_cost = unload_finder.solve_load_unload()
         print("&&&&&&&&&&&", self.sequence)
         print("************", self.descriptions)
 

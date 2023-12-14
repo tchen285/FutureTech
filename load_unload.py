@@ -82,7 +82,7 @@ class FindLoadUnloadPath:
             print(row)
 
         print("\ntotal cost is: ", self.total_cost)
-        return self.unload_sequence, self.total_description
+        return self.unload_sequence, self.total_description, self.total_cost
 
 
 
