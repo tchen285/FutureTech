@@ -32,6 +32,10 @@ class Page3:
                                           command=self.set_operator_name)
         set_operator_name_button.pack(pady=20)
 
+        # Add the comment button
+        comment_button = Button(self.frame, text="Comment", font=("Arial", 14), bg="red", command=self.handle_comment)
+        comment_button.pack(pady=20)
+
         self.operator_name_label = Label(self.frame, text="", font=("Arial", 14), bg="white")
         self.operator_name_label.pack(pady=20)
 
@@ -107,10 +111,18 @@ class Page3:
         self.operator_name_label.config(text=f"Operator: {name}")
         self.app.page4.update_operator_name(name)
 
-    def write_to_log(self, operator_name, action):
+    def write_to_log(self, txt, action):
         current_time = datetime.now().strftime("%d/%m/%Y: %H:%M")
         with open('log.txt', 'a') as file:
-            file.write(f"{current_time} {operator_name} {action} \n")
+            file.write(f"{current_time} {txt} {action} \n")
+
+    def handle_comment(self):
+        # Prompt the user to enter an event
+        current_operator = self.operator_name_label.cget("text").replace("Operator: ", "")+ ":"
+        event_comment = askstring("Comment", "Enter the event:")
+        if event_comment:
+            event_comment = '"'+  event_comment+ '"'
+            self.write_to_log(current_operator, event_comment)
 
     def add_loading_containers(self):
         container_name = askstring("Add Loading Containers", "Enter the container name:")
