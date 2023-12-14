@@ -11,6 +11,8 @@ class Page3:
         self.frame = Frame(app.root, bg="white")
         self.selected_descriptions = []
         self.loading_containers = []
+        self.descriptions = []
+        self.sequence = []
 
         file_name = self.app.page1.file_name
 
@@ -65,20 +67,22 @@ class Page3:
                     if self.app.container_data[coordinates] == description:
                         print(coordinates)
                         target_coordinates.append(coordinates)
-        print("^^^^^^打印target_coordinates: ", target_coordinates)
+
         # 测试起点
         unload_finder = FindLoadUnloadPath(self.app.original_matrix)
         # load_unload_finder.unload_set = target_coordinates
         for target_coordinate in target_coordinates:
             unload_finder.unload_set.add((8 - target_coordinate[0], target_coordinate[1] - 1))
-        print("&&&&&&&&打印unload_set: ", unload_finder.unload_set)
 
         for loading_container in self.loading_containers:
-            weight = loading_container["id"]
-            unload_finder.load_list.append(weight)
-            print(weight)
+            if isinstance(loading_container, dict):
+                weight = loading_container["id"]
+                unload_finder.load_list.append(weight)
+                print(weight)
 
-        unload_finder.solve_load_unload()
+        self.sequence, self.descriptions = unload_finder.solve_load_unload()
+        print("&&&&&&&&&&&", self.sequence)
+        print("************", self.descriptions)
 
         return selected_coordinates, target_coordinates
 
@@ -144,3 +148,6 @@ class Page3:
             self.loading_containers.append(loading_container_info)
             print("&&&&&&&&&&&输出containers的重量: ", loading_container_id)
 
+            # self.container_weight[loading_container_name] = loading_container_id
+
+            print("输出出*********", self.loading_containers)

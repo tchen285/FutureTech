@@ -25,8 +25,8 @@ class ShipManagementApp:
         self.description_page = ShowDescriptions(self)
 
         # 初始化两个字典
-        self.container_data = {}
-        self.container_weight = {}
+        self.container_data = {}   # self.container_datap[coordinate] = description
+        self.container_weight = {} # self.container_weight[description] = weight
 
         self.show_page1()
 
