@@ -172,7 +172,7 @@ class Page1:
 
 
     def write_to_log(self, txt, action):
-        current_time = datetime.now().strftime("%d/%m/%Y: %H:%M")
+        current_time = datetime.now().strftime("%m/%d/%Y: %H:%M")
         with open('log.txt', 'a') as file:
             file.write(f"{current_time} {txt} {action} \n")
 
