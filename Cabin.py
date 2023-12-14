@@ -1,10 +1,10 @@
 import tkinter as tk
 from tkinter import messagebox
 
-class GridApp:
+class Cabin:
     def __init__(self, root):
         self.root = root
-        self.root.title("Grid Application")
+        self.root.title("Cabin Application")
         self.rows = 8
         self.columns = 12
         self.grid_data = [[0] * self.columns for _ in range(self.rows)]
@@ -33,10 +33,8 @@ class GridApp:
 
 #if __name__ == "__main__":
     #root = tk.Tk()
-    #app = GridApp(root)
+    #app = Cabin(root)
 
     # Add a button to save updates
     # save_button = tk.Button(root, text="Save Updates", command=app.save_updates)
     # save_button.grid(row=app.rows, columnspan=app.columns, pady=10)
-
-    root.mainloop()
