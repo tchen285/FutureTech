@@ -42,7 +42,8 @@ class FindBalancingPath:
             level_size = len(self.queue)
             for _ in range(level_size):
                 popped_matrix = self.queue.popleft()
-                # 初始状态就已经平衡的情况
+                
+                # The initial state is already balanced
                 if self.is_balanced(popped_matrix):
                     return
 
@@ -120,7 +121,8 @@ class FindBalancingPath:
 
                             matrix_tuple = tuple(tuple(row) for row in matrix)
                             # if matrix_tuple in self.visited:
-                            #     continue  # 这里这种情况是无限循环的根源
+                            #     continue  
+                            # This situation here is the source of the infinite loop
 
                             self.visited.add(matrix_tuple)
                             self.queue.append(copy.deepcopy(matrix))
@@ -136,6 +138,7 @@ class FindBalancingPath:
                         range(self.cols // 2, self.cols))
         if left_sum == right_sum:
             return True
+            
         # Ensure that denominator is not zero
         max_sum = max(left_sum, right_sum)
         balancing_score = min(left_sum, right_sum) / max_sum if max_sum != 0 else 0
@@ -201,6 +204,7 @@ class FindBalancingPath:
         start_height = self.rows - idle_start[0]
         end_height = self.rows - idle_end[0]
         mid_height = 0
+        
         for col in range(min(idle_start[1], idle_end[1]) + 1, max(idle_start[1], idle_end[1])):
             for row in range(self.rows):
                 if idle_matrix_tuple[row][col] != 0:
@@ -281,7 +285,7 @@ def main():
     #     [1, 1, 2, 7]
     # ]
 
-    # 无法平衡的情况
+    # unbalanced situation
     # matrix = [ # passed time cost test, passed idle
     #     [0, 0, 0, 0],
     #     [1, 0, 0, 0]
