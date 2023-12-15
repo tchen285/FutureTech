@@ -79,7 +79,7 @@ class Page3:
                         print(coordinates)
                         target_coordinates.append(coordinates)
 
-        # 测试起点
+        # tesing start
         unload_finder = FindLoadUnloadPath(self.app.original_matrix, self.app.container_data, self.app.container_weight, self.file_name)
         # load_unload_finder.unload_set = target_coordinates
         for target_coordinate in target_coordinates:
