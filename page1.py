@@ -4,17 +4,18 @@ from tkinter.simpledialog import askstring  # Import askstring for input dialog
 from os.path import join, expanduser
 from balancing import FindBalancingPath
 import os
-
+from datetime import datetime
 class Page1:
+
     def __init__(self, app):
         self.app = app
-
+        self.operator_name_label = None  # This should be initialized appropriately
         self.frame = Frame(app.root, bg="white")
         self.frame.grid(row=0, column=0, padx=10, pady=10)
         self.file_name = None
         self.operator_name = None
 
-        logo = PhotoImage(file="Logo.png")
+        logo = PhotoImage(file="logologo.png")
 
         def resize_image(image, width, height):
             return image.subsample(5) # 5 represents the image is going to be 1/5 size of original
@@ -40,6 +41,10 @@ class Page1:
         continue_button = Button(self.frame, text="Continue", font=("Arial", 18), bg="green", command=app.show_page2)
         continue_button.grid(row=4, column=1, pady=20)
 
+        # Add the comment button
+        comment_button = Button(self.frame, text="Comment", font=("Arial", 14), bg="red", command=self.handle_comment)
+        comment_button.grid(row=5, column=1, padx=10, pady=10)
+
         # Add a button to set operator name
         set_operator_name_button = Button(self.frame, text="Check in", font=("Arial", 14), bg="orange",
                                           command=self.set_operator_name)
@@ -51,12 +56,14 @@ class Page1:
 
     def browse_file(self):
         file_path = filedialog.askopenfilename(filetypes=[("Text Files", "*.txt")])
+        base_name = os.path.basename(file_path)
         self.file_entry.delete(0, END)
         self.file_entry.insert(0, file_path)
         self.app.page2.update_file_name(file_path)
         self.app.page3.update_file_name(file_path)
         self.app.page4.update_file_name(file_path)
         self.file_name = os.path.splitext(os.path.basename(file_path))[0]
+        self.write_Manifest_log(base_name)
         print(self.file_name)
 
         # 初始化两个字典
@@ -145,14 +152,48 @@ class Page1:
         self.app.page3.set_file_content(self.file_content)
         self.app.show_page3()
 
+
     def set_operator_name(self):
         # Use askstring to get operator name from user
         operator_name = askstring("Operator Name", "Enter Your Name:")
+
+
         if operator_name:
+           # if current_operator != "":
+                #self.write_to_log(current_operator, "signs out", "page1")
             # Display operator name in the label
             self.operator_name_label.config(text=f"Operator: {operator_name}")
+            self.write_to_log(operator_name, "signs in")
 
         self.app.page2.update_operator_name(operator_name)
+
+    def handle_comment(self):
+        # Prompt the user to enter an event
+        current_operator = self.operator_name_label.cget("text").replace("Operator: ", "")+ " report:"
+        event_comment = askstring("Comment", "Enter the event:")
+        if event_comment:
+            event_comment = '"'+  event_comment+ '"'
+            self.write_to_log(current_operator, event_comment)
+
+
+    def write_to_log(self, txt, action):
+        current_time = datetime.now().strftime("%m/%d/%Y: %H:%M")
+        with open('log.txt', 'a') as file:
+            file.write(f"{current_time} {txt} {action} \n")
+
+    def write_Manifest_log(self,base_path):
+        current_time = datetime.now().strftime("%m/%d/%Y: %H:%M")
+        # Initialize the container count
+        container_count = 0
+        # Read the file and count the number of non-empty lines
+        with open(base_path, 'r') as file:
+            container_count = sum(1 for line in file if line.strip())
+
+        # Log the information to the log file
+        with open('log.txt', 'a') as log_file:
+            log_file.write(f"{current_time} Manifest {base_path} is opened, there are {container_count} containers on the ship.\n")
+
+        #print(f"{current_time} Manifest {file_path} is opened, there are {container_count} containers on the ship.")
 
     # For small test cases
     # def initialize_matrix(self):

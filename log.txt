@@ -1,0 +1,15 @@
+12/14/2023: 15:52 Manifest test.txt is opened, there are 8 containers on the ship.
+12/14/2023: 15:52 Manifest Titanic.txt is opened, there are 9 containers on the ship.
+12/14/2023: 15:53 Tony signs in 
+12/14/2023: 15:53 Tony report: "111"
+12/14/2023: 15:53 Tony: "page 2" 
+12/14/2023: 15:53 Andy signs in 
+12/14/2023: 15:53 Andy: "test Page 3" 
+12/14/2023: 15:53 Jack signs in 
+12/14/2023: 15:55 Operater1 signs in 
+12/14/2023: 15:55 Operator1 signs in 
+12/14/2023: 15:55 Operator1 report: "test page 1" 
+12/14/2023: 15:55 Operator 2 signs in 
+12/14/2023: 15:55 Operator 2 report: "test page 2" 
+12/14/2023: 15:55 Operator 3 signs in 
+12/14/2023: 15:55 Operator 3 report: "test page 3" 

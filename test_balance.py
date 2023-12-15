@@ -36,7 +36,7 @@ class FindBalancingPath:
         )
         print("total sum and max:", total_sum, max_element)
         if 0.9 * max_element > (total_sum - max_element):
-            print("无法找到结果")
+            print(" No solution ")
             return
         while self.queue:
             level_size = len(self.queue)
@@ -61,7 +61,7 @@ class FindBalancingPath:
                     current_matrix = copy.deepcopy(popped_matrix)
                     if self.solve_current_column(current_matrix, popped_matrix, col):
                         return
-        print("无法找到solution")
+        print(" No solution ")
 
     def solve_current_column(self, matrix, original_matrix, col):
         for row1 in range(self.rows):
@@ -96,13 +96,13 @@ class FindBalancingPath:
                                 while self.idle_matrix_tuple[-i] != self.goal_matrix_tuple and self.idle_matrix_tuple[
                                     -i] != self.start_matrix_tuple:
                                     idle_start = self.idle_starts[-i]
-                                    print("\n空转起点: ", idle_start)
+                                    print("\nidling starting point: ", idle_start)
                                     idle_matrix_tuple = self.idle_matrix_tuple[-i]
-                                    print("\n空转矩阵: ", idle_matrix_tuple)
+                                    print("\nIdling matrix: ", idle_matrix_tuple)
                                     idle_end = self.idle_ends[-(i + 1)]
-                                    print("\n空转终点: ", idle_end)
+                                    print("\nidling ending point: ", idle_end)
                                     idle_distance = self.find_idle_distance(idle_start, idle_matrix_tuple, idle_end)
-                                    print("\n空转距离", idle_distance)
+                                    print("\nidling distance", idle_distance)
                                     idle_description = f"\nMove crane from {idle_start} to {idle_end}. It takes {idle_distance} minutes."
                                     self.idle_descriptions.append(idle_description)
                                     self.total_cost += idle_distance
@@ -158,9 +158,7 @@ class FindBalancingPath:
                     moves.append((i2, j2))
                     end_row, end_col = i2, j2
                     height = max(height, self.rows - end_row)
-        print("打印moves:", moves)
-        print("打印moves[0]:", moves[0])
-        print("打印moves[1]:", moves[1])
+
         self.replace_coordinates(moves[0], moves[1])
 
         if abs(start_col - end_col) == 1:
