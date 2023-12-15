@@ -78,14 +78,14 @@ class Page2:
 
     def handle_comment(self):
         # Prompt the user to enter an event
-        current_operator = self.operator_name_label.cget("text").replace("Operator: ", "") + " report:"
+        current_operator = self.operator_name_label.cget("text").replace("Operator: ", "") + ":"
         event_comment = askstring("Comment", "Enter the event:")
         if event_comment:
             event_comment = '"'+  event_comment+ '"'
             self.write_to_log(current_operator, event_comment)
 
     def calculate_balance(self):
-        balancing_path_finder = FindBalancingPath(self.app.original_matrix, self.app.page1.file_name)
+        balancing_path_finder = FindBalancingPath(self.app.original_matrix, self.app.page1.file_name, self.app.container_data, self.app.container_weight)
         balancing_path_finder.solve_balancing()
         self.app.balance_list = balancing_path_finder.description_list
         descriptions = balancing_path_finder.description_list
