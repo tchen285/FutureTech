@@ -38,15 +38,15 @@ class Page1:
         browse_button = Button(self.frame, text="Browse", font=("Arial", 18), bg="blue", command=self.browse_file)
         browse_button.grid(row=2, column=2, pady=20)
 
-        continue_button = Button(self.frame, text="Continue", font=("Arial", 18), bg="green", command=app.show_page2)
+        continue_button = Button(self.frame, text="Continue", font=("Arial", 18), bg="blue", command=app.show_page2)
         continue_button.grid(row=4, column=1, pady=20)
 
         # Add the comment button
-        comment_button = Button(self.frame, text="Comment", font=("Arial", 14), bg="red", command=self.handle_comment)
+        comment_button = Button(self.frame, text="Comment", font=("Arial", 14), bg="blue", command=self.handle_comment)
         comment_button.grid(row=5, column=1, padx=10, pady=10)
 
         # Add a button to set operator name
-        set_operator_name_button = Button(self.frame, text="Check in", font=("Arial", 14), bg="orange",
+        set_operator_name_button = Button(self.frame, text="Check in", font=("Arial", 14), bg="blue",
                                           command=self.set_operator_name)
         set_operator_name_button.grid(row=0, column=3, padx=10, pady=10)
 
@@ -66,11 +66,12 @@ class Page1:
         self.app.page4.update_file_name(file_path, self.file_name)
 
 
-        # 初始化两个字典
+        # Initialize two dictionaries
         container_data = {}
         container_weight = {}
         container_count = 0
-        # 读取文件内容并处理
+        
+        # Read file contents and process
         with open(file_path, 'r') as file:
             lines = file.readlines()
             for line in lines:
@@ -86,14 +87,14 @@ class Page1:
                 coordinates[0] = coordinates[0].strip("[")
                 coordinates = tuple(map(int, coordinates[0].split(",")))
 
-                # 输出坐标和描述，以确保它们被正确读取
+                # Output coordinates and descriptions to ensure they are read correctly
                 print("Coordinates:", coordinates)
                 print("Description:", description)
 
-                # 将坐标映射到描述
+                # Map coordinates to description
                 container_data[coordinates] = description
 
-                # 输出 container_data，以确保它被正确更新
+                # Output container_data to ensure it is updated correctly
                 print("Container Data Updated:")
                 print(container_data)
 
