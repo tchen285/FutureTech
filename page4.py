@@ -5,7 +5,6 @@ from datetime import datetime
 from show_load_unload_cost_page import ShowLoadUnloadCost  # Import the relevant class
 
 
-
 class Page4:
     def __init__(self, app):
         self.app = app
@@ -13,6 +12,7 @@ class Page4:
         self.sequence = []  # Initialize sequence attribute
         self.descriptions = []  # Initialize descriptions attribute
         self.loading_containers = []
+        self.final_sequence = []
 
         self.file_name_label = Label(self.frame, text=self.app.page1.file_name, font=("Arial", 14), bg="white",
                                      fg="red")
@@ -128,7 +128,9 @@ class Page4:
         self.app.show_load_unload_cost_page()
         steps = len(self.descriptions)
         time_cost = self.time_cost
-        self.app.load_unload_page.update_labels(steps, time_cost)
+        self.final_sequence = self.merge_lists_alternatively()
+        print("++++++++++++++++++++Final Sequence: ", self.final_sequence)
+        self.app.load_unload_page.update_labels(steps, time_cost, self.final_sequence)
 
     def show_load_unload_cost_page(self):
         print("Debug: Load/Unload Cost Page - Sequence:", self.sequence)
@@ -138,3 +140,17 @@ class Page4:
         print("Page4 - Get Sequence and Descriptions - Sequence:", self.sequence)
         print("Page4 - Get Sequence and Descriptions - Descriptions:", self.descriptions)
         return self.sequence, self.descriptions
+
+    def merge_lists_alternatively(self):
+        # 提取 loading_containers 中的 "name" 列表
+        loading_container_names = [container["name"] for container in self.loading_containers]
+
+        # 交替合并 sequence 和 loading_container_names
+        result = [item for pair in zip(self.sequence, loading_container_names) for item in pair]
+
+        # 如果一个列表较长，将其余元素添加到结果列表中
+        remaining_items = self.sequence[len(loading_container_names):] + loading_container_names[len(self.sequence):]
+        result.extend(remaining_items)
+
+        return result
+

@@ -3,6 +3,7 @@ from tkinter.simpledialog import askstring  # Import askstring for input dialog
 import os
 from datetime import datetime
 from load_unload import FindLoadUnloadPath
+from show_load_unload_page import ShowLoadUnload
 
 
 class Page3:
@@ -16,6 +17,7 @@ class Page3:
         self.time_cost = 0
 
         file_name = self.app.page1.file_name
+        self.show_load_unload_page = ShowLoadUnload(self.app)
 
         self.file_name_label = Label(self.frame, text=file_name, font=("Arial", 14), bg="white", fg="red")
         self.file_name_label.pack(pady=20)
@@ -45,8 +47,8 @@ class Page3:
     def continue_clicked(self):
         selected_coordinates, target_coordinates = self.get_selected_coordinates()
         print("dayindayin&&&&&&&&&", self.sequence)
-        self.app.page4.update_unload_result(self.sequence, self.descriptions, self.time_cost, self.loading_containers)
-        self.app.page4.show_load_unload_cost_page()
+        self.app.page4.update_unload_result(self.descriptions, self.sequence, self.time_cost, self.loading_containers)
+        self.app.show_load_unload_page.update_descriptions(self.descriptions)
         self.app.show_page4()
 
     def set_file_content(self, descriptions):
