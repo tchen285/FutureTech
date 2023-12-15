@@ -56,7 +56,7 @@ class Page4:
         self.unload_sequence_var.set(f"Unload Sequence: {self.sequence}")
         self.unload_descriptions_var.set(f"Descriptions: {self.descriptions}")
         self.unload_time_cost_var.set(f"Time Cost: {self.time_cost}")
-
+        self.write_unload_log(self.sequence)
     def get_selected_coordinates(self):
         # Your implementation for get_selected_coordinates in Page4
         pass
@@ -106,9 +106,10 @@ class Page4:
             # Display operator name in the label
             self.operator_name_label.config(text=f"Operator: {operator_name}")
             self.write_to_log(operator_name, "signs in")
-            self.app.page1.update_operator_name(operator_name)
+            self.app.update_operator_name_all_pages(operator_name)
     def update_operator_name(self, name):
         self.operator_name_label.config(text=f"Operator: {name}")
+        #self.app.load_unload_page.update_operator_name(name)
 
     def write_to_log(self, txt, action):
         current_time = datetime.now().strftime("%m/%d/%Y: %H:%M")
@@ -122,6 +123,14 @@ class Page4:
         if event_comment:
             event_comment = '"'+  event_comment+ '"'
             self.write_to_log(current_operator, event_comment)
+
+    def write_unload_log(self,text):
+        current_time = datetime.now().strftime("%m/%d/%Y: %H:%M")
+
+        # Log the information to the log file
+        with open('log.txt', 'a') as log_file:
+            log_file.write(f'{current_time} "{text}" is offloaded.\n')
+
 
     def continue_clicked(self):
         selected_coordinates, target_coordinates = self.app.page3.get_selected_coordinates()
