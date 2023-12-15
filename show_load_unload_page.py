@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import filedialog
 from tkinter.simpledialog import askstring  # Import askstring for input dialog
+from tkinter.simpledialog import askfloat
 import os
 
 class ShowLoadUnload:
@@ -57,10 +58,29 @@ class ShowLoadUnload:
         print("Debug: Combined Text in ShowLoadUnload -", combined_text)
 
         self.label1.config(text=combined_text)
-
-        print("可以看见我吗?")
         self.label1.update_idletasks()  # Update the label immediately
         self.start_button.config(state=NORMAL)  # Enable the button
+
+        # Check if the current description contains the keyword
+        if "Take the loading container" in description_text:
+            # Display the "Enter weight" button
+            self.enter_weight_button = Button(self.frame, text="Enter weight", font=("Arial", 18), bg="blue",
+                                              command=self.enter_weight)
+            self.enter_weight_button.grid(row=5, column=1, pady=20)
+
+    def enter_weight(self):
+        # Prompt the user to enter the weight
+        weight = askfloat("Enter Weight", "Enter the weight of the loading container:")
+        if weight is not None:
+            # Do something with the entered weight (e.g., store it, print it)
+            print("Entered weight:", weight)
+
+    def enter_weight(self):
+        # Prompt the user to enter the weight
+        weight = askfloat("Enter Weight", "Enter the weight of the loading container:")
+        if weight is not None:
+            # Do something with the entered weight (e.g., store it, print it)
+            print("Entered weight:", weight)
 
     def reset(self):
         self.descriptions = []

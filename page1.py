@@ -58,11 +58,12 @@ class Page1:
         file_path = filedialog.askopenfilename(filetypes=[("Text Files", "*.txt")])
         self.file_entry.delete(0, END)
         self.file_entry.insert(0, file_path)
+        self.file_name = os.path.splitext(os.path.basename(file_path))[0] + "OUTBOUND.txt"
+        print("((((((((((", self.file_name)
         self.app.page2.update_file_name(file_path)
-        self.app.page3.update_file_name(file_path)
-        self.app.page4.update_file_name(file_path)
-        self.file_name = os.path.splitext(os.path.basename(file_path))[0]
-        print(self.file_name)
+        self.app.page3.update_file_name(file_path, self.file_name)
+        self.app.page4.update_file_name(file_path, self.file_name)
+
 
         # 初始化两个字典
         container_data = {}
@@ -124,9 +125,9 @@ class Page1:
         desktop_path = join(expanduser("~"), "Desktop")
 
         # Generate the new filename for the outbound file on the desktop
-        outbound_file_path = join(desktop_path, f"{self.file_name}OUTBOUND.txt")
+        outbound_file_path = join(desktop_path, f"{self.file_name}")
 
-        self.file_name = f"{self.file_name}OUTBOUND.txt"
+        # self.file_name = f"{self.file_name}OUTBOUND.txt"
 
         # Copy the content from the original file to the outbound file with the new name
         with open(file_path, 'r') as original_file, open(outbound_file_path, 'w') as outbound_file:

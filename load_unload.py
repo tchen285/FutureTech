@@ -1,12 +1,14 @@
 from collections import deque
 import copy
+import os
 
 
 class FindLoadUnloadPath:
-    def __init__(self, matrix, container_data, container_weight):
+    def __init__(self, matrix, container_data, container_weight, file_path):
         self.matrix = matrix
         self.container_data = container_data
         self.container_weight = container_weight
+        self.file_path = file_path
         self.unload_set = set()
         self.load_list = []
         self.start_matrix_tuple = tuple(map(tuple, matrix))
@@ -37,6 +39,7 @@ class FindLoadUnloadPath:
             if not self.unload_set and not self.load_list:
                 break
             level_size = len(self.queue)
+
             for _ in range(level_size):
                 popped_matrix = self.queue.popleft()
 
@@ -77,15 +80,19 @@ class FindLoadUnloadPath:
                 continue
             self.total_description.append(reversed_array[i])
 
-        print()
+        # # 模版模版
+        # base_file_name = os.path.basename(self.file_path)
+        # file_name = os.path.splitext(base_file_name)[0] + "OUTBOUND.txt"
+        # desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
+        # self.file_path = os.path.join(desktop_path, file_name)
+        # with open(self.file_path, 'a') as file:
+        #     file.write("Adding a new line\n")
 
         # The software should print self.total_description step by step
         for row in self.total_description:
             print(row)
 
-        print("\ntotal cost is: ", self.total_cost)
-        print("********shishishishishih ", self.container_data[(1, 2)])  # 成功!!!
-        print("))))))))测试unload Sequence", self.unload_sequence)
+
         return self.unload_sequence, self.total_description, self.total_cost
 
 
@@ -233,6 +240,14 @@ class FindLoadUnloadPath:
     def interpret_final_matrix(self, final_matrix):
         current_matrix = copy.deepcopy(final_matrix)
         current_matrix_tuple = tuple(map(tuple, current_matrix))
+
+        # 模版模版
+        base_file_name = os.path.basename(self.file_path)
+        file_name = os.path.splitext(base_file_name)[0]
+        desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
+        self.file_path = os.path.join(desktop_path, file_name)
+
+
         while self.matrix_parent[current_matrix_tuple]:
             parent_matrix_tuple = self.matrix_parent[current_matrix_tuple]
             parent_weight, current_weight = 0, 0
@@ -252,14 +267,38 @@ class FindLoadUnloadPath:
                 description = f"Retrieve {self.container_data[(8 - row, col + 1)]} ({self.container_weight[self.container_data[(8 - row, col + 1)]]}kg) located at [{8 - row},{col + 1}] and place it onto the truck.\nThis step takes {cost} minutes."
                 self.unload_load_description.append(description)
                 self.total_cost += cost
+                formatted_row = f"{8 - row:02}"  # Add leading zero if needed (2 digits wide)
+                formatted_col = f"{col + 1:02}"
+                exclude_coordinates = f"[{formatted_row},{formatted_col}]"
+                with open(self.file_path, 'r') as file:
+                    lines = file.readlines()
+
+                # Filter out lines with excluded coordinates
+                lines = [line for line in lines if exclude_coordinates not in line]
+
+                # Write back the modified content
+                with open(self.file_path, 'w') as file:
+                    file.writelines(lines)
 
             if parent_weight == current_weight:
                 # 执行船内移动
                 start_coordinate, end_coordinate, cost = self.interpret_move(parent_matrix_tuple, current_matrix_tuple)
-                description = f"Move {self.container_data[(8 - start_coordinate, end_coordinate + 1)]} ({self.container_weight[self.container_data[(8 - start_coordinate, end_coordinate + 1)]]}kg) located at [{8 - start_coordinate}] to [{end_coordinate + 1}].\nThis step takes {cost} minutes."
+                description = f"Move {self.container_data[(8 - start_coordinate, start_coordinate + 1)]} ({self.container_weight[self.container_data[(8 - start_coordinate, start_coordinate + 1)]]}kg) located at [{8 - end_coordinate}] to [{end_coordinate + 1}].\nThis step takes {cost} minutes."
                 self.unload_load_description.append(description)
                 self.idle_start = end_coordinate
                 self.total_cost += cost
+
+                # formatted_row_start = f"{8 - start_coordinate:02}"
+                # formatted_col_start = f"{start_coordinate + 1:02}"
+                #
+                # formatted_row_end = f"{8 - end_coordinate:02}"
+                # formatted_col_end = f"{end_coordinate + 1:02}"
+                # coordinates_start = f"[{formatted_row_start},{formatted_col_start}]"
+                # coordinates_end = f"[{formatted_row_start},{formatted_col_start}]"
+                # with open(self.file_path, 'r') as file:
+                #     lines = file.readlines()
+
+
 
 
             if parent_weight < current_weight:
@@ -268,5 +307,6 @@ class FindLoadUnloadPath:
                 description = f"Take the loading container from truck and place it at [{8 - row},{col + 1}].\nThis step takes {cost} minutes."
                 self.unload_load_description.append(description)
                 self.total_cost += cost
+
 
             current_matrix_tuple = self.matrix_parent[current_matrix_tuple]

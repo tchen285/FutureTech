@@ -19,6 +19,7 @@ class ShipManagementApp:
         # 初始化矩阵
         self.original_matrix = None
 
+
         # 初始化页面
         self.page1 = Page1(self)
         self.page2 = Page2(self)
@@ -30,7 +31,7 @@ class ShipManagementApp:
         self.show_load_unload_page = ShowLoadUnload(self)
 
         # 初始化两个字典
-        self.container_data = {}   # self.container_datap[coordinate] = description
+        self.container_data = {}   # self.container_data[coordinate] = description
         self.container_weight = {} # self.container_weight[description] = weight
 
         self.show_page1()
@@ -115,6 +116,7 @@ class ShipManagementApp:
         self.description_page.hide()
         self.load_unload_page.hide()
         self.show_load_unload_page.show()
+
 
 if __name__ == "__main__":
     root = Tk()
