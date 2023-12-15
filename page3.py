@@ -117,11 +117,11 @@ class Page3:
             self.operator_name_label.config(text=f"Operator: {operator_name}")
             self.write_to_log(operator_name, "signs in")
 
-        self.app.page4.update_operator_name(operator_name)
+        self.app.update_operator_name_all_pages(operator_name)
 
     def update_operator_name(self, name):
         self.operator_name_label.config(text=f"Operator: {name}")
-        self.app.page4.update_operator_name(name)
+        #self.app.page4.update_operator_name(name)
 
     def write_to_log(self, txt, action):
         current_time = datetime.now().strftime("%m/%d/%Y: %H:%M")
@@ -139,18 +139,12 @@ class Page3:
     def add_loading_containers(self):
         container_name = askstring("Add Loading Containers", "Enter the container name:")
 
-        desktop_path = join(expanduser("~"), "Desktop")
-
-        # Generate the new filename for the outbound file on the desktop
-        outbound_file_path = join(desktop_path, f"{self.file_name}")
-
-        # Copy the content from the original file to the outbound file with the new name
-        with open(self.file_path, 'r') as original_file, open(outbound_file_path, 'w') as outbound_file:
-            for line in original_file:
-                outbound_file.write(line)
-
-        outbound_file_path = join(desktop_path, f"{self.file_name}OUTBOUND.txt")
-        print("d;slakfj________", self.file_name)
+        # self.file_name = self.app.page1.file_name
+        # print("dsa;sldkfj;alskdjgh;alksdjf", self.file_name)
+        #
+        # desktop_path = join(expanduser("~"), "Desktop")
+        # filename = self.file_name
+        # file_path = join(desktop_path, filename)
 
         if container_name:
             loading_container_id = 99999
@@ -169,17 +163,16 @@ class Page3:
             }
             self.loading_containers.append(loading_container_info)
 
-            print("d;slakfj________", self.file_name)
-
-            # self.file_path = join(desktop_path, f"{self.file_name}.txtOUTBOUND.txt")
-            with open(self.file_path, 'r') as original_file, open(outbound_file_path, 'w') as outbound_file:
-                for line in original_file:
-                    outbound_file.write(line)
-
-            print(f"Outbound file created on the desktop: {outbound_file_path}")
-
-            # with open(self.file_path, 'a') as file:
-            #     file.write(f"[00,00], {{99999}}, {loading_container_info['display_name']}\n")
+            self.write_load_log(loading_container_name)
+            # self.container_weight[loading_container_name] = loading_container_id
 
 
 
+
+
+    def write_load_log(self, loading_container_name):
+        current_time = datetime.now().strftime("%m/%d/%Y: %H:%M")
+
+        # Log the information to the log file
+        with open('log.txt', 'a') as log_file:
+            log_file.write(f'{current_time} "{loading_container_name}" is loaded.\n')

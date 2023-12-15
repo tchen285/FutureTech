@@ -242,10 +242,10 @@ class FindLoadUnloadPath:
         current_matrix_tuple = tuple(map(tuple, current_matrix))
 
         # 模版模版
-        base_file_name = os.path.basename(self.file_path)
-        file_name = os.path.splitext(base_file_name)[0]
-        desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
-        self.file_path = os.path.join(desktop_path, file_name)
+        # base_file_name = os.path.basename(self.file_path)
+        # file_name = os.path.splitext(base_file_name)[0]
+        # desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
+        # self.file_path = os.path.join(desktop_path, file_name)
 
 
         while self.matrix_parent[current_matrix_tuple]:
@@ -267,18 +267,18 @@ class FindLoadUnloadPath:
                 description = f"Retrieve {self.container_data[(8 - row, col + 1)]} ({self.container_weight[self.container_data[(8 - row, col + 1)]]}kg) located at [{8 - row},{col + 1}] and place it onto the truck.\nThis step takes {cost} minutes."
                 self.unload_load_description.append(description)
                 self.total_cost += cost
-                formatted_row = f"{8 - row:02}"  # Add leading zero if needed (2 digits wide)
-                formatted_col = f"{col + 1:02}"
-                exclude_coordinates = f"[{formatted_row},{formatted_col}]"
-                with open(self.file_path, 'r') as file:
-                    lines = file.readlines()
-
-                # Filter out lines with excluded coordinates
-                lines = [line for line in lines if exclude_coordinates not in line]
-
-                # Write back the modified content
-                with open(self.file_path, 'w') as file:
-                    file.writelines(lines)
+                # formatted_row = f"{8 - row:02}"  # Add leading zero if needed (2 digits wide)
+                # formatted_col = f"{col + 1:02}"
+                # exclude_coordinates = f"[{formatted_row},{formatted_col}]"
+                # with open(self.file_path, 'r') as file:
+                #     lines = file.readlines()
+                #
+                # # Filter out lines with excluded coordinates
+                # lines = [line for line in lines if exclude_coordinates not in line]
+                #
+                # # Write back the modified content
+                # with open(self.file_path, 'w') as file:
+                #     file.writelines(lines)
 
             if parent_weight == current_weight:
                 # 执行船内移动

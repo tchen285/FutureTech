@@ -65,11 +65,11 @@ class Page2:
             self.operator_name_label.config(text=f"Operator: {operator_name}")
             self.write_to_log(operator_name, "signs in")
 
-        self.app.page3.update_operator_name(operator_name)
+        self.app.update_operator_name_all_pages(operator_name)
 
     def update_operator_name(self, name):
         self.operator_name_label.config(text=f"Operator: {name}")
-        self.app.page3.update_operator_name(name)
+        #self.app.page3.update_operator_name(name)
 
     def write_to_log(self, txt, action):
         current_time = datetime.now().strftime("%m/%d/%Y: %H:%M")
@@ -85,7 +85,7 @@ class Page2:
             self.write_to_log(current_operator, event_comment)
 
     def calculate_balance(self):
-        balancing_path_finder = FindBalancingPath(self.app.original_matrix, self.app.page1.file_name)
+        balancing_path_finder = FindBalancingPath(self.app.original_matrix, self.app.page1.file_name, self.app.container_data, self.app.container_weight)
         balancing_path_finder.solve_balancing()
         self.app.balance_list = balancing_path_finder.description_list
         descriptions = balancing_path_finder.description_list
@@ -94,4 +94,3 @@ class Page2:
         self.app.show_balance_cost_page()
         self.app.balance_cost_page.update_labels(steps, time_cost)
         self.app.description_page.update_descriptions(descriptions)
-
