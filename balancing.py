@@ -1,10 +1,13 @@
 from collections import deque
 from os.path import join, expanduser
 import copy
+import re
 
 
 class FindBalancingPath:
-    def __init__(self, matrix, file_name):
+    def __init__(self, matrix, file_name, container_data, container_weight):
+        self.container_data = container_data
+        self.container_weight = container_weight
         self.start_matrix_tuple = tuple(map(tuple, matrix))
         self.file_name = file_name
         self.cols = len(matrix[0])
@@ -171,7 +174,8 @@ class FindBalancingPath:
             distance = self.find_moving_distance(parent_tuple, current_tuple, start_col, end_col)
         self.total_cost += distance
 
-        move_description = f"\nMove container at {moves[0]} to {moves[1]}. It takes {distance} minutes."
+        move_description = f"\nMove {self.container_data[moves[0]]} ({self.container_weight[self.container_data[moves[0]]]}kg) at {moves[0]} to {moves[1]}. It takes {distance} minutes."
+        # move_description = f"\nMove container at {moves[0]} to {moves[1]}. It takes {distance} minutes."
         self.move_descriptions.append(move_description)
         self.idle_ends.append(moves[0])
         self.idle_starts.append(moves[1])
@@ -219,23 +223,24 @@ class FindBalancingPath:
 
         return mid_height - start_height + 2 + mid_height - end_height + abs(idle_start[1] - idle_end[1])
 
-    def replace_coordinates(self, old_coordinates, new_coordinates):
+    def replace_coordinates(self, coordinates1, coordinates2):
         desktop_path = join(expanduser("~"), "Desktop")
         filename = self.file_name
 
-        print("Print file name:", filename)
         file_path = join(desktop_path, filename)
+        print("Print file name:", filename)
 
         with open(file_path, 'r') as file:
             lines = file.readlines()
 
-        # Convert old and new coordinates to the formatted strings
-        old_coordinates_str = '[{:02d},{:02d}]'.format(*old_coordinates)
-        new_coordinates_str = '[{:02d},{:02d}]'.format(*new_coordinates)
+        old_coordinates_str1 = '[{:02d},{:02d}]'.format(*coordinates1)
+        old_coordinates_str2 = '[{:02d},{:02d}]'.format(*coordinates2)
 
         for i in range(len(lines)):
-            # Assuming [01, 01] is present in each line
-            lines[i] = lines[i].replace(old_coordinates_str, new_coordinates_str)
+            # Assuming [01, 01] and [02, 02] are present in each line
+            lines[i] = lines[i].replace(old_coordinates_str1, 'TEMP_SWAP')
+            lines[i] = lines[i].replace(old_coordinates_str2, old_coordinates_str1)
+            lines[i] = lines[i].replace('TEMP_SWAP', old_coordinates_str2)
 
         # Write the modified content back to the file
         with open(file_path, 'w') as file:

@@ -1,3 +1,153 @@
-
-11/12/2023: 20:35 Peter signs in 
-11/12/2023: 20:35 Alex signs in 
+12/14/2023: 15:52 Manifest test.txt is opened, there are 8 containers on the ship.
+12/14/2023: 15:52 Manifest Titanic.txt is opened, there are 9 containers on the ship.
+12/14/2023: 15:53 Tony signs in 
+12/14/2023: 15:53 Tony report: "111"
+12/14/2023: 15:53 Tony: "page 2" 
+12/14/2023: 15:53 Andy signs in 
+12/14/2023: 15:53 Andy: "test Page 3" 
+12/14/2023: 15:53 Jack signs in 
+12/14/2023: 15:55 Operater1 signs in 
+12/14/2023: 15:55 Operator1 signs in 
+12/14/2023: 15:55 Operator1 report: "test page 1" 
+12/14/2023: 15:55 Operator 2 signs in 
+12/14/2023: 15:55 Operator 2 report: "test page 2" 
+12/14/2023: 15:55 Operator 3 signs in 
+12/14/2023: 15:55 Operator 3 report: "test page 3" 
+12/14/2023: 16:03 Manifest test.txt is opened, there are 8 containers on the ship.
+12/14/2023: 17:21 Manifest test.txt is opened, there are 8 containers on the ship.
+12/14/2023: 17:28 Manifest ShipCase2.txt is opened, there are 96 containers on the ship.
+12/14/2023: 17:29 Manifest ShipCase1.txt is opened, there are 96 containers on the ship.
+12/14/2023: 17:29 Manifest ShipCase1.txt is opened, there are 96 containers on the ship.
+12/14/2023: 17:36 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/14/2023: 17:36 Manifest ShipCase2.txt is opened, there are 4 containers on the ship.
+12/14/2023: 17:36 Manifest ShipCase3.txt is opened, there are 6 containers on the ship.
+12/14/2023: 17:36 Manifest ShipCase4.txt is opened, there are 7 containers on the ship.
+12/14/2023: 17:36 Manifest ShipCase5.txt is opened, there are 5 containers on the ship.
+12/14/2023: 22:03 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/14/2023: 22:04 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/14/2023: 22:04  Balancing complete.
+12/14/2023: 22:06 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/14/2023: 22:20 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/14/2023: 22:27 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/14/2023: 22:28 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+ 'Cat' is offloaded.
+12/14/2023: 22:30 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/14/2023: 22:30"Cat" is offloaded.
+12/14/2023: 22:31 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/14/2023: 22:31 "Cat" is offloaded.
+12/14/2023: 22:31  Balancing complete.
+12/14/2023: 22:35 "Cat -> Dog" is offloaded.
+12/14/2023: 22:36 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/14/2023: 22:36 "Cat" is offloaded.
+12/14/2023: 22:36 Manifest ShipCase1OUTBOUND.txt is opened, there are 2 containers on the ship.
+12/14/2023: 22:37  Balancing complete.
+12/14/2023: 22:37  Balancing complete.
+12/14/2023: 22:37 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/14/2023: 22:37 "Cat" is offloaded.
+12/14/2023: 22:38 Manifest ShipCase1OUTBOUNDOUTBOUND.txt is opened, there are 2 containers on the ship.
+12/14/2023: 22:41 Jack Sun signs in 
+12/14/2023: 22:41 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/14/2023: 22:41 "Cat" is offloaded.
+12/14/2023: 22:42 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/14/2023: 22:42 Ethan Wang signs in 
+12/14/2023: 22:42  Balancing complete.
+12/14/2023: 22:47 Manifest ShipCase2.txt is opened, there are 4 containers on the ship.
+12/14/2023: 22:50 "Ram" is offloaded.
+12/14/2023: 22:52 Manifest ShipCase2.txt is opened, there are 4 containers on the ship.
+12/14/2023: 22:52 "Ram" is offloaded.
+12/14/2023: 22:55 1 signs in 
+12/14/2023: 22:55 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/14/2023: 22:55 "Cat" is offloaded.
+12/14/2023: 22:55 1 signs in 
+12/14/2023: 22:55 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/14/2023: 22:55 1 signs in 
+12/14/2023: 22:56 "Cat" is offloaded.
+12/14/2023: 22:57 1 signs in 
+12/14/2023: 22:57 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/14/2023: 22:57 "Cat" is offloaded.
+12/14/2023: 23:04 1 signs in 
+12/14/2023: 23:04 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/14/2023: 23:04 "Cat" is offloaded.
+12/14/2023: 23:04 1 signs in 
+12/14/2023: 23:07 1 signs in 
+12/14/2023: 23:08 1 signs in 
+12/14/2023: 23:09 1 signs in 
+12/14/2023: 23:17 1 signs in 
+12/14/2023: 23:17 1 signs in 
+12/14/2023: 23:22 1 signs in 
+12/14/2023: 23:23 1 signs in 
+12/14/2023: 23:24 1 signs in 
+12/14/2023: 23:25 1 signs in 
+12/14/2023: 23:25 1 signs in 
+12/14/2023: 23:25 Manifest test.txt is opened, there are 3 containers on the ship.
+12/14/2023: 23:27 1 signs in 
+12/14/2023: 23:27 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/14/2023: 23:28 "Cat" is offloaded.
+12/14/2023: 23:30 1 signs in 
+12/14/2023: 23:34 1 signs in 
+12/14/2023: 23:35 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/14/2023: 23:35 "Cat" is offloaded.
+12/14/2023: 23:36 1 signs in 
+12/14/2023: 23:37 1 signs in 
+12/14/2023: 23:38 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/14/2023: 23:38 "Cat" is offloaded.
+12/14/2023: 23:40 1 signs in 
+12/14/2023: 23:46 1 signs in 
+12/14/2023: 23:46 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/14/2023: 23:46 3 signs in 
+12/14/2023: 23:46 4 signs in 
+12/14/2023: 23:46 "Cat" is offloaded.
+12/14/2023: 23:47 1 signs in 
+12/14/2023: 23:48 1 signs in 
+12/14/2023: 23:48 2 signs in 
+12/14/2023: 23:48 3 signs in 
+12/14/2023: 23:49 1 signs in 
+12/14/2023: 23:49 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/14/2023: 23:49 2 signs in 
+12/14/2023: 23:49 3 signs in 
+12/14/2023: 23:49 4 signs in 
+12/14/2023: 23:49 "Cat" is offloaded.
+12/14/2023: 23:49 5 signs in 
+12/14/2023: 23:56 1 signs in 
+12/14/2023: 23:56 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/14/2023: 23:56 2 signs in 
+12/14/2023: 23:56 "Cat" is offloaded.
+12/14/2023: 23:56 1 signs in 
+12/15/2023: 00:01 1 signs in 
+12/15/2023: 00:01 2 signs in 
+12/15/2023: 00:01 1 signs in 
+12/15/2023: 00:01 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/15/2023: 00:01 2 signs in 
+12/15/2023: 00:02 3 signs in 
+12/15/2023: 00:02 4 signs in 
+12/15/2023: 00:02 "Cat" is offloaded.
+12/15/2023: 00:02 5 signs in 
+12/15/2023: 00:02 6 signs in 
+12/15/2023: 00:06 1 signs in 
+12/15/2023: 00:06 10 signs in 
+12/15/2023: 00:06 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/15/2023: 00:06 20 signs in 
+12/15/2023: 00:06  Balancing complete.
+12/15/2023: 00:11 10 signs in 
+12/15/2023: 00:11 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/15/2023: 00:11 2 signs in 
+12/15/2023: 00:11  Balancing complete.
+12/15/2023: 00:11 3 signs in 
+12/15/2023: 00:11 4 signs in 
+12/15/2023: 00:11 5 signs in 
+12/15/2023: 00:13 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/15/2023: 00:22 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/15/2023: 00:22 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/15/2023: 00:25 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/15/2023: 00:25 "Ram (loading)" is loaded.
+12/15/2023: 00:25 "Ram" is offloaded.
+12/15/2023: 00:26 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/15/2023: 00:27 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/15/2023: 00:27 "Ram (loading)" is loaded.
+12/15/2023: 00:27 "Ram" is offloaded.
+12/15/2023: 00:27 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/15/2023: 00:30 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/15/2023: 00:31 "['Cat']" is offloaded.
+12/15/2023: 00:32 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/15/2023: 00:32 "Ram (loading)" is loaded.
+12/15/2023: 00:32 "[]" is offloaded.
