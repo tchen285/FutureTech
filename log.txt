@@ -13,3 +13,13 @@
 12/14/2023: 15:55 Operator 2 report: "test page 2" 
 12/14/2023: 15:55 Operator 3 signs in 
 12/14/2023: 15:55 Operator 3 report: "test page 3" 
+12/14/2023: 16:03 Manifest test.txt is opened, there are 8 containers on the ship.
+12/14/2023: 17:21 Manifest test.txt is opened, there are 8 containers on the ship.
+12/14/2023: 17:28 Manifest ShipCase2.txt is opened, there are 96 containers on the ship.
+12/14/2023: 17:29 Manifest ShipCase1.txt is opened, there are 96 containers on the ship.
+12/14/2023: 17:29 Manifest ShipCase1.txt is opened, there are 96 containers on the ship.
+12/14/2023: 17:36 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/14/2023: 17:36 Manifest ShipCase2.txt is opened, there are 4 containers on the ship.
+12/14/2023: 17:36 Manifest ShipCase3.txt is opened, there are 6 containers on the ship.
+12/14/2023: 17:36 Manifest ShipCase4.txt is opened, there are 7 containers on the ship.
+12/14/2023: 17:36 Manifest ShipCase5.txt is opened, there are 5 containers on the ship.

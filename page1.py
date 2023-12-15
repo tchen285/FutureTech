@@ -63,13 +63,12 @@ class Page1:
         self.app.page3.update_file_name(file_path)
         self.app.page4.update_file_name(file_path)
         self.file_name = os.path.splitext(os.path.basename(file_path))[0]
-        self.write_Manifest_log(base_name)
         print(self.file_name)
 
         # 初始化两个字典
         container_data = {}
         container_weight = {}
-
+        container_count = 0
         # 读取文件内容并处理
         with open(file_path, 'r') as file:
             lines = file.readlines()
@@ -106,7 +105,7 @@ class Page1:
                 # 将描述映射到重量，但排除NAN和UNUSED
                 if description != "NAN" and description != "UNUSED":
                     container_weight[description] = weight
-
+                    container_count = container_count+1
                 # 输出 container_weight，以确保它被正确更新
                 print("Container Weight Updated:")
                 print(container_weight)
@@ -121,7 +120,7 @@ class Page1:
         self.app.container_data = container_data
         self.app.container_weight = container_weight
         self.initialize_matrix()
-
+        self.write_Manifest_log(base_name, container_count)
         # Get the desktop path
         desktop_path = join(expanduser("~"), "Desktop")
 
@@ -178,13 +177,8 @@ class Page1:
         with open('log.txt', 'a') as file:
             file.write(f"{current_time} {txt} {action} \n")
 
-    def write_Manifest_log(self,base_path):
+    def write_Manifest_log(self,base_path,container_count):
         current_time = datetime.now().strftime("%m/%d/%Y: %H:%M")
-        # Initialize the container count
-        container_count = 0
-        # Read the file and count the number of non-empty lines
-        with open(base_path, 'r') as file:
-            container_count = sum(1 for line in file if line.strip())
 
         # Log the information to the log file
         with open('log.txt', 'a') as log_file:
