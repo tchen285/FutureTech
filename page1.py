@@ -161,7 +161,11 @@ class Page1:
             self.operator_name_label.config(text=f"Operator: {operator_name}")
             self.write_to_log(operator_name, "signs in")
 
-        self.app.page2.update_operator_name(operator_name)
+        self.app.update_operator_name_all_pages(operator_name)
+
+    def update_operator_name(self, name):
+        self.operator_name_label.config(text=f"Operator: {name}")
+        #self.app.page2.update_operator_name(name)
 
     def handle_comment(self):
         # Prompt the user to enter an event
