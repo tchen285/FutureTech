@@ -243,8 +243,9 @@ class FindLoadUnloadPath:
                         parent_weight += parent_matrix_tuple[row][col]
                     if current_matrix_tuple[row][col] is not None:
                         current_weight += current_matrix_tuple[row][col]
+                        
             if parent_weight > current_weight:
-                # 执行卸船
+                # Execute unloading
                 row, col, cost = self.interpret_unloading(parent_matrix_tuple, current_matrix_tuple)
                 self.idle_end = (row, col)
                 # idle_distance = abs(critical_end[0] - row) + abs(critical_end[1] - col)
@@ -252,15 +253,17 @@ class FindLoadUnloadPath:
                 description = f"Retrieve the container located at [{row},{col}] and place it onto the truck.\nThis step takes {cost} minutes"
                 self.unload_load_description.append(description)
                 self.total_cost += cost
+                
             if parent_weight == current_weight:
-                # 执行船内移动
+                # Perform intraship movement
                 start_coordinate, end_coordinate, cost = self.interpret_move(parent_matrix_tuple, current_matrix_tuple)
                 description = f"Move the container located at [{start_coordinate}] to [{end_coordinate}].\nThis step takes {cost} minutes"
                 self.unload_load_description.append(description)
                 self.idle_start = end_coordinate
                 self.total_cost += cost
+                
             if parent_weight < current_weight:
-                # 执行装船
+                # Execute shipment
                 row, col, cost = self.interpret_loading(parent_matrix_tuple, current_matrix_tuple)
                 description = f"Take the loading container from truck and place it at [{row},{col}].\nThis step takes {cost} minutes"
                 self.unload_load_description.append(description)
