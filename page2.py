@@ -94,4 +94,3 @@ class Page2:
         self.app.show_balance_cost_page()
         self.app.balance_cost_page.update_labels(steps, time_cost)
         self.app.description_page.update_descriptions(descriptions)
-

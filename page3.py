@@ -177,8 +177,3 @@ class Page3:
         with open('log.txt', 'a') as log_file:
             log_file.write(f'{current_time} "{loading_container_name}" is loaded.\n')
 
-
-
-
-
-

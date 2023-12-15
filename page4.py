@@ -90,7 +90,7 @@ class Page4:
     def hide(self):
         self.frame.grid_remove()
 
-    def update_file_name(self, file_path):
+    def update_file_name(self, file_path, file_name):
         file_name = os.path.basename(file_path)
         file_name_no_extension = os.path.splitext(file_name)[0]
         self.file_name_label.config(text=f"{file_name_no_extension}")
