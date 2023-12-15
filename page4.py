@@ -50,7 +50,7 @@ class Page4:
         print("Debug: Page4 - Updated Sequence:", self.sequence)
         print("Debug: Page4 - Updated Descriptions:", self.descriptions)
         print("Debug: Page4 - Updated Loading_containers:", self.loading_containers)
-        print(self.app.container_data[(1, 2)])  # 可以用这个方法调用
+        print(self.app.container_data[(1, 2)])  # call
 
         # Update the GUI elements with the received data
         self.unload_sequence_var.set(f"Unload Sequence: {self.sequence}")
@@ -151,13 +151,13 @@ class Page4:
         return self.sequence, self.descriptions
 
     def merge_lists_alternatively(self):
-        # 提取 loading_containers 中的 "name" 列表
+        # Extract the "name" list in loading_containers
         loading_container_names = [container["name"] for container in self.loading_containers]
 
-        # 交替合并 sequence 和 loading_container_names
+        # Alternately merge sequence and loading_container_names
         result = [item for pair in zip(self.sequence, loading_container_names) for item in pair]
 
-        # 如果一个列表较长，将其余元素添加到结果列表中
+        # If a list is longer, add the remaining elements to the resulting list
         remaining_items = self.sequence[len(loading_container_names):] + loading_container_names[len(self.sequence):]
         result.extend(remaining_items)
 
