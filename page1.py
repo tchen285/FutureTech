@@ -56,6 +56,7 @@ class Page1:
 
     def browse_file(self):
         file_path = filedialog.askopenfilename(filetypes=[("Text Files", "*.txt")])
+        base_name = os.path.basename(file_path)
         self.file_entry.delete(0, END)
         self.file_entry.insert(0, file_path)
         self.file_name = os.path.splitext(os.path.basename(file_path))[0] + "OUTBOUND.txt"
@@ -68,7 +69,7 @@ class Page1:
         # 初始化两个字典
         container_data = {}
         container_weight = {}
-
+        container_count = 0
         # 读取文件内容并处理
         with open(file_path, 'r') as file:
             lines = file.readlines()
@@ -105,7 +106,7 @@ class Page1:
                 # 将描述映射到重量，但排除NAN和UNUSED
                 if description != "NAN" and description != "UNUSED":
                     container_weight[description] = weight
-
+                    container_count = container_count+1
                 # 输出 container_weight，以确保它被正确更新
                 print("Container Weight Updated:")
                 print(container_weight)
@@ -120,7 +121,7 @@ class Page1:
         self.app.container_data = container_data
         self.app.container_weight = container_weight
         self.initialize_matrix()
-
+        self.write_Manifest_log(base_name, container_count)
         # Get the desktop path
         desktop_path = join(expanduser("~"), "Desktop")
 
@@ -161,11 +162,15 @@ class Page1:
             self.operator_name_label.config(text=f"Operator: {operator_name}")
             self.write_to_log(operator_name, "signs in")
 
-        self.app.page2.update_operator_name(operator_name)
+        self.app.update_operator_name_all_pages(operator_name)
+
+    def update_operator_name(self, name):
+        self.operator_name_label.config(text=f"Operator: {name}")
+        #self.app.page2.update_operator_name(name)
 
     def handle_comment(self):
         # Prompt the user to enter an event
-        current_operator = self.operator_name_label.cget("text").replace("Operator: ", "")+ ":"
+        current_operator = self.operator_name_label.cget("text").replace("Operator: ", "")+ " report:"
         event_comment = askstring("Comment", "Enter the event:")
         if event_comment:
             event_comment = '"'+  event_comment+ '"'
@@ -176,6 +181,15 @@ class Page1:
         current_time = datetime.now().strftime("%m/%d/%Y: %H:%M")
         with open('log.txt', 'a') as file:
             file.write(f"{current_time} {txt} {action} \n")
+
+    def write_Manifest_log(self,base_path,container_count):
+        current_time = datetime.now().strftime("%m/%d/%Y: %H:%M")
+
+        # Log the information to the log file
+        with open('log.txt', 'a') as log_file:
+            log_file.write(f"{current_time} Manifest {base_path} is opened, there are {container_count} containers on the ship.\n")
+
+        #print(f"{current_time} Manifest {file_path} is opened, there are {container_count} containers on the ship.")
 
     # For small test cases
     # def initialize_matrix(self):

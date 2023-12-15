@@ -2,7 +2,6 @@ from collections import deque
 import copy
 import os
 
-
 class FindLoadUnloadPath:
     def __init__(self, matrix, container_data, container_weight, file_path):
         self.matrix = matrix

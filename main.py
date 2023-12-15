@@ -118,10 +118,20 @@ class ShipManagementApp:
         self.show_load_unload_page.show()
 
 
+    def update_operator_name_all_pages(self, name):
+        self.page1.update_operator_name(name)
+        self.page2.update_operator_name(name)
+        self.page3.update_operator_name(name)
+        self.page4.update_operator_name(name)
+        self.balance_cost_page.update_operator_name(name)
+        self.description_page.update_operator_name(name)
+        self.load_unload_page.update_operator_name(name)
+        self.show_load_unload_page.update_operator_name(name)
+
 if __name__ == "__main__":
     root = Tk()
     root.columnconfigure(0, weight=1)
     root.rowconfigure(0, weight=1)
-    root.geometry("1100x800")  # 设置窗口大小为800x600像素
+    root.geometry("1100x800") 
     app = ShipManagementApp(root)
     root.mainloop()
