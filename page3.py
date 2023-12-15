@@ -4,6 +4,7 @@ import os
 from datetime import datetime
 from load_unload import FindLoadUnloadPath
 from show_load_unload_page import ShowLoadUnload
+from os.path import join, expanduser
 
 
 class Page3:
@@ -15,6 +16,8 @@ class Page3:
         self.descriptions = []
         self.sequence = []
         self.time_cost = 0
+        self.file_path = ""
+        self.file_name = ""
 
         file_name = self.app.page1.file_name
         self.show_load_unload_page = ShowLoadUnload(self.app)
@@ -46,7 +49,6 @@ class Page3:
 
     def continue_clicked(self):
         selected_coordinates, target_coordinates = self.get_selected_coordinates()
-        print("dayindayin&&&&&&&&&", self.sequence)
         self.app.page4.update_unload_result(self.descriptions, self.sequence, self.time_cost, self.loading_containers)
         self.app.show_load_unload_page.update_descriptions(self.descriptions)
         self.app.show_page4()
@@ -72,14 +74,13 @@ class Page3:
         for widget in self.frame.winfo_children():
             if isinstance(widget, Checkbutton) and widget.var.get() == 1:
                 description = widget.cget("text")
-                print("Selected Description:", description)
                 for coordinates in self.app.container_data:
                     if self.app.container_data[coordinates] == description:
                         print(coordinates)
                         target_coordinates.append(coordinates)
 
         # 测试起点
-        unload_finder = FindLoadUnloadPath(self.app.original_matrix, self.app.container_data, self.app.container_weight)
+        unload_finder = FindLoadUnloadPath(self.app.original_matrix, self.app.container_data, self.app.container_weight, self.file_name)
         # load_unload_finder.unload_set = target_coordinates
         for target_coordinate in target_coordinates:
             unload_finder.unload_set.add((8 - target_coordinate[0], target_coordinate[1] - 1))
@@ -91,8 +92,6 @@ class Page3:
                 print(weight)
 
         self.sequence, self.descriptions, self.time_cost = unload_finder.solve_load_unload()
-        print("&&&&&&&&&&&", self.sequence)
-        print("************", self.descriptions)
 
         return selected_coordinates, target_coordinates
 
@@ -102,10 +101,9 @@ class Page3:
     def hide(self):
         self.frame.pack_forget()
 
-    def update_file_name(self, file_path):
-        file_name = os.path.basename(file_path)
-        file_name_no_extension = os.path.splitext(file_name)[0]
-        self.file_name_label.config(text=f"{file_name_no_extension}")
+    def update_file_name(self, file_path, file_name):
+        self.file_name = file_name
+        self.file_path = file_path
 
     def set_operator_name(self):
         # Use askstring to get operator name from user
@@ -132,7 +130,7 @@ class Page3:
 
     def handle_comment(self):
         # Prompt the user to enter an event
-        current_operator = self.operator_name_label.cget("text").replace("Operator: ", "")+ " report:"
+        current_operator = self.operator_name_label.cget("text").replace("Operator: ", "")+ ":"
         event_comment = askstring("Comment", "Enter the event:")
         if event_comment:
             event_comment = '"'+  event_comment+ '"'
@@ -140,8 +138,16 @@ class Page3:
 
     def add_loading_containers(self):
         container_name = askstring("Add Loading Containers", "Enter the container name:")
+
+        # self.file_name = self.app.page1.file_name
+        # print("dsa;sldkfj;alskdjgh;alksdjf", self.file_name)
+        #
+        # desktop_path = join(expanduser("~"), "Desktop")
+        # filename = self.file_name
+        # file_path = join(desktop_path, filename)
+
         if container_name:
-            loading_container_id = len(self.loading_containers) + 100000
+            loading_container_id = 99999
             loading_container_name = f"{container_name} (loading)"
             var = IntVar()
             check_button = Checkbutton(self.frame, text=loading_container_name, font=("Arial", 18), variable=var)
@@ -156,8 +162,14 @@ class Page3:
                 "display_name": loading_container_name
             }
             self.loading_containers.append(loading_container_info)
-            print("&&&&&&&&&&&输出containers的重量: ", loading_container_id)
 
-            # self.container_weight[loading_container_name] = loading_container_id
+            print("d;slakfj________", self.file_name)
 
-            print("输出出*********", self.loading_containers)
+            # self.file_path = join(desktop_path, f"{self.file_name}.txtOUTBOUND.txt")
+
+            #
+            # with open(self.file_path, 'a') as file:
+            #     file.write(f"[00,00], {{99999}}, {loading_container_info['display_name']}\n")
+
+
+
