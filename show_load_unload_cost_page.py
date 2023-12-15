@@ -13,8 +13,11 @@ class ShowLoadUnloadCost:
         self.label2 = Label(self.frame, text="Takes 12 minutes to complete.", font=("Arial", 20), bg="white")
         self.label2.grid(row=1, column=0, pady=10)
 
-        self.start_button = Button(self.frame, text="Start", font=("Arial", 18), bg="red", command=self.app.show_description_page)
-        self.start_button.grid(row=2, column=0, pady=20)
+        self.label3 = Label(self.frame, text="Takes 12 minutes to complete.", font=("Arial", 20), bg="white")
+        self.label3.grid(row=2, column=0, pady=10)
+
+        self.start_button = Button(self.frame, text="Start", font=("Arial", 18), bg="red", command=self.app.show_load_unload_page)
+        self.start_button.grid(row=3, column=0, pady=20)
 
     def show(self):
         self.frame.grid()
@@ -23,8 +26,10 @@ class ShowLoadUnloadCost:
         self.frame.grid_remove()
 
 
-    def update_labels(self, steps, time):
+    def update_labels(self, steps, time, final_sequence):
         self.label1.config(text=f'The balance process has {steps} steps.')
         self.label2.config(text=f'Takes {time} minutes to complete.')
+        sequence = ' -> '.join(final_sequence)
+        self.label3.config(text=f'The sequence of loading and unloading is: \n\n{sequence}')
 
 

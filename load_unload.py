@@ -66,7 +66,7 @@ class FindLoadUnloadPath:
 
         self.interpret_final_matrix(self.final_matrix)
         reversed_array = self.unload_load_description[::-1]
-        keyword = "Move the container located"
+        keyword = "Move"
         for i in range(len(reversed_array)):
             if keyword in reversed_array[i]:
                 idle_dist = abs(self.idle_start[0] - self.idle_end[0]) + abs(self.idle_start[1] - self.idle_end[1])
@@ -85,6 +85,7 @@ class FindLoadUnloadPath:
 
         print("\ntotal cost is: ", self.total_cost)
         print("********shishishishishih ", self.container_data[(1, 2)])  # 成功!!!
+        print("))))))))测试unload Sequence", self.unload_sequence)
         return self.unload_sequence, self.total_description, self.total_cost
 
 
@@ -92,7 +93,7 @@ class FindLoadUnloadPath:
     def solve_current_column(self, matrix, original_matrix, col):
         for row1 in range(self.rows):
             if (row1, col) in self.unload_set:
-                self.unload_sequence.append((row1, col))
+                self.unload_sequence.append(self.container_data[(8 - row1, col + 1)])
                 self.unload_set.remove((row1, col))
                 matrix[row1][col] = 0
                 matrix_tuple = tuple(map(tuple, matrix))
@@ -248,14 +249,14 @@ class FindLoadUnloadPath:
                 self.idle_end = (row, col)
                 # idle_distance = abs(critical_end[0] - row) + abs(critical_end[1] - col)
                 # print(f"Move the crane from [{critical_end}] to [{row},{col}].\nThis step takes {idle_distance} minutes")
-                description = f"Retrieve the container located at [{8 - row},{col + 1}] and place it onto the truck.\nThis step takes {cost} minutes."
+                description = f"Retrieve {self.container_data[(8 - row, col + 1)]} ({self.container_weight[self.container_data[(8 - row, col + 1)]]}kg) located at [{8 - row},{col + 1}] and place it onto the truck.\nThis step takes {cost} minutes."
                 self.unload_load_description.append(description)
                 self.total_cost += cost
 
             if parent_weight == current_weight:
                 # 执行船内移动
                 start_coordinate, end_coordinate, cost = self.interpret_move(parent_matrix_tuple, current_matrix_tuple)
-                description = f"Move the container located at [{8 - start_coordinate}] to [{end_coordinate + 1}].\nThis step takes {cost} minutes."
+                description = f"Move {self.container_data[(8 - start_coordinate, end_coordinate + 1)]} ({self.container_weight[self.container_data[(8 - start_coordinate, end_coordinate + 1)]]}kg) located at [{8 - start_coordinate}] to [{end_coordinate + 1}].\nThis step takes {cost} minutes."
                 self.unload_load_description.append(description)
                 self.idle_start = end_coordinate
                 self.total_cost += cost
