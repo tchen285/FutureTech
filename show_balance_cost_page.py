@@ -15,8 +15,14 @@ class ShowBalanceCost:
         self.label2 = Label(self.frame, text="Takes 12 minutes to complete.", font=("Arial", 20), bg="white")
         self.label2.grid(row=1, column=0, pady=10)
 
+        self.label3 = Label(self.frame, text="", font=("Arial", 20), bg="white")
+        self.label3.grid(row=2, column=0, pady=10)
+
+        self.label4 = Label(self.frame, text="", font=("Arial", 20), bg="white")
+        self.label4.grid(row=3, column=0, pady=10)
+
         self.start_button = Button(self.frame, text="Start", font=("Arial", 18), bg="red", command=self.app.show_description_page)
-        self.start_button.grid(row=2, column=0, pady=20)
+        self.start_button.grid(row=4, column=0, pady=20)
 
         # Add a button to set operator name
         self.set_operator_name_button = Button(self.frame, text="Check in", font=("Arial", 14), bg="orange",
@@ -34,13 +40,20 @@ class ShowBalanceCost:
     def show(self):
         self.frame.grid()
 
+
     def hide(self):
         self.frame.grid_remove()
 
-    def update_labels(self, steps, time):
-        self.label1.config(text=f'The balance process has {steps} steps.')
-        self.label2.config(text=f'Takes {time} minutes to complete.')
-        self.write_balancing_log("Balancing complete")
+    def update_labels(self, steps, time, sift):
+        if sift:
+            self.label1.config(text="This ship cannot be balanced")
+            self.label2.config(text="Need to perform a SIFT process")
+            self.label3.config(text=f'The SIFT process has {steps} steps.')
+            self.label4.config(text=f'Takes {time} minutes to complete.')
+        else:
+            self.label1.config(text=f'The balance process has {steps} steps.')
+            self.label2.config(text=f'Takes {time} minutes to complete.')
+            self.write_balancing_log("Balancing complete")
 
     def write_balancing_log(self, text):
         current_time = datetime.now().strftime("%m/%d/%Y: %H:%M")
