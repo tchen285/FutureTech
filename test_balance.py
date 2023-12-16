@@ -48,7 +48,7 @@ class FindBalancingPath:
             level_size = len(self.queue)
             for _ in range(level_size):
                 popped_matrix = self.queue.popleft()
-                # 判断初始状态是否已经平衡
+
                 if self.is_balanced(popped_matrix):
                     return
 
@@ -128,8 +128,10 @@ class FindBalancingPath:
                                 return True
 
                             matrix_tuple = tuple(tuple(row) for row in matrix)
+
                             if matrix_tuple in self.visited:
                                 continue  # 这里这种情况是无限循环的根源
+
 
                             self.visited.add(matrix_tuple)
                             self.queue.append(copy.deepcopy(matrix))
@@ -143,6 +145,9 @@ class FindBalancingPath:
             matrix[i][j] if matrix[i][j] is not None else 0 for i in range(self.rows) for j in range(self.cols // 2))
         right_sum = sum(matrix[i][j] if matrix[i][j] is not None else 0 for i in range(self.rows) for j in
                         range(self.cols // 2, self.cols))
+
+        if left_sum == right_sum:
+            return True
 
         # Ensure that denominator is not zero
         max_sum = max(left_sum, right_sum)
@@ -210,6 +215,7 @@ class FindBalancingPath:
         start_height = self.rows - idle_start[0]
         end_height = self.rows - idle_end[0]
         mid_height = 0
+        
         for col in range(min(idle_start[1], idle_end[1]) + 1, max(idle_start[1], idle_end[1])):
             for row in range(self.rows):
                 if idle_matrix_tuple[row][col] != 0:
@@ -390,11 +396,6 @@ def main():
     #     [10, 0, 0, 2],
     #     [None, 2, 14, None]
     # ]
-
-    matrix = [ # passed time cost test,
-        [6, 4, 0, 0],
-        [None, 10, None, None]
-    ]
 
     matrix = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],

@@ -25,7 +25,7 @@ class FindBalancingPath:
         self.idle_matrix_tuple = []
         self.idle_ends = []
         self.idle_descriptions = []
-        # 用于储存输出在软件页面上的steps
+        # Used to store steps output on the software page
         self.description_list = []
 
     def solve_balancing(self):
@@ -39,14 +39,14 @@ class FindBalancingPath:
         )
         print("total sum and max:", total_sum, max_element)
         if 0.9 * max_element > (total_sum - max_element):
-            print("无法找到结果")
+            print("no solution")
             return
 
         while self.queue:
             level_size = len(self.queue)
             for _ in range(level_size):
                 popped_matrix = self.queue.popleft()
-                # 判断初始状态是否已经平衡
+                # Determine whether the initial state is balanced
                 if self.is_balanced(popped_matrix):
                     return
 
@@ -100,13 +100,13 @@ class FindBalancingPath:
                                 while self.idle_matrix_tuple[-i] != self.goal_matrix_tuple and self.idle_matrix_tuple[
                                     -i] != self.start_matrix_tuple:
                                     idle_start = self.idle_starts[-i]
-                                    print("\n空转起点: ", idle_start)
+                                    print("\nidling starting point: ", idle_start)
                                     idle_matrix_tuple = self.idle_matrix_tuple[-i]
-                                    print("\n空转矩阵: ", idle_matrix_tuple)
+                                    print("\nIdling matrix: ", idle_matrix_tuple)
                                     idle_end = self.idle_ends[-(i + 1)]
-                                    print("\n空转终点: ", idle_end)
+                                    print("\nidling end point: ", idle_end)
                                     idle_distance = self.find_idle_distance(idle_start, idle_matrix_tuple, idle_end)
-                                    print("\n空转距离", idle_distance)
+                                    print("\nidling distance", idle_distance)
                                     idle_description = f"\nMove crane from {idle_start} to {idle_end}. It takes {idle_distance} minutes."
                                     self.idle_descriptions.append(idle_description)
                                     self.total_cost += idle_distance
@@ -126,8 +126,9 @@ class FindBalancingPath:
                                 return True
 
                             matrix_tuple = tuple(tuple(row) for row in matrix)
+                            # This situation here is the source of the infinite loop
                             if matrix_tuple in self.visited:
-                                continue  # 这里这种情况是无限循环的根源
+                                continue
 
                             self.visited.add(matrix_tuple)
                             self.queue.append(copy.deepcopy(matrix))
@@ -225,7 +226,9 @@ class FindBalancingPath:
     def replace_coordinates(self, coordinates1, coordinates2):
         desktop_path = join(expanduser("~"), "Desktop")
         filename = self.file_name
+
         file_path = join(desktop_path, filename)
+        print("Print file name:", filename)
 
         with open(file_path, 'r') as file:
             lines = file.readlines()

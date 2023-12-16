@@ -16,11 +16,11 @@ class ShipManagementApp:
         self.root.config(padx=20, pady=20, bg="white")
 
         self.balance_list = []
-        # 初始化矩阵
+        # Initialization matrix
         self.original_matrix = None
 
 
-        # 初始化页面
+        # Initialization page
         self.page1 = Page1(self)
         self.page2 = Page2(self)
         self.page3 = Page3(self)
@@ -30,7 +30,7 @@ class ShipManagementApp:
         self.load_unload_page = ShowLoadUnloadCost(self)
         self.show_load_unload_page = ShowLoadUnload(self)
 
-        # 初始化两个字典
+        # Initialize two dictionaries
         self.container_data = {}   # self.container_data[coordinate] = description
         self.container_weight = {} # self.container_weight[description] = weight
 
