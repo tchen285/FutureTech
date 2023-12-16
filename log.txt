@@ -151,3 +151,15 @@
 12/15/2023: 00:32 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
 12/15/2023: 00:32 "Ram (loading)" is loaded.
 12/15/2023: 00:32 "[]" is offloaded.
+12/15/2023: 12:00 Manifest ShipCase1.txt is opened, there are 2 containers on the ship.
+12/15/2023: 12:00 "['Cat']" is offloaded.
+12/15/2023: 12:03 Manifest ShipCase5.txt is opened, there are 5 containers on the ship.
+12/15/2023: 12:04  Balancing complete.
+12/15/2023: 12:05 Manifest ShipCase5.txt is opened, there are 5 containers on the ship.
+12/15/2023: 12:05 "['Cat', 'Dog']" is offloaded.
+12/15/2023: 12:24 Manifest ShipCase5.txt is opened, there are 5 containers on the ship.
+12/15/2023: 16:25 Manifest ShipCase3.txt is opened, there are 6 containers on the ship.
+12/15/2023: 16:29 Manifest ShipCase3.txt is opened, there are 6 containers on the ship.
+12/15/2023: 16:29 "['Ewe', 'Cow']" is offloaded.
+12/15/2023: 16:30 Manifest ShipCase3.txt is opened, there are 6 containers on the ship.
+12/15/2023: 16:30 "['Dog', 'Rat', 'Ewe', 'Cow']" is offloaded.
