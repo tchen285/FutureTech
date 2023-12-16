@@ -282,7 +282,7 @@ class FindLoadUnloadPath:
             if parent_weight == current_weight:
                 # 执行船内移动
                 start_coordinate, end_coordinate, cost = self.interpret_move(parent_matrix_tuple, current_matrix_tuple)
-                description = f"Move {self.container_data[(8 - start_coordinate, start_coordinate + 1)]} ({self.container_weight[self.container_data[(8 - start_coordinate, start_coordinate + 1)]]}kg) located at [{8 - end_coordinate}] to [{end_coordinate + 1}].\nThis step takes {cost} minutes."
+                description = f"Move {self.container_data[(8 - start_coordinate[0], start_coordinate[1] + 1)]} ({self.container_weight[self.container_data[(8 - start_coordinate[0], start_coordinate[1] + 1)]]}kg) located at [{8 - end_coordinate[0]}] to [{end_coordinate[1] + 1}].\nThis step takes {cost} minutes."
                 self.unload_load_description.append(description)
                 self.idle_start = end_coordinate
                 self.total_cost += cost

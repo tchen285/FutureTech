@@ -244,51 +244,51 @@ class FindBalancingPath:
             file.writelines(lines)
 
 
-# def main():
-#     # matrix = [
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [1, 0, 0, 0, 0, 0, 0, 0, 0, 10],
-#     #     [25, 30, 20, 20, 0, 0, 15, 10, 101, 50],
-#     #     [101, 101, 5, 101, 25, 20, 51, 101, 101, 29]
-#     # ]
-#
-#     # matrix = [ # passed time cost test,
-#     #     [3, 3, 0, 0],
-#     #     [10, 4, 0, None]
-#     # ]
-#
-#     # matrix = [ # passed time cost test, no idle needed
-#     #     [10, 0, 3, 0],
-#     #     [None, 4, 3, None]
-#     # ]
-#
-#     # matrix = [ # passed time cost test, no idle needed
-#     #     [10, 0, 0, 2],
-#     #     [None, 2, 14, None]
-#     # ]
-#
-#     matrix = [ # passed time cost test,
-#         [6, 4, 0, 0],
-#         [None, 10, None, None]
-#     ]
-#
-#     # matrix = [ # passed time cost test,
-#     #     [0, 0, 3, 1],
-#     #     [5, 9, 1, 1]
-#     # ]
-#     #
-#     # matrix = [ # passed time cost test, passed idle
-#     #     [0, 2, 3, 0],
-#     #     [1, 1, 2, 7]
-#     # ]
-#
-#     balancing_path_finder = FindBalancingPath(matrix)
-#     balancing_path_finder.solve_balancing()
-#
-#
-# if __name__ == "__main__":
-#     main()
+def main():
+    # matrix = [
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [1, 0, 0, 0, 0, 0, 0, 0, 0, 10],
+    #     [25, 30, 20, 20, 0, 0, 15, 10, 101, 50],
+    #     [101, 101, 5, 101, 25, 20, 51, 101, 101, 29]
+    # ]
+
+    # matrix = [ # passed time cost test,
+    #     [3, 3, 0, 0],
+    #     [10, 4, 0, None]
+    # ]
+
+    # matrix = [ # passed time cost test, no idle needed
+    #     [10, 0, 3, 0],
+    #     [None, 4, 3, None]
+    # ]
+
+    # matrix = [ # passed time cost test, no idle needed
+    #     [10, 0, 0, 2],
+    #     [None, 2, 14, None]
+    # ]
+
+    matrix = [ # passed time cost test,
+        [6, 4, 0, 0],
+        [None, 10, None, None]
+    ]
+
+    # matrix = [ # passed time cost test,
+    #     [0, 0, 3, 1],
+    #     [5, 9, 1, 1]
+    # ]
+    #
+    # matrix = [ # passed time cost test, passed idle
+    #     [0, 2, 3, 0],
+    #     [1, 1, 2, 7]
+    # ]
+
+    balancing_path_finder = FindBalancingPath(matrix)
+    balancing_path_finder.solve_balancing()
+
+
+if __name__ == "__main__":
+    main()
