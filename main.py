@@ -8,7 +8,6 @@ from show_description_page import ShowDescriptions
 from show_load_unload_cost_page import ShowLoadUnloadCost
 from show_load_unload_page import ShowLoadUnload
 
-
 class ShipManagementApp:
     def __init__(self, root):
         self.root = root
@@ -18,7 +17,6 @@ class ShipManagementApp:
         self.balance_list = []
         # Initialization matrix
         self.original_matrix = None
-
 
         # Initialization page
         self.page1 = Page1(self)
@@ -35,7 +33,6 @@ class ShipManagementApp:
         self.container_weight = {} # self.container_weight[description] = weight
 
         self.show_page1()
-
 
     def show_page1(self):
         self.page2.hide()
@@ -117,7 +114,6 @@ class ShipManagementApp:
         self.load_unload_page.hide()
         self.show_load_unload_page.show()
 
-
     def update_operator_name_all_pages(self, name):
         self.page1.update_operator_name(name)
         self.page2.update_operator_name(name)
@@ -132,6 +128,6 @@ if __name__ == "__main__":
     root = Tk()
     root.columnconfigure(0, weight=1)
     root.rowconfigure(0, weight=1)
-    root.geometry("1100x800") 
+    root.geometry("1300x800")
     app = ShipManagementApp(root)
     root.mainloop()

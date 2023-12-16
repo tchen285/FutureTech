@@ -12,21 +12,21 @@ class ShowDescriptions:
         self.descriptions = []
         self.current_step = 0
 
-        self.file_name_label = Label(self.frame, text="file_name", font=("Arial", 20), bg="white", fg="red")
+        self.file_name_label = Label(self.frame, text="", font=("Arial", 20), bg="white", fg="black")
         self.file_name_label.grid(row=0, column=0, padx=10, pady=10, sticky="e")
 
         self.label1 = Label(self.frame, text="", font=("Arial", 20), bg="white", justify="center")
         self.label1.grid(row=1, column=1, padx=20, pady=20)
 
-        self.start_button = Button(self.frame, text="Next Step", font=("Arial", 18), bg="red", command=self.next_step, state=DISABLED)
+        self.start_button = Button(self.frame, text="Next Step", font=("Arial", 18), bg="light green", command=self.next_step, state=DISABLED)
         self.start_button.grid(row=2, column=1, pady=20)
 
-        self.new_task_button = Button(self.frame, text="Start a new task", font=("Arial", 18), bg="green", command=self.start_new_task)
+        self.new_task_button = Button(self.frame, text="Start a New Task", font=("Arial", 18), bg="light green", command=self.start_new_task)
         self.new_task_button.grid(row=3, column=1, pady=20)
         self.new_task_button.grid_remove()  # Initially hide the "Start a new task" button
 
         # Add a button to set operator name
-        self.set_operator_name_button = Button(self.frame, text="Check in", font=("Arial", 14), bg="orange",
+        self.set_operator_name_button = Button(self.frame, text="Check In", font=("Arial", 14), bg="orange",
                                           command=self.set_operator_name)
         self.set_operator_name_button.grid(row=0, column=4, padx=10, pady=10)
 
@@ -35,7 +35,7 @@ class ShowDescriptions:
         self.comment_button.grid(row=5, column=1, padx=10, pady=10)
 
         # Display operator name label
-        self.operator_name_label = Label(self.frame, text="Hello Name!", font=("Arial", 14), bg="white")
+        self.operator_name_label = Label(self.frame, text="Enter Your Name Please", font=("Arial", 14), bg="white")
         self.operator_name_label.grid(row=1, column=4, padx=10, pady=10)
     def show(self):
         self.frame.grid()
@@ -53,7 +53,7 @@ class ShowDescriptions:
             self.current_step += 1
             self.update_label()
         else:
-            self.label1.config(text="Task done!\n\nDon't forget to send the updated manifest to the captain.")
+            self.label1.config(text="Task Done\n\nPlease Send the Updated Manifest to the Captain")
             self.start_button.grid_remove()
             self.new_task_button.grid()
 
@@ -78,10 +78,10 @@ class ShowDescriptions:
         self.new_task_button.grid_remove()
 
     def update_file_name(self, file_path):
-        print(f"$$$$$Updating file name with path: {file_path}")
+        print(f"$$$$$Updating File Name with Path: {file_path}")
         file_name = os.path.basename(file_path)
         file_name_no_extension = os.path.splitext(file_name)[0]
-        print(f"$$$$$Updated file name: {file_name_no_extension}")
+        print(f"$$$$$Updated File Name: {file_name_no_extension}")
         self.file_name_label.config(text=f"{file_name_no_extension}")
 
     def set_operator_name(self):
@@ -109,7 +109,7 @@ class ShowDescriptions:
 
     def handle_comment(self):
         # Prompt the user to enter an event
-        current_operator = self.operator_name_label.cget("text").replace("Operator: ", "") + " report:"
+        current_operator = self.operator_name_label.cget("text").replace("Operator: ", "") + " Report:"
         event_comment = askstring("Comment", "Enter the event:")
         if event_comment:
             event_comment = '"' + event_comment + '"'

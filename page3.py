@@ -6,7 +6,6 @@ from load_unload import FindLoadUnloadPath
 from show_load_unload_page import ShowLoadUnload
 from os.path import join, expanduser
 
-
 class Page3:
     def __init__(self, app):
         self.app = app
@@ -25,14 +24,13 @@ class Page3:
         self.file_name_label = Label(self.frame, text=file_name, font=("Arial", 14), bg="white", fg="red")
         self.file_name_label.pack(pady=20)
 
-        self.the_label = Label(self.frame, text="Select the containers you want to unload", font=("Arial", 24), bg="white")
+        self.the_label = Label(self.frame, text="Select the Containers You Want to Unload", font=("Arial", 24), bg="white")
         self.the_label.pack(pady=20)
 
-        continue_button = Button(self.frame, text="Continue", font=("Arial", 18), bg="white", command=self.continue_clicked)
+        continue_button = Button(self.frame, text="Continue", font=("Arial", 18), bg="light green", command=self.continue_clicked)
         continue_button.pack(side="bottom", pady=(10, 50))
 
-        continue_with_loading_button = Button(self.frame, text="Adding loading containers", font=("Arial", 18),
-                                              bg="red", command=self.add_loading_containers)
+        continue_with_loading_button = Button(self.frame, text="Adding Loading Containers", font=("Arial", 18), bg="yellow", command=self.add_loading_containers)
         continue_with_loading_button.pack(side="bottom", pady=10)
 
         # Add a button to set operator name
@@ -79,7 +77,7 @@ class Page3:
                         print(coordinates)
                         target_coordinates.append(coordinates)
 
-        # tesing start
+        # testing start
         unload_finder = FindLoadUnloadPath(self.app.original_matrix, self.app.container_data, self.app.container_weight, self.file_name)
         # load_unload_finder.unload_set = target_coordinates
         for target_coordinate in target_coordinates:
@@ -166,14 +164,9 @@ class Page3:
             self.write_load_log(loading_container_name)
             # self.container_weight[loading_container_name] = loading_container_id
 
-
-
-
-
     def write_load_log(self, loading_container_name):
         current_time = datetime.now().strftime("%m/%d/%Y: %H:%M")
 
         # Log the information to the log file
         with open('log.txt', 'a') as log_file:
             log_file.write(f'{current_time} "{loading_container_name}" is loaded.\n')
-

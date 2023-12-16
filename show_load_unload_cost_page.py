@@ -8,23 +8,23 @@ class ShowLoadUnloadCost:
         self.frame = Frame(app.root, bg="white")
 
         # Initialize labels
-        self.label1 = Label(self.frame, text=f"The load / unload process has 2 steps.", font=("Arial", 20), bg="white")
+        self.label1 = Label(self.frame, text=f"Load / Unload Process has 2 Steps.", font=("Arial", 20), bg="white")
         self.label1.grid(row=0, column=0, pady=10)
 
-        self.label2 = Label(self.frame, text="Takes 12 minutes to complete.", font=("Arial", 20), bg="white")
+        self.label2 = Label(self.frame, text="Takes 12 Minutes to Complete.", font=("Arial", 20), bg="white")
         self.label2.grid(row=1, column=0, pady=10)
 
-        self.label3 = Label(self.frame, text="Takes 12 minutes to complete.", font=("Arial", 20), bg="white")
+        self.label3 = Label(self.frame, text="Takes 12 Minutes to Complete.", font=("Arial", 20), bg="white")
         self.label3.grid(row=2, column=0, pady=10)
 
         self.start_button = Button(self.frame, text="Start", font=("Arial", 18), bg="red", command=self.app.show_load_unload_page)
         self.start_button.grid(row=3, column=0, pady=20)
 
-        self.set_operator_name_button = Button(self.frame, text="Check in", font=("Arial", 14), bg="orange",
+        self.set_operator_name_button = Button(self.frame, text="Check In", font=("Arial", 14), bg="orange",
                                           command=self.set_operator_name)
         self.set_operator_name_button.grid(row=0, column=4, padx=10, pady=10)
 
-        self.operator_name_label = Label(self.frame, text="Hello Name!", font=("Arial", 14), bg="white")
+        self.operator_name_label = Label(self.frame, text="Enter Your Name Please", font=("Arial", 14), bg="white")
         self.operator_name_label.grid(row=1, column=4, padx=10, pady=10)
 
     def show(self):
@@ -35,10 +35,10 @@ class ShowLoadUnloadCost:
 
 
     def update_labels(self, steps, time, final_sequence):
-        self.label1.config(text=f'The balance process has {steps} steps.')
-        self.label2.config(text=f'Takes {time} minutes to complete.')
+        self.label1.config(text=f'The Balance Process has {steps} Steps')
+        self.label2.config(text=f'Takes {time} Minutes to Complete')
         sequence = ' -> '.join(final_sequence)
-        self.label3.config(text=f'The sequence of loading and unloading is: \n\n{sequence}')
+        self.label3.config(text=f'The Sequence of Loading and Unloading: \n\n{sequence}')
 
 
 

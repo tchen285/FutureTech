@@ -6,7 +6,6 @@ from balancing import FindBalancingPath
 import os
 from datetime import datetime
 class Page1:
-
     def __init__(self, app):
         self.app = app
         self.operator_name_label = None  # This should be initialized appropriately
@@ -29,24 +28,24 @@ class Page1:
         canvas.create_image(0, 0, anchor='nw', image=self.small_logo)
         canvas.grid(row=0, column=0)
 
-        label = Label(self.frame, text="Upload a manifest file", font=("Arial", 24), bg="white")
+        label = Label(self.frame, text="Upload a Manifest File", font=("Arial", 24), bg="white")
         label.grid(row=1, column=1, pady=20)
 
         self.file_entry = Entry(self.frame, font=("Arial", 18), justify='center', width=40)
         self.file_entry.grid(row=2, column=1, pady=20)
 
-        browse_button = Button(self.frame, text="Browse", font=("Arial", 18), bg="blue", command=self.browse_file)
+        browse_button = Button(self.frame, text="Browse", font=("Arial", 18), bg="light blue", command=self.browse_file)
         browse_button.grid(row=2, column=2, pady=20)
 
-        continue_button = Button(self.frame, text="Continue", font=("Arial", 18), bg="blue", command=app.show_page2)
+        continue_button = Button(self.frame, text="Continue", font=("Arial", 18), bg="light green", command=app.show_page2)
         continue_button.grid(row=4, column=1, pady=20)
 
         # Add the comment button
-        comment_button = Button(self.frame, text="Comment", font=("Arial", 14), bg="blue", command=self.handle_comment)
+        comment_button = Button(self.frame, text="Comment", font=("Arial", 14), bg="red", command=self.handle_comment)
         comment_button.grid(row=5, column=1, padx=10, pady=10)
 
         # Add a button to set operator name
-        set_operator_name_button = Button(self.frame, text="Check in", font=("Arial", 14), bg="blue",
+        set_operator_name_button = Button(self.frame, text="Check In", font=("Arial", 14), bg="orange",
                                           command=self.set_operator_name)
         set_operator_name_button.grid(row=0, column=3, padx=10, pady=10)
 
@@ -152,11 +151,9 @@ class Page1:
         self.app.page3.set_file_content(self.file_content)
         self.app.show_page3()
 
-
     def set_operator_name(self):
         # Use askstring to get operator name from user
         operator_name = askstring("Operator Name", "Enter Your Name:")
-
 
         if operator_name:
            # if current_operator != "":
@@ -178,7 +175,6 @@ class Page1:
         if event_comment:
             event_comment = '"'+  event_comment+ '"'
             self.write_to_log(current_operator, event_comment)
-
 
     def write_to_log(self, txt, action):
         current_time = datetime.now().strftime("%m/%d/%Y: %H:%M")
@@ -212,7 +208,6 @@ class Page1:
     #     print("\nModified Matrix:")
     #     for row in original_matrix:
     #         print(row)
-
 
     # For regular test cases
     def initialize_matrix(self):

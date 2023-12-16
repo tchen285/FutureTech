@@ -3,7 +3,6 @@ from os.path import join, expanduser
 import copy
 import re
 
-
 class FindBalancingPath:
     def __init__(self, matrix, file_name, container_data, container_weight):
         self.container_data = container_data
@@ -26,7 +25,6 @@ class FindBalancingPath:
         self.idle_matrix_tuple = []
         self.idle_ends = []
         self.idle_descriptions = []
-        # 用于储存输出在软件页面上的steps
         self.description_list = []
 
     def solve_balancing(self):
@@ -38,10 +36,9 @@ class FindBalancingPath:
             self.start_matrix_tuple[i][j] if self.start_matrix_tuple[i][j] is not None else float('-inf')
             for i in range(self.rows) for j in range(self.cols)
         )
-        print("total sum and max:", total_sum, max_element)
+        print("Total Sum and Maximum:", total_sum, max_element)
         if 0.9 * max_element > (total_sum - max_element):
             self.sift(self.matrix)
-            print("测试测试测试:)_))))))))", self.description_list)
             return
 
         while self.queue:
@@ -102,14 +99,14 @@ class FindBalancingPath:
                                 while self.idle_matrix_tuple[-i] != self.goal_matrix_tuple and self.idle_matrix_tuple[
                                     -i] != self.start_matrix_tuple:
                                     idle_start = self.idle_starts[-i]
-                                    print("\n空转起点: ", idle_start)
+                                    print(idle_start)
                                     idle_matrix_tuple = self.idle_matrix_tuple[-i]
-                                    print("\n空转矩阵: ", idle_matrix_tuple)
+                                    print(idle_matrix_tuple)
                                     idle_end = self.idle_ends[-(i + 1)]
-                                    print("\n空转终点: ", idle_end)
+                                    print(idle_end)
                                     idle_distance = self.find_idle_distance(idle_start, idle_matrix_tuple, idle_end)
-                                    print("\n空转距离", idle_distance)
-                                    idle_description = f"\nMove crane from {idle_start} to {idle_end}. It takes {idle_distance} minutes."
+                                    print(idle_distance)
+                                    idle_description = f"\nMove Crane from {idle_start} to {idle_end}. It takes {idle_distance} Minutes."
                                     self.idle_descriptions.append(idle_description)
                                     self.total_cost += idle_distance
                                     i += 1
@@ -130,8 +127,7 @@ class FindBalancingPath:
                             matrix_tuple = tuple(tuple(row) for row in matrix)
 
                             if matrix_tuple in self.visited:
-                                continue  # 这里这种情况是无限循环的根源
-
+                                continue
 
                             self.visited.add(matrix_tuple)
                             self.queue.append(copy.deepcopy(matrix))
@@ -181,7 +177,7 @@ class FindBalancingPath:
         self.total_cost += distance
 
         # move_description = f"\nMove {self.container_data[moves[0]]} ({self.container_weight[self.container_data[moves[0]]]}kg) at {moves[0]} to {moves[1]}. It takes {distance} minutes."
-        move_description = f"\nMove container at {moves[0]} to {moves[1]}. It takes {distance} minutes."
+        move_description = f"\nMove Container at {moves[0]} to {moves[1]}. It takes {distance} Minutes."
         self.move_descriptions.append(move_description)
         self.idle_ends.append(moves[0])
         self.idle_starts.append(moves[1])
@@ -316,7 +312,7 @@ class FindBalancingPath:
 
                                     idle_distance = self.find_idle_distance(idle_start, idle_matrix_tuple, idle_end)
 
-                                    idle_description = f"\nMove crane from {idle_start} to {idle_end}. It takes {idle_distance} minutes."
+                                    idle_description = f"\nMove Crane from {idle_start} to {idle_end}. It Takes {idle_distance} Minutes."
                                     self.idle_descriptions.append(idle_description)
                                     self.total_cost += idle_distance
                                     i += 1
@@ -331,7 +327,7 @@ class FindBalancingPath:
                                     index2 += 1
                                 print(self.move_descriptions[0])
                                 self.description_list.append(self.move_descriptions[0])
-                                print("\nTotal time cost: ", self.total_cost, " minutes.")
+                                print("\nTotal Time Cost: ", self.total_cost, " Minutes.")
                                 return True
 
                             matrix_tuple = tuple(tuple(row) for row in matrix)

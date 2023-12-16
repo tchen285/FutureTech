@@ -22,15 +22,15 @@ class ShowLoadUnload:
         self.start_button = Button(self.frame, text="Next Step", font=("Arial", 18), bg="red", command=self.next_step, state=DISABLED)
         self.start_button.grid(row=3, column=1, pady=20)
 
-        self.new_task_button = Button(self.frame, text="Start a new task", font=("Arial", 18), bg="green", command=self.start_new_task)
+        self.new_task_button = Button(self.frame, text="Start a New Task", font=("Arial", 18), bg="green", command=self.start_new_task)
         self.new_task_button.grid(row=4, column=1, pady=20)
         self.new_task_button.grid_remove()  # Initially hide the "Start a new task" button
 
-        self.set_operator_name_button = Button(self.frame, text="Check in", font=("Arial", 14), bg="orange",
+        self.set_operator_name_button = Button(self.frame, text="Check In", font=("Arial", 14), bg="orange",
                                                command=self.set_operator_name)
         self.set_operator_name_button.grid(row=0, column=4, padx=10, pady=10)
 
-        self.operator_name_label = Label(self.frame, text="Hello Name!", font=("Arial", 14), bg="white")
+        self.operator_name_label = Label(self.frame, text="Enter Your Name Please", font=("Arial", 14), bg="white")
         self.operator_name_label.grid(row=1, column=4, padx=10, pady=10)
 
     def show(self):
@@ -75,23 +75,23 @@ class ShowLoadUnload:
         # Check if the current description contains the keyword
         if "Take the loading container" in description_text:
             # Display the "Enter weight" button
-            self.enter_weight_button = Button(self.frame, text="Enter weight", font=("Arial", 18), bg="blue",
+            self.enter_weight_button = Button(self.frame, text="Enter Weight", font=("Arial", 18), bg="light blue",
                                               command=self.enter_weight)
             self.enter_weight_button.grid(row=5, column=1, pady=20)
 
     def enter_weight(self):
         # Prompt the user to enter the weight
-        weight = askfloat("Enter Weight", "Enter the weight of the loading container:")
+        weight = askfloat("Enter Weight", "Enter the Weight of the Loading Container:")
         if weight is not None:
             # Do something with the entered weight (e.g., store it, print it)
             print("Entered weight:", weight)
 
-    def enter_weight(self):
-        # Prompt the user to enter the weight
-        weight = askfloat("Enter Weight", "Enter the weight of the loading container:")
-        if weight is not None:
-            # Do something with the entered weight (e.g., store it, print it)
-            print("Entered weight:", weight)
+    # def enter_weight(self):
+    #     # Prompt the user to enter the weight
+    #     weight = askfloat("Enter Weight", "Enter the weight of the loading container:")
+    #     if weight is not None:
+    #         # Do something with the entered weight (e.g., store it, print it)
+    #         print("Entered weight:", weight)
 
     def reset(self):
         self.descriptions = []
@@ -101,10 +101,10 @@ class ShowLoadUnload:
         self.new_task_button.grid_remove()
 
     def update_file_name(self, file_path):
-        print(f"$$$$$Updating file name with path: {file_path}")
+        print(f"$$$$$Updating File Name with Path: {file_path}")
         file_name = os.path.basename(file_path)
         file_name_no_extension = os.path.splitext(file_name)[0]
-        print(f"$$$$$Updated file name: {file_name_no_extension}")
+        print(f"$$$$$Updated File Name: {file_name_no_extension}")
         self.file_name_label.config(text=f"{file_name_no_extension}")
 
 

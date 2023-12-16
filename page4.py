@@ -4,7 +4,6 @@ import os
 from datetime import datetime
 from show_load_unload_cost_page import ShowLoadUnloadCost  # Import the relevant class
 
-
 class Page4:
     def __init__(self, app):
         self.app = app
@@ -14,16 +13,15 @@ class Page4:
         self.loading_containers = []
         self.final_sequence = []
 
-        self.file_name_label = Label(self.frame, text=self.app.page1.file_name, font=("Arial", 14), bg="white",
-                                     fg="red")
+        self.file_name_label = Label(self.frame, text=self.app.page1.file_name, font=("Arial", 14), bg="white", fg="red")
         self.file_name_label.pack(pady=20)
 
         # Add a button to set operator name
-        set_operator_name_button = Button(self.frame, text="Check in", font=("Arial", 14), bg="orange",
+        set_operator_name_button = Button(self.frame, text="Check In", font=("Arial", 14), bg="orange",
                                           command=self.set_operator_name)
         set_operator_name_button.pack(pady=20)
 
-        continue_button = Button(self.frame, text="Continue", font=("Arial", 18), bg="white",
+        continue_button = Button(self.frame, text="Continue", font=("Arial", 18), bg="light green",
                                  command=self.continue_clicked)
         continue_button.pack(side="bottom", pady=20)
 
@@ -37,7 +35,6 @@ class Page4:
         self.unload_sequence_var = StringVar()
         self.unload_descriptions_var = StringVar()
         self.unload_time_cost_var = StringVar()  # Add this line
-
 
     def update_unload_result(self, descriptions, sequence, time_cost, loading_containers):
         # Method to update the unload result
@@ -60,8 +57,6 @@ class Page4:
     def get_selected_coordinates(self):
         # Your implementation for get_selected_coordinates in Page4
         pass
-
-
 
     def show_selected_descriptions(self):
         # Create a label to display selected descriptions
@@ -86,7 +81,6 @@ class Page4:
         print("********", self.sequence)
         print("********", self.descriptions)
 
-
     def hide(self):
         self.frame.grid_remove()
 
@@ -107,6 +101,7 @@ class Page4:
             self.operator_name_label.config(text=f"Operator: {operator_name}")
             self.write_to_log(operator_name, "signs in")
             self.app.update_operator_name_all_pages(operator_name)
+
     def update_operator_name(self, name):
         self.operator_name_label.config(text=f"Operator: {name}")
         #self.app.load_unload_page.update_operator_name(name)
@@ -130,7 +125,6 @@ class Page4:
         # Log the information to the log file
         with open('log.txt', 'a') as log_file:
             log_file.write(f'{current_time} "{text}" is offloaded.\n')
-
 
     def continue_clicked(self):
         selected_coordinates, target_coordinates = self.app.page3.get_selected_coordinates()
@@ -162,4 +156,3 @@ class Page4:
         result.extend(remaining_items)
 
         return result
-
