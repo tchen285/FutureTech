@@ -1,10 +1,13 @@
 from collections import deque
 from os.path import join, expanduser
 import copy
+import re
 
 
 class FindBalancingPath:
-    def __init__(self, matrix, file_name):
+    def __init__(self, matrix, file_name, container_data, container_weight):
+        self.container_data = container_data
+        self.container_weight = container_weight
         self.start_matrix_tuple = tuple(map(tuple, matrix))
         self.file_name = file_name
         self.cols = len(matrix[0])
@@ -22,7 +25,7 @@ class FindBalancingPath:
         self.idle_matrix_tuple = []
         self.idle_ends = []
         self.idle_descriptions = []
-        # 用于储存输出在软件页面上的steps
+        # Used to store steps output on the software page
         self.description_list = []
 
     def solve_balancing(self):
@@ -36,14 +39,14 @@ class FindBalancingPath:
         )
         print("total sum and max:", total_sum, max_element)
         if 0.9 * max_element > (total_sum - max_element):
-            print("无法找到结果")
+            print("no solution")
             return
 
         while self.queue:
             level_size = len(self.queue)
             for _ in range(level_size):
                 popped_matrix = self.queue.popleft()
-                # 判断初始状态是否已经平衡
+                # Determine whether the initial state is balanced
                 if self.is_balanced(popped_matrix):
                     return
 
@@ -97,13 +100,13 @@ class FindBalancingPath:
                                 while self.idle_matrix_tuple[-i] != self.goal_matrix_tuple and self.idle_matrix_tuple[
                                     -i] != self.start_matrix_tuple:
                                     idle_start = self.idle_starts[-i]
-                                    print("\n空转起点: ", idle_start)
+                                    print("\nidling starting point: ", idle_start)
                                     idle_matrix_tuple = self.idle_matrix_tuple[-i]
-                                    print("\n空转矩阵: ", idle_matrix_tuple)
+                                    print("\nIdling matrix: ", idle_matrix_tuple)
                                     idle_end = self.idle_ends[-(i + 1)]
-                                    print("\n空转终点: ", idle_end)
+                                    print("\nidling end point: ", idle_end)
                                     idle_distance = self.find_idle_distance(idle_start, idle_matrix_tuple, idle_end)
-                                    print("\n空转距离", idle_distance)
+                                    print("\nidling distance", idle_distance)
                                     idle_description = f"\nMove crane from {idle_start} to {idle_end}. It takes {idle_distance} minutes."
                                     self.idle_descriptions.append(idle_description)
                                     self.total_cost += idle_distance
@@ -123,8 +126,9 @@ class FindBalancingPath:
                                 return True
 
                             matrix_tuple = tuple(tuple(row) for row in matrix)
+                            # This situation here is the source of the infinite loop
                             if matrix_tuple in self.visited:
-                                continue  # 这里这种情况是无限循环的根源
+                                continue
 
                             self.visited.add(matrix_tuple)
                             self.queue.append(copy.deepcopy(matrix))
@@ -170,7 +174,8 @@ class FindBalancingPath:
             distance = self.find_moving_distance(parent_tuple, current_tuple, start_col, end_col)
         self.total_cost += distance
 
-        move_description = f"\nMove container at {moves[0]} to {moves[1]}. It takes {distance} minutes."
+        move_description = f"\nMove {self.container_data[moves[0]]} ({self.container_weight[self.container_data[moves[0]]]}kg) at {moves[0]} to {moves[1]}. It takes {distance} minutes."
+        # move_description = f"\nMove container at {moves[0]} to {moves[1]}. It takes {distance} minutes."
         self.move_descriptions.append(move_description)
         self.idle_ends.append(moves[0])
         self.idle_starts.append(moves[1])
@@ -218,74 +223,75 @@ class FindBalancingPath:
 
         return mid_height - start_height + 2 + mid_height - end_height + abs(idle_start[1] - idle_end[1])
 
-    def replace_coordinates(self, old_coordinates, new_coordinates):
+    def replace_coordinates(self, coordinates1, coordinates2):
         desktop_path = join(expanduser("~"), "Desktop")
         filename = self.file_name
 
-        print("打印文件名:", filename)
         file_path = join(desktop_path, filename)
+        print("Print file name:", filename)
 
         with open(file_path, 'r') as file:
             lines = file.readlines()
 
-        # Convert old and new coordinates to the formatted strings
-        old_coordinates_str = '[{:02d},{:02d}]'.format(*old_coordinates)
-        new_coordinates_str = '[{:02d},{:02d}]'.format(*new_coordinates)
+        old_coordinates_str1 = '[{:02d},{:02d}]'.format(*coordinates1)
+        old_coordinates_str2 = '[{:02d},{:02d}]'.format(*coordinates2)
 
         for i in range(len(lines)):
-            # Assuming [01, 01] is present in each line
-            lines[i] = lines[i].replace(old_coordinates_str, new_coordinates_str)
+            # Assuming [01, 01] and [02, 02] are present in each line
+            lines[i] = lines[i].replace(old_coordinates_str1, 'TEMP_SWAP')
+            lines[i] = lines[i].replace(old_coordinates_str2, old_coordinates_str1)
+            lines[i] = lines[i].replace('TEMP_SWAP', old_coordinates_str2)
 
         # Write the modified content back to the file
         with open(file_path, 'w') as file:
             file.writelines(lines)
 
 
-# def main():
-#     # matrix = [
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [1, 0, 0, 0, 0, 0, 0, 0, 0, 10],
-#     #     [25, 30, 20, 20, 0, 0, 15, 10, 101, 50],
-#     #     [101, 101, 5, 101, 25, 20, 51, 101, 101, 29]
-#     # ]
-#
-#     # matrix = [ # passed time cost test,
-#     #     [3, 3, 0, 0],
-#     #     [10, 4, 0, None]
-#     # ]
-#
-#     # matrix = [ # passed time cost test, no idle needed
-#     #     [10, 0, 3, 0],
-#     #     [None, 4, 3, None]
-#     # ]
-#
-#     # matrix = [ # passed time cost test, no idle needed
-#     #     [10, 0, 0, 2],
-#     #     [None, 2, 14, None]
-#     # ]
-#
-#     matrix = [ # passed time cost test,
-#         [6, 4, 0, 0],
-#         [None, 10, None, None]
-#     ]
-#
-#     # matrix = [ # passed time cost test,
-#     #     [0, 0, 3, 1],
-#     #     [5, 9, 1, 1]
-#     # ]
-#     #
-#     # matrix = [ # passed time cost test, passed idle
-#     #     [0, 2, 3, 0],
-#     #     [1, 1, 2, 7]
-#     # ]
-#
-#     balancing_path_finder = FindBalancingPath(matrix)
-#     balancing_path_finder.solve_balancing()
-#
-#
-# if __name__ == "__main__":
-#     main()
+def main():
+    # matrix = [
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    #     [1, 0, 0, 0, 0, 0, 0, 0, 0, 10],
+    #     [25, 30, 20, 20, 0, 0, 15, 10, 101, 50],
+    #     [101, 101, 5, 101, 25, 20, 51, 101, 101, 29]
+    # ]
+
+    # matrix = [ # passed time cost test,
+    #     [3, 3, 0, 0],
+    #     [10, 4, 0, None]
+    # ]
+
+    # matrix = [ # passed time cost test, no idle needed
+    #     [10, 0, 3, 0],
+    #     [None, 4, 3, None]
+    # ]
+
+    # matrix = [ # passed time cost test, no idle needed
+    #     [10, 0, 0, 2],
+    #     [None, 2, 14, None]
+    # ]
+
+    matrix = [ # passed time cost test,
+        [6, 4, 0, 0],
+        [None, 10, None, None]
+    ]
+
+    # matrix = [ # passed time cost test,
+    #     [0, 0, 3, 1],
+    #     [5, 9, 1, 1]
+    # ]
+    #
+    # matrix = [ # passed time cost test, passed idle
+    #     [0, 2, 3, 0],
+    #     [1, 1, 2, 7]
+    # ]
+
+    balancing_path_finder = FindBalancingPath(matrix)
+    balancing_path_finder.solve_balancing()
+
+
+if __name__ == "__main__":
+    main()

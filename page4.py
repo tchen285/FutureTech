@@ -50,13 +50,13 @@ class Page4:
         print("Debug: Page4 - Updated Sequence:", self.sequence)
         print("Debug: Page4 - Updated Descriptions:", self.descriptions)
         print("Debug: Page4 - Updated Loading_containers:", self.loading_containers)
-        print(self.app.container_data[(1, 2)])  # 可以用这个方法调用
+        print(self.app.container_data[(1, 2)])  # call
 
         # Update the GUI elements with the received data
         self.unload_sequence_var.set(f"Unload Sequence: {self.sequence}")
         self.unload_descriptions_var.set(f"Descriptions: {self.descriptions}")
         self.unload_time_cost_var.set(f"Time Cost: {self.time_cost}")
-
+        self.write_unload_log(self.sequence)
     def get_selected_coordinates(self):
         # Your implementation for get_selected_coordinates in Page4
         pass
@@ -90,7 +90,7 @@ class Page4:
     def hide(self):
         self.frame.grid_remove()
 
-    def update_file_name(self, file_path):
+    def update_file_name(self, file_path, file_name):
         file_name = os.path.basename(file_path)
         file_name_no_extension = os.path.splitext(file_name)[0]
         self.file_name_label.config(text=f"{file_name_no_extension}")
@@ -106,9 +106,10 @@ class Page4:
             # Display operator name in the label
             self.operator_name_label.config(text=f"Operator: {operator_name}")
             self.write_to_log(operator_name, "signs in")
-            self.app.page1.update_operator_name(operator_name)
+            self.app.update_operator_name_all_pages(operator_name)
     def update_operator_name(self, name):
         self.operator_name_label.config(text=f"Operator: {name}")
+        #self.app.load_unload_page.update_operator_name(name)
 
     def write_to_log(self, txt, action):
         current_time = datetime.now().strftime("%m/%d/%Y: %H:%M")
@@ -122,6 +123,14 @@ class Page4:
         if event_comment:
             event_comment = '"'+  event_comment+ '"'
             self.write_to_log(current_operator, event_comment)
+
+    def write_unload_log(self,text):
+        current_time = datetime.now().strftime("%m/%d/%Y: %H:%M")
+
+        # Log the information to the log file
+        with open('log.txt', 'a') as log_file:
+            log_file.write(f'{current_time} "{text}" is offloaded.\n')
+
 
     def continue_clicked(self):
         selected_coordinates, target_coordinates = self.app.page3.get_selected_coordinates()
@@ -142,13 +151,13 @@ class Page4:
         return self.sequence, self.descriptions
 
     def merge_lists_alternatively(self):
-        # 提取 loading_containers 中的 "name" 列表
+        # Extract the "name" list in loading_containers
         loading_container_names = [container["name"] for container in self.loading_containers]
 
-        # 交替合并 sequence 和 loading_container_names
+        # Alternately merge sequence and loading_container_names
         result = [item for pair in zip(self.sequence, loading_container_names) for item in pair]
 
-        # 如果一个列表较长，将其余元素添加到结果列表中
+        # If a list is longer, add the remaining elements to the resulting list
         remaining_items = self.sequence[len(loading_container_names):] + loading_container_names[len(self.sequence):]
         result.extend(remaining_items)
 

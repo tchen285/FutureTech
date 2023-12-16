@@ -38,15 +38,15 @@ class Page1:
         browse_button = Button(self.frame, text="Browse", font=("Arial", 18), bg="blue", command=self.browse_file)
         browse_button.grid(row=2, column=2, pady=20)
 
-        continue_button = Button(self.frame, text="Continue", font=("Arial", 18), bg="green", command=app.show_page2)
+        continue_button = Button(self.frame, text="Continue", font=("Arial", 18), bg="blue", command=app.show_page2)
         continue_button.grid(row=4, column=1, pady=20)
 
         # Add the comment button
-        comment_button = Button(self.frame, text="Comment", font=("Arial", 14), bg="red", command=self.handle_comment)
+        comment_button = Button(self.frame, text="Comment", font=("Arial", 14), bg="blue", command=self.handle_comment)
         comment_button.grid(row=5, column=1, padx=10, pady=10)
 
         # Add a button to set operator name
-        set_operator_name_button = Button(self.frame, text="Check in", font=("Arial", 14), bg="orange",
+        set_operator_name_button = Button(self.frame, text="Check in", font=("Arial", 14), bg="blue",
                                           command=self.set_operator_name)
         set_operator_name_button.grid(row=0, column=3, padx=10, pady=10)
 
@@ -59,17 +59,20 @@ class Page1:
         base_name = os.path.basename(file_path)
         self.file_entry.delete(0, END)
         self.file_entry.insert(0, file_path)
+        self.file_name = os.path.splitext(os.path.basename(file_path))[0] + "OUTBOUND.txt"
+        print("((((((((((", self.file_name)
+        
         self.app.page2.update_file_name(file_path)
-        self.app.page3.update_file_name(file_path)
-        self.app.page4.update_file_name(file_path)
-        self.file_name = os.path.splitext(os.path.basename(file_path))[0]
-        print(self.file_name)
+        self.app.page3.update_file_name(file_path, self.file_name)
+        self.app.page4.update_file_name(file_path, self.file_name)
 
-        # 初始化两个字典
+
+        # Initialize two dictionaries
         container_data = {}
         container_weight = {}
         container_count = 0
-        # 读取文件内容并处理
+        
+        # Read file contents and process
         with open(file_path, 'r') as file:
             lines = file.readlines()
             for line in lines:
@@ -77,22 +80,22 @@ class Page1:
                 parts = line.split("}, ")
                 description = parts[1]
 
-                # 经过下面这行, [01, 02], {00120 变成 ("01", "02")元组
-                # 进一步处理 coordinates，去除方括号并将元素转换为整数
+                # After the following line, [01, 02], {00120 becomes ("01", "02") tuple
+                # Process coordinates further, removing square brackets and converting elements to integers
                 # Process coordinates
                 coordinates = parts[0].split("], {")
                 weight = int(coordinates[1])
                 coordinates[0] = coordinates[0].strip("[")
                 coordinates = tuple(map(int, coordinates[0].split(",")))
 
-                # 输出坐标和描述，以确保它们被正确读取
+                # Output coordinates and descriptions to ensure they are read correctly
                 print("Coordinates:", coordinates)
                 print("Description:", description)
 
-                # 将坐标映射到描述
+                # Map coordinates to description
                 container_data[coordinates] = description
 
-                # 输出 container_data，以确保它被正确更新
+                # Output container_data to ensure it is updated correctly
                 print("Container Data Updated:")
                 print(container_data)
 
@@ -102,35 +105,33 @@ class Page1:
                 if description == "UNUSED":
                     container_weight[description] = 0
 
-                # 将描述映射到重量，但排除NAN和UNUSED
+                # Map description to weight but exclude NAN and UNUSED
                 if description != "NAN" and description != "UNUSED":
                     container_weight[description] = weight
                     container_count = container_count+1
-                # 输出 container_weight，以确保它被正确更新
+                    
+                # Output container_weight to ensure it is updated correctly
                 print("Container Weight Updated:")
                 print(container_weight)
 
-        # 输出最终的 container_data 和 container_weight
+        # Output the final container_data and container_weight
         print("Final Container Data:")
         print(container_data)
         print("Final Container Weight:")
         print(container_weight)
 
-        # 将数据赋值给 app 对象
+        # Assign data to the app object
         self.app.container_data = container_data
         self.app.container_weight = container_weight
         self.initialize_matrix()
         self.write_Manifest_log(base_name, container_count)
         # Get the desktop path
-        desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
+        desktop_path = join(expanduser("~"), "Desktop")
 
         # Generate the new filename for the outbound file on the desktop
-        outbound_file_path = os.path.join(desktop_path, f"{self.file_name}OUTBOUND.txt")
+        outbound_file_path = join(desktop_path, f"{self.file_name}")
 
-        self.file_name = f"{self.file_name}OUTBOUND.txt"
-
-        # Create the necessary directories if they don't exist
-        os.makedirs(os.path.dirname(outbound_file_path), exist_ok=True)
+        # self.file_name = f"{self.file_name}OUTBOUND.txt"
 
         # Copy the content from the original file to the outbound file with the new name
         with open(file_path, 'r') as original_file, open(outbound_file_path, 'w') as outbound_file:
@@ -146,7 +147,7 @@ class Page1:
         self.frame.grid_remove()
 
     def show_file_content(self):
-        # 在点击"Unloading"按钮后，将文件内容存储到Page2的file_content属性中
+        # After clicking the "Unloading" button, store the file content in the file_content attribute of Page2
         self.app.page2.file_content = self.file_content
         self.app.page3.set_file_content(self.file_content)
         self.app.show_page3()
@@ -164,7 +165,11 @@ class Page1:
             self.operator_name_label.config(text=f"Operator: {operator_name}")
             self.write_to_log(operator_name, "signs in")
 
-        self.app.page2.update_operator_name(operator_name)
+        self.app.update_operator_name_all_pages(operator_name)
+
+    def update_operator_name(self, name):
+        self.operator_name_label.config(text=f"Operator: {name}")
+        #self.app.page2.update_operator_name(name)
 
     def handle_comment(self):
         # Prompt the user to enter an event
@@ -191,19 +196,19 @@ class Page1:
 
     # For small test cases
     # def initialize_matrix(self):
-    #     # 初始化一个2x4的矩阵，内容都是0
+    #     # Initialize a 2x4 matrix, the contents are all 0
     #     original_matrix = [[0] * 4 for _ in range(2)]
-    #     # 遍历文件内容并更新矩阵
+    #     # Iterate over the file contents and update the matrix
     #     for coordinates, description in self.app.container_data.items():
     #         row, col = coordinates
     #         new_col = col - 1
     #         new_row = len(original_matrix) - row
     #         original_matrix[new_row][new_col] = self.app.container_weight.get(description, 0)
     #
-    #     # 将矩阵存储到App对象中, 可以直接使用self.app.original_matrix调用
+    #     # Store the matrix in the App object, which can be called directly using self.app.original_matrix
     #     self.app.original_matrix = original_matrix
     #
-    #     # 输出修改后的矩阵到控制台
+    #     # Output the modified matrix to the console
     #     print("\nModified Matrix:")
     #     for row in original_matrix:
     #         print(row)
@@ -211,18 +216,20 @@ class Page1:
 
     # For regular test cases
     def initialize_matrix(self):
-        # 初始化一个8x12的矩阵，内容都是0
+        # Initialize an 8x12 matrix, the contents are all 0
         original_matrix = [[0] * 12 for _ in range(8)]
-        # 遍历文件内容并更新矩阵
+        
+        # Iterate over the file contents and update the matrix
         for coordinates, description in self.app.container_data.items():
             row, col = coordinates
             new_col = col - 1
             new_row = len(original_matrix) - row
             original_matrix[new_row][new_col] = self.app.container_weight.get(description, 0)
 
-        # 将矩阵存储到App对象中, 可以直接使用self.app.original_matrix调用
+        # Store the matrix in the App object, which can be called directly using self.app.original_matrix
         self.app.original_matrix = original_matrix
-        # 输出修改后的矩阵到控制台
+        
+        # Output the modified matrix to the console
         print("\nModified Matrix:")
         for row in original_matrix:
             print(row)
