@@ -2,7 +2,7 @@ from collections import deque
 from os.path import join, expanduser
 import copy
 import re
-
+from datetime import datetime
 
 class FindBalancingPath:
     def __init__(self, matrix, file_name, container_data, container_weight):
@@ -338,6 +338,7 @@ class FindBalancingPath:
                                 print(self.move_descriptions[0])
                                 self.description_list.append(self.move_descriptions[0])
                                 print("\nTotal time cost: ", self.total_cost, " minutes.")
+                                self.write_sift_log()
                                 return True
 
                             matrix_tuple = tuple(tuple(row) for row in matrix)
@@ -376,7 +377,12 @@ class FindBalancingPath:
 
         return target_matrix
 
+    def write_sift_log(self):
+        current_time = datetime.now().strftime("%m/%d/%Y: %H:%M")
 
+        # Log the information to the log file
+        with open('log.txt', 'a') as log_file:
+            log_file.write(f"{current_time} Can't use balance, use SIFT process.\n")
 # def main():
 #     # matrix = [
 #     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
