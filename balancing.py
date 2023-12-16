@@ -52,7 +52,7 @@ class FindBalancingPath:
             level_size = len(self.queue)
             for _ in range(level_size):
                 popped_matrix = self.queue.popleft()
-                # 判断初始状态是否已经平衡
+
                 if self.is_balanced(popped_matrix):
                     return
 
@@ -108,13 +108,13 @@ class FindBalancingPath:
                                 while self.idle_matrix_tuple[-i] != self.goal_matrix_tuple and self.idle_matrix_tuple[
                                     -i] != self.start_matrix_tuple:
                                     idle_start = self.idle_starts[-i]
-                                    print("\n空转起点: ", idle_start)
+
                                     idle_matrix_tuple = self.idle_matrix_tuple[-i]
-                                    print("\n空转矩阵: ", idle_matrix_tuple)
+
                                     idle_end = self.idle_ends[-(i + 1)]
-                                    print("\n空转终点: ", idle_end)
+
                                     idle_distance = self.find_idle_distance(idle_start, idle_matrix_tuple, idle_end)
-                                    print("\n空转距离", idle_distance)
+
                                     idle_description = f"\nMove crane from {idle_start} to {idle_end}. It takes {idle_distance} minutes."
                                     self.idle_descriptions.append(idle_description)
                                     self.total_cost += idle_distance
@@ -343,7 +343,7 @@ class FindBalancingPath:
 
                             matrix_tuple = tuple(tuple(row) for row in matrix)
                             if matrix_tuple in self.visited:
-                                continue  # 这里这种情况是无限循环的根源
+                                continue  
 
                             self.visited.add(matrix_tuple)
                             self.queue.append(copy.deepcopy(matrix))
@@ -383,51 +383,3 @@ class FindBalancingPath:
         # Log the information to the log file
         with open('log.txt', 'a') as log_file:
             log_file.write(f"{current_time} Can't use balance, use SIFT process.\n")
-# def main():
-#     # matrix = [
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-#     #     [1, 0, 0, 0, 0, 0, 0, 0, 0, 10],
-#     #     [25, 30, 20, 20, 0, 0, 15, 10, 101, 50],
-#     #     [101, 101, 5, 101, 25, 20, 51, 101, 101, 29]
-#     # ]
-#
-#     # matrix = [ # passed time cost test,
-#     #     [3, 3, 0, 0],
-#     #     [10, 4, 0, None]
-#     # ]
-#
-#     # matrix = [ # passed time cost test, no idle needed
-#     #     [10, 0, 3, 0],
-#     #     [None, 4, 3, None]
-#     # ]
-#
-#     # matrix = [ # passed time cost test, no idle needed
-#     #     [10, 0, 0, 2],
-#     #     [None, 2, 14, None]
-#     # ]
-#
-#     matrix = [ # passed time cost test,
-#         [6, 4, 0, 0],
-#         [None, 10, None, None]
-#     ]
-#
-#     # matrix = [ # passed time cost test,
-#     #     [0, 0, 3, 1],
-#     #     [5, 9, 1, 1]
-#     # ]
-#     #
-#     # matrix = [ # passed time cost test, passed idle
-#     #     [0, 2, 3, 0],
-#     #     [1, 1, 2, 7]
-#     # ]
-#
-#     balancing_path_finder = FindBalancingPath(matrix)
-#     balancing_path_finder.solve_balancing()
-#
-#
-# if __name__ == "__main__":
-#     main()
