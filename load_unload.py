@@ -79,13 +79,13 @@ class FindLoadUnloadPath:
                 continue
             self.total_description.append(reversed_array[i])
 
-        # # 模版模版
-        # base_file_name = os.path.basename(self.file_path)
-        # file_name = os.path.splitext(base_file_name)[0] + "OUTBOUND.txt"
-        # desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
-        # self.file_path = os.path.join(desktop_path, file_name)
-        # with open(self.file_path, 'a') as file:
-        #     file.write("Adding a new line\n")
+         # 模版模版
+            #base_file_name = os.path.basename(self.file_path)
+            #file_name = os.path.splitext(base_file_name)[0] + ".txt"
+            #desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
+            #self.file_path = os.path.join(desktop_path, file_name)
+            #with open(self.file_path, 'a') as file:
+             #file.write("Adding a new line\n")
 
         # The software should print self.total_description step by step
         for row in self.total_description:
@@ -266,6 +266,7 @@ class FindLoadUnloadPath:
                 description = f"Retrieve {self.container_data[(8 - row, col + 1)]} ({self.container_weight[self.container_data[(8 - row, col + 1)]]}kg) located at [{8 - row},{col + 1}] and place it onto the truck.\nThis step takes {cost} minutes."
                 self.unload_load_description.append(description)
                 self.total_cost += cost
+                self.delete_in_manifest(self.container_data[(8 - row, col + 1)])
                 # formatted_row = f"{8 - row:02}"  # Add leading zero if needed (2 digits wide)
                 # formatted_col = f"{col + 1:02}"
                 # exclude_coordinates = f"[{formatted_row},{formatted_col}]"
@@ -306,6 +307,38 @@ class FindLoadUnloadPath:
                 description = f"Take the loading container from truck and place it at [{8 - row},{col + 1}].\nThis step takes {cost} minutes."
                 self.unload_load_description.append(description)
                 self.total_cost += cost
-
+                global rrow, cclo
 
             current_matrix_tuple = self.matrix_parent[current_matrix_tuple]
+
+    def delete_in_manifest(self, text):
+        base_file_name = os.path.basename(self.file_path)
+        file_name = os.path.splitext(base_file_name)[0] + ".txt"
+        desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
+        modified_file_path = os.path.join(desktop_path, file_name)
+
+        # First, read the existing content from the file
+        with open(modified_file_path, 'r') as file:
+            lines = file.readlines()
+
+        # Process each line
+        updated_lines = []
+        for line in lines:
+            parts = line.strip().split(", ")
+            if len(parts) == 3 and parts[-1] in text:
+                # Change the weight to {00000} and label to UNUSED
+                parts[1] = "{00000}"
+                parts[2] = "UNUSED"
+                line = ", ".join(parts) + '\n'
+            updated_lines.append(line)
+
+        # Write the updated content back to the file
+        with open(modified_file_path, 'w') as file:
+            file.writelines(updated_lines)
+
+
+
+
+
+
+
