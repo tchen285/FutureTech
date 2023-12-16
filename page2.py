@@ -5,6 +5,7 @@ from balancing import FindBalancingPath
 import os
 from datetime import datetime
 
+
 class Page2:
     def __init__(self, app):
         self.operator_name_label = None
@@ -12,17 +13,17 @@ class Page2:
         self.frame = Frame(app.root, bg="white")
         self.file_content = []
 
-        self.file_name_label = Label(self.frame, text="", font=("Arial", 20), bg="white", fg="black")
+        self.file_name_label = Label(self.frame, text="", font=("Arial", 20), bg="white", fg="red")
         self.file_name_label.grid(row=0, column=0, padx=10, pady=10, sticky="e")
 
-        unload_button = Button(self.frame, text="Loading / Unloading", font=("Arial", 20), bg="light green", command=self.show_file_content)
+        unload_button = Button(self.frame, text="Loading / Unloading", font=("Arial", 20), bg="white", command=self.show_file_content)
         unload_button.grid(row=2, column=3, pady=20)
 
-        balancing_button = Button(self.frame, text="Balancing", font=("Arial", 20), bg="light green", command=self.calculate_balance)
+        balancing_button = Button(self.frame, text="Balancing", font=("Arial", 20), bg="white", command=self.calculate_balance)
         balancing_button.grid(row=3, column=3, pady=20)
 
         # Add a button to set operator name
-        set_operator_name_button = Button(self.frame, text="Check In", font=("Arial", 14), bg="orange",
+        set_operator_name_button = Button(self.frame, text="Check in", font=("Arial", 14), bg="orange",
                                           command=self.set_operator_name)
         set_operator_name_button.grid(row=0, column=4, padx=10, pady=10)
 
@@ -31,7 +32,7 @@ class Page2:
         comment_button.grid(row=5, column=1, padx=10, pady=10)
 
         # Display operator name label
-        self.operator_name_label = Label(self.frame, text="Enter Your Name Please", font=("Arial", 14), bg="white")
+        self.operator_name_label = Label(self.frame, text="Hello Name!", font=("Arial", 14), bg="white")
         self.operator_name_label.grid(row=1, column=4, padx=10, pady=10)
 
     def show(self):
@@ -90,6 +91,7 @@ class Page2:
         descriptions = balancing_path_finder.description_list
         steps = len(balancing_path_finder.description_list)
         time_cost = balancing_path_finder.total_cost
+        sift = balancing_path_finder.is_sift
         self.app.show_balance_cost_page()
-        self.app.balance_cost_page.update_labels(steps, time_cost)
+        self.app.balance_cost_page.update_labels(steps, time_cost, sift)
         self.app.description_page.update_descriptions(descriptions)
