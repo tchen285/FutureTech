@@ -39,7 +39,7 @@ class FindBalancingPath:
             self.start_matrix_tuple[i][j] if self.start_matrix_tuple[i][j] is not None else float('-inf')
             for i in range(self.rows) for j in range(self.cols)
         )
-        
+
         if 0.9 * max_element > (total_sum - max_element):
             self.is_sift = True
             self.sift(self.matrix)
@@ -72,6 +72,8 @@ class FindBalancingPath:
 
                     current_matrix = copy.deepcopy(popped_matrix)
                     if self.solve_current_column(current_matrix, popped_matrix, col):
+                        for swap_tuple in reversed(self.swap_tuple_list):
+                            self.replace_coordinates(swap_tuple[0], swap_tuple[1])
                         return
 
     def solve_current_column(self, matrix, original_matrix, col):
