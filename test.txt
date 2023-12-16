@@ -1,8 +1,0 @@
-[01,01], {00000}, NAN
-[02,01], {00006}, Walmart Ohio 1000 air fryers
-[01,02], {00010}, Walmart Ohio Cat toys
-[01,03], {00000}, UNUSED
-[02,02], {00004}, Amazon 64834 Snap-on tools
-[02,03], {00000}, UNUSED
-[02,04], {00000}, UNUSED
-[01,04], {00000}, NAN
