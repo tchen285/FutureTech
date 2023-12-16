@@ -79,7 +79,7 @@ class FindLoadUnloadPath:
                 continue
             self.total_description.append(reversed_array[i])
 
-         # 模版模版
+
             #base_file_name = os.path.basename(self.file_path)
             #file_name = os.path.splitext(base_file_name)[0] + ".txt"
             #desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
@@ -240,7 +240,7 @@ class FindLoadUnloadPath:
         current_matrix = copy.deepcopy(final_matrix)
         current_matrix_tuple = tuple(map(tuple, current_matrix))
 
-        # 模版模版
+
         # base_file_name = os.path.basename(self.file_path)
         # file_name = os.path.splitext(base_file_name)[0]
         # desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
@@ -258,7 +258,7 @@ class FindLoadUnloadPath:
                         current_weight += current_matrix_tuple[row][col]
 
             if parent_weight > current_weight:
-                # 执行卸船
+
                 row, col, cost = self.interpret_unloading(parent_matrix_tuple, current_matrix_tuple)
                 self.idle_end = (row, col)
                 # idle_distance = abs(critical_end[0] - row) + abs(critical_end[1] - col)
@@ -281,7 +281,7 @@ class FindLoadUnloadPath:
                 #     file.writelines(lines)
 
             if parent_weight == current_weight:
-                # 执行船内移动
+
                 start_coordinate, end_coordinate, cost = self.interpret_move(parent_matrix_tuple, current_matrix_tuple)
                 description = f"Move {self.container_data[(8 - start_coordinate[0], start_coordinate[1] + 1)]} ({self.container_weight[self.container_data[(8 - start_coordinate[0], start_coordinate[1] + 1)]]}kg) located at [{8 - end_coordinate[0]}] to [{end_coordinate[1] + 1}].\nThis step takes {cost} minutes."
                 self.unload_load_description.append(description)
@@ -302,7 +302,7 @@ class FindLoadUnloadPath:
 
 
             if parent_weight < current_weight:
-                # 执行装船
+
                 row, col, cost = self.interpret_loading(parent_matrix_tuple, current_matrix_tuple)
                 description = f"Take the loading container from truck and place it at [{8 - row},{col + 1}].\nThis step takes {cost} minutes."
                 self.unload_load_description.append(description)
@@ -335,10 +335,3 @@ class FindLoadUnloadPath:
         # Write the updated content back to the file
         with open(modified_file_path, 'w') as file:
             file.writelines(updated_lines)
-
-
-
-
-
-
-
