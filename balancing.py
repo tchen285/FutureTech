@@ -27,8 +27,8 @@ class FindBalancingPath:
         self.idle_matrix_tuple = []
         self.idle_ends = []
         self.idle_descriptions = []
-        # 用于储存输出在软件页面上的steps
         self.description_list = []
+        self.swap_tuple_list = []
 
     def solve_balancing(self):
         total_sum = sum(
@@ -39,10 +39,13 @@ class FindBalancingPath:
             self.start_matrix_tuple[i][j] if self.start_matrix_tuple[i][j] is not None else float('-inf')
             for i in range(self.rows) for j in range(self.cols)
         )
-        print("total sum and max:", total_sum, max_element)
+        
         if 0.9 * max_element > (total_sum - max_element):
             self.is_sift = True
             self.sift(self.matrix)
+
+            for swap_tuple in reversed(self.swap_tuple_list):
+                self.replace_coordinates(swap_tuple[0], swap_tuple[1])
             return
 
         while self.queue:
@@ -130,7 +133,7 @@ class FindBalancingPath:
 
                             matrix_tuple = tuple(tuple(row) for row in matrix)
                             if matrix_tuple in self.visited:
-                                continue  # 这里这种情况是无限循环的根源
+                                continue
 
                             self.visited.add(matrix_tuple)
                             self.queue.append(copy.deepcopy(matrix))
@@ -168,13 +171,16 @@ class FindBalancingPath:
                     end_row, end_col = i2, j2
                     height = max(height, self.rows - end_row)
 
-        self.replace_coordinates(moves[0], moves[1])
 
         if abs(start_col - end_col) == 1:
             distance = abs(moves[0][0] - moves[1][0]) + abs(moves[0][1] - moves[1][1])
         else:
             distance = self.find_moving_distance(parent_tuple, current_tuple, start_col, end_col)
         self.total_cost += distance
+        print("Print moves0 and moves1:*******")
+        print(moves[0])
+        print(moves[1])
+        self.swap_tuple_list.append((moves[0], moves[1]))
 
         move_description = f"\nMove {self.container_data[moves[0]]} ({self.container_weight[self.container_data[moves[0]]]}kg) at {moves[0]} to {moves[1]}. It takes {distance} minutes."
         # move_description = f"\nMove container at {moves[0]} to {moves[1]}. It takes {distance} minutes."
@@ -182,6 +188,7 @@ class FindBalancingPath:
         self.idle_ends.append(moves[0])
         self.idle_starts.append(moves[1])
         self.idle_matrix_tuple.append(current_tuple)
+
 
     def find_moving_distance(self, start_tuple, end_tuple, start_col, end_col):
         mid_height, start_height, end_height = 0, 0, 0
