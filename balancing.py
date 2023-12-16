@@ -9,6 +9,7 @@ class FindBalancingPath:
         self.container_data = container_data
         self.container_weight = container_weight
         self.start_matrix_tuple = tuple(map(tuple, matrix))
+        self.matrix = matrix
         self.file_name = file_name
         self.cols = len(matrix[0])
         self.rows = len(matrix)
@@ -20,12 +21,13 @@ class FindBalancingPath:
         self.matrix_parent = {tuple(map(tuple, matrix)): None}
         self.move_descriptions = []
         self.total_cost = 0
+        self.is_sift = False
         self.goal_matrix_tuple = None
         self.idle_starts = []
         self.idle_matrix_tuple = []
         self.idle_ends = []
         self.idle_descriptions = []
-        # Used to store steps output on the software page
+        # 用于储存输出在软件页面上的steps
         self.description_list = []
 
     def solve_balancing(self):
@@ -39,14 +41,15 @@ class FindBalancingPath:
         )
         print("total sum and max:", total_sum, max_element)
         if 0.9 * max_element > (total_sum - max_element):
-            print("no solution")
+            self.is_sift = True
+            self.sift(self.matrix)
             return
 
         while self.queue:
             level_size = len(self.queue)
             for _ in range(level_size):
                 popped_matrix = self.queue.popleft()
-                # Determine whether the initial state is balanced
+                # 判断初始状态是否已经平衡
                 if self.is_balanced(popped_matrix):
                     return
 
@@ -100,13 +103,13 @@ class FindBalancingPath:
                                 while self.idle_matrix_tuple[-i] != self.goal_matrix_tuple and self.idle_matrix_tuple[
                                     -i] != self.start_matrix_tuple:
                                     idle_start = self.idle_starts[-i]
-                                    print("\nidling starting point: ", idle_start)
+                                    print("\n空转起点: ", idle_start)
                                     idle_matrix_tuple = self.idle_matrix_tuple[-i]
-                                    print("\nIdling matrix: ", idle_matrix_tuple)
+                                    print("\n空转矩阵: ", idle_matrix_tuple)
                                     idle_end = self.idle_ends[-(i + 1)]
-                                    print("\nidling end point: ", idle_end)
+                                    print("\n空转终点: ", idle_end)
                                     idle_distance = self.find_idle_distance(idle_start, idle_matrix_tuple, idle_end)
-                                    print("\nidling distance", idle_distance)
+                                    print("\n空转距离", idle_distance)
                                     idle_description = f"\nMove crane from {idle_start} to {idle_end}. It takes {idle_distance} minutes."
                                     self.idle_descriptions.append(idle_description)
                                     self.total_cost += idle_distance
@@ -126,9 +129,8 @@ class FindBalancingPath:
                                 return True
 
                             matrix_tuple = tuple(tuple(row) for row in matrix)
-                            # This situation here is the source of the infinite loop
                             if matrix_tuple in self.visited:
-                                continue
+                                continue  # 这里这种情况是无限循环的根源
 
                             self.visited.add(matrix_tuple)
                             self.queue.append(copy.deepcopy(matrix))
@@ -226,9 +228,7 @@ class FindBalancingPath:
     def replace_coordinates(self, coordinates1, coordinates2):
         desktop_path = join(expanduser("~"), "Desktop")
         filename = self.file_name
-
         file_path = join(desktop_path, filename)
-        print("Print file name:", filename)
 
         with open(file_path, 'r') as file:
             lines = file.readlines()
@@ -247,51 +247,172 @@ class FindBalancingPath:
             file.writelines(lines)
 
 
-def main():
-    # matrix = [
-    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    #     [1, 0, 0, 0, 0, 0, 0, 0, 0, 10],
-    #     [25, 30, 20, 20, 0, 0, 15, 10, 101, 50],
-    #     [101, 101, 5, 101, 25, 20, 51, 101, 101, 29]
-    # ]
+    def sift(self, matrix):
+        start_matrix = matrix
+        target_matrix = self.find_sift_target_matrix(start_matrix)
 
-    # matrix = [ # passed time cost test,
-    #     [3, 3, 0, 0],
-    #     [10, 4, 0, None]
-    # ]
+        while self.queue:
+            level_size = len(self.queue)
+            for _ in range(level_size):
+                popped_matrix = self.queue.popleft()
+                if popped_matrix == target_matrix:
+                    return
 
-    # matrix = [ # passed time cost test, no idle needed
-    #     [10, 0, 3, 0],
-    #     [None, 4, 3, None]
-    # ]
+                for col in range(self.cols):
+                    if popped_matrix[-1][col] == 0:
+                        continue
+                    if popped_matrix[-1][col] is None:
+                        find_a_container = False
+                        for r in range(self.rows):
+                            if popped_matrix[r][col] != 0 or popped_matrix[r][col] is not None:
+                                find_a_container = True
+                        if find_a_container is False:
+                            continue
 
-    # matrix = [ # passed time cost test, no idle needed
-    #     [10, 0, 0, 2],
-    #     [None, 2, 14, None]
-    # ]
-
-    matrix = [ # passed time cost test,
-        [6, 4, 0, 0],
-        [None, 10, None, None]
-    ]
-
-    # matrix = [ # passed time cost test,
-    #     [0, 0, 3, 1],
-    #     [5, 9, 1, 1]
-    # ]
-    #
-    # matrix = [ # passed time cost test, passed idle
-    #     [0, 2, 3, 0],
-    #     [1, 1, 2, 7]
-    # ]
-
-    balancing_path_finder = FindBalancingPath(matrix)
-    balancing_path_finder.solve_balancing()
+                    current_matrix = copy.deepcopy(popped_matrix)
+                    if self.solve_sift_current_column(current_matrix, popped_matrix, target_matrix, col):
+                        return
 
 
-if __name__ == "__main__":
-    main()
+    def solve_sift_current_column(self, matrix, original_matrix, target_matrix, col):
+        for row1 in range(self.rows):
+            if matrix[row1][col] != 0 and matrix[row1][col] != None:
+                weight = matrix[row1][col]
+                matrix[row1][col] = 0
+
+                for col2 in range(self.cols):
+                    if col2 == col:
+                        continue
+                    for row2 in reversed(range(self.rows)):
+                        if matrix[0][col2] != 0:
+                            continue
+                        if matrix[row2][col2] == 0:
+                            matrix[row2][col2] = weight
+                            if tuple(map(tuple, matrix)) in self.visited:
+                                matrix[row2][col2] = 0
+                                break
+                            self.matrix_parent[tuple(map(tuple, matrix))] = tuple(map(tuple, original_matrix))
+
+                            if matrix == target_matrix:
+                                self.goal_matrix_tuple = tuple(map(tuple, matrix))
+                                self.matrix_parent[tuple(map(tuple, matrix))]
+                                current = tuple(map(tuple, matrix))
+
+                                while self.matrix_parent[current]:
+                                    self.interpret_move(self.matrix_parent[current], current)
+                                    current = self.matrix_parent[current]
+
+                                i = 1
+                                while self.idle_matrix_tuple[-i] != self.goal_matrix_tuple and self.idle_matrix_tuple[
+                                    -i] != self.start_matrix_tuple:
+                                    idle_start = self.idle_starts[-i]
+
+                                    idle_matrix_tuple = self.idle_matrix_tuple[-i]
+
+                                    idle_end = self.idle_ends[-(i + 1)]
+
+                                    idle_distance = self.find_idle_distance(idle_start, idle_matrix_tuple, idle_end)
+
+                                    idle_description = f"\nMove crane from {idle_start} to {idle_end}. It takes {idle_distance} minutes."
+                                    self.idle_descriptions.append(idle_description)
+                                    self.total_cost += idle_distance
+                                    i += 1
+
+                                index1, index2 = 0, 0
+                                while index1 != len(self.move_descriptions) and index2 != len(self.idle_descriptions):
+                                    print(self.move_descriptions[-(index1 + 1)])
+                                    self.description_list.append(self.move_descriptions[-(index1 + 1)])
+                                    print(self.idle_descriptions[index2])
+                                    self.description_list.append(self.idle_descriptions[index2])
+                                    index1 += 1
+                                    index2 += 1
+                                print(self.move_descriptions[0])
+                                self.description_list.append(self.move_descriptions[0])
+                                print("\nTotal time cost: ", self.total_cost, " minutes.")
+                                return True
+
+                            matrix_tuple = tuple(tuple(row) for row in matrix)
+                            if matrix_tuple in self.visited:
+                                continue  # 这里这种情况是无限循环的根源
+
+                            self.visited.add(matrix_tuple)
+                            self.queue.append(copy.deepcopy(matrix))
+                            matrix[row2][col2] = 0
+                            break  # Exit the inner loop
+                break  # Exit the outer loop
+        return False
+
+
+    def find_sift_target_matrix(self, matrix):
+        start_matrix = matrix
+        list = [element for row in start_matrix for element in row if element is not None and element != 0]
+        list.sort(reverse=True)
+        print(list)
+        target_matrix = [[None if element is None else 0 for element in row] for row in start_matrix]
+        print(target_matrix)
+        column_list = [5, 6, 4, 7, 3, 8, 2, 9, 1, 10, 0, 11]
+
+        if target_matrix[7][5] is not None:
+            row = 7
+        if target_matrix[7][5] is None:
+            row = 6
+
+        while list:
+            col = column_list.pop(0)
+            target_matrix[row][col] = list.pop(0)
+
+        # print target_matrix
+        for row in target_matrix:
+            print(row)
+
+        return target_matrix
+
+
+# def main():
+#     # matrix = [
+#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#     #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+#     #     [1, 0, 0, 0, 0, 0, 0, 0, 0, 10],
+#     #     [25, 30, 20, 20, 0, 0, 15, 10, 101, 50],
+#     #     [101, 101, 5, 101, 25, 20, 51, 101, 101, 29]
+#     # ]
+#
+#     # matrix = [ # passed time cost test,
+#     #     [3, 3, 0, 0],
+#     #     [10, 4, 0, None]
+#     # ]
+#
+#     # matrix = [ # passed time cost test, no idle needed
+#     #     [10, 0, 3, 0],
+#     #     [None, 4, 3, None]
+#     # ]
+#
+#     # matrix = [ # passed time cost test, no idle needed
+#     #     [10, 0, 0, 2],
+#     #     [None, 2, 14, None]
+#     # ]
+#
+#     matrix = [ # passed time cost test,
+#         [6, 4, 0, 0],
+#         [None, 10, None, None]
+#     ]
+#
+#     # matrix = [ # passed time cost test,
+#     #     [0, 0, 3, 1],
+#     #     [5, 9, 1, 1]
+#     # ]
+#     #
+#     # matrix = [ # passed time cost test, passed idle
+#     #     [0, 2, 3, 0],
+#     #     [1, 1, 2, 7]
+#     # ]
+#
+#     balancing_path_finder = FindBalancingPath(matrix)
+#     balancing_path_finder.solve_balancing()
+#
+#
+# if __name__ == "__main__":
+#     main()
